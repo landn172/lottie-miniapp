@@ -181,8 +181,9 @@ class Matrix {
   }
 
   isIdentity() {
+    const props = this.props;
     if (!this._identityCalculated) {
-      this._identity = !(this.props[0] !== 1 || this.props[1] !== 0 || this.props[2] !== 0 || this.props[3] !== 0 || this.props[4] !== 0 || this.props[5] !== 1 || this.props[6] !== 0 || this.props[7] !== 0 || this.props[8] !== 0 || this.props[9] !== 0 || this.props[10] !== 1 || this.props[11] !== 0 || this.props[12] !== 0 || this.props[13] !== 0 || this.props[14] !== 0 || this.props[15] !== 1);
+      this._identity = !(props[0] !== 1 || props[1] !== 0 || props[2] !== 0 || props[3] !== 0 || props[4] !== 0 || props[5] !== 1 || props[6] !== 0 || props[7] !== 0 || props[8] !== 0 || props[9] !== 0 || props[10] !== 1 || props[11] !== 0 || props[12] !== 0 || props[13] !== 0 || props[14] !== 0 || props[15] !== 1);
       this._identityCalculated = true;
     }
     return this._identity;
@@ -190,8 +191,9 @@ class Matrix {
 
   equals(matr) {
     let i = 0;
+    const props = this.props;
     while (i < 16) {
-      if (matr.props[i] !== this.props[i]) {
+      if (matr.props[i] !== props[i]) {
         return false;
       }
       i += 1;
@@ -201,8 +203,9 @@ class Matrix {
 
   clone(matr) {
     let i;
+    const props = this.props;
     for (i = 0; i < 16; i += 1) {
-      matr.props[i] = this.props[i];
+      matr.props[i] = props[i];
     }
   }
 
@@ -214,10 +217,11 @@ class Matrix {
   }
 
   applyToPoint(x, y, z) {
+    const props = this.props;
     return {
-      x: x * this.props[0] + y * this.props[4] + z * this.props[8] + this.props[12],
-      y: x * this.props[1] + y * this.props[5] + z * this.props[9] + this.props[13],
-      z: x * this.props[2] + y * this.props[6] + z * this.props[10] + this.props[14]
+      x: x * props[0] + y * props[4] + z * props[8] + props[12],
+      y: x * props[1] + y * props[5] + z * props[9] + props[13],
+      z: x * props[2] + y * props[6] + z * props[10] + props[14]
     };
   /* return {
    x: x * me.a + y * me.c + me.e,
@@ -225,22 +229,26 @@ class Matrix {
    }; */
   }
   applyToX(x, y, z) {
-    return x * this.props[0] + y * this.props[4] + z * this.props[8] + this.props[12];
+    const props = this.props;
+    return x * props[0] + y * props[4] + z * props[8] + props[12];
   }
   applyToY(x, y, z) {
-    return x * this.props[1] + y * this.props[5] + z * this.props[9] + this.props[13];
+    const props = this.props;
+    return x * props[1] + y * props[5] + z * props[9] + props[13];
   }
   applyToZ(x, y, z) {
-    return x * this.props[2] + y * this.props[6] + z * this.props[10] + this.props[14];
+    const props = this.props;
+    return x * props[2] + y * props[6] + z * props[10] + props[14];
   }
   inversePoint(pt) {
-    let determinant = this.props[0] * this.props[5] - this.props[1] * this.props[4];
-    let a = this.props[5] / determinant;
-    let b = -this.props[1] / determinant;
-    let c = -this.props[4] / determinant;
-    let d = this.props[0] / determinant;
-    let e = (this.props[4] * this.props[13] - this.props[5] * this.props[12]) / determinant;
-    let f = -(this.props[0] * this.props[13] - this.props[1] * this.props[12]) / determinant;
+    const props = this.props;
+    let determinant = props[0] * props[5] - props[1] * props[4];
+    let a = props[5] / determinant;
+    let b = -props[1] / determinant;
+    let c = -props[4] / determinant;
+    let d = props[0] / determinant;
+    let e = (props[4] * props[13] - props[5] * props[12]) / determinant;
+    let f = -(props[0] * props[13] - props[1] * props[12]) / determinant;
     return [pt[0] * a + pt[1] * c + e, pt[0] * b + pt[1] * d + f, 0];
   }
 
@@ -264,12 +272,13 @@ class Matrix {
       arr[4] = pt3[0];
       arr[5] = pt3[1];
     } else {
-      let p0 = this.props[0];
-      let p1 = this.props[1];
-      let p4 = this.props[4];
-      let p5 = this.props[5];
-      let p12 = this.props[12];
-      let p13 = this.props[13];
+      const props = this.props;
+      let p0 = props[0];
+      let p1 = props[1];
+      let p4 = props[4];
+      let p5 = props[5];
+      let p12 = props[12];
+      let p13 = props[13];
       arr[0] = pt1[0] * p0 + pt1[1] * p4 + p12;
       arr[1] = pt1[0] * p1 + pt1[1] * p5 + p13;
       arr[2] = pt2[0] * p0 + pt2[1] * p4 + p12;
@@ -285,7 +294,8 @@ class Matrix {
     if (this.isIdentity()) {
       arr = [x, y, z];
     } else {
-      arr = [x * this.props[0] + y * this.props[4] + z * this.props[8] + this.props[12], x * this.props[1] + y * this.props[5] + z * this.props[9] + this.props[13], x * this.props[2] + y * this.props[6] + z * this.props[10] + this.props[14]];
+      const props = this.props;
+      arr = [x * props[0] + y * props[4] + z * props[8] + props[12], x * props[1] + y * props[5] + z * props[9] + props[13], x * props[2] + y * props[6] + z * props[10] + props[14]];
     }
     return arr;
   }

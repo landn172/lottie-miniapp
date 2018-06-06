@@ -92,7 +92,7 @@ class AnimationManager {
   }
 
   resume(nowTime) {
-    let elapsedTime = nowTime - this.initTime;
+    let elapsedTime = ~~(nowTime - this.initTime);
     const registeredAnimations = this.registeredAnimations;
     let i;
     for (i = 0; i < this.len; i += 1) {

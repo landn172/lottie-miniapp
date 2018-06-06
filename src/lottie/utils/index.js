@@ -4,8 +4,10 @@ function rafFactory() {
   if (typeof requestAnimationFrame !== 'undefined') return requestAnimationFrame;
   let lastTime = 0;
   return function Raf(callback) {
-    let currTime = new Date().getTime();
-    let timeToCall = Math.max(0, 16 - (currTime - lastTime));
+    let currTime = +new Date();
+    // pref：优化js密集计算 资源竞争恶性循环
+    let timeToCall = Math.max(0, 16 + (currTime - lastTime));
+    // let timeToCall = Math.max(0, 16 - (currTime - lastTime));
     let id = setTimeout(function setTimeout() {
       callback(currTime + timeToCall);
     }, timeToCall);
