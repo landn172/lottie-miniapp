@@ -1,7 +1,8 @@
+/* eslint global-require: 0 */
 import Matrix from '../3rd_party/transformation-matrix';
 import CVContextData from '../canvasElements/CVContextData';
 import BaseRenderer from './BaseRenderer';
-import CVCompElement from '../canvasElements/CVCompElement';
+// import CVCompElement from '../canvasElements/CVCompElement';
 import CVShapeElement from '../canvasElements/CVShapeElement';
 import CVTextElement from '../canvasElements/CVTextElement';
 import CVImageElement from '../canvasElements/CVImageElement';
@@ -48,7 +49,7 @@ class CanvasRenderer extends BaseRenderer {
   }
 
   createComp(data) {
-    // const CVCompElement = require('../canvasElements/CVCompElement').default;
+    const CVCompElement = require('../canvasElements/CVCompElement').default;
     return new CVCompElement(data, this.globalData, this);
   }
 

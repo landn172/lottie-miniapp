@@ -8,7 +8,9 @@ export default {
     file: 'lib/lottie-miniapp.js',
     format: 'cjs'
   },
-  plugins: [babel(), nodeResolve({
+  plugins: [babel({
+    plugins: ['external-helpers']
+  }), nodeResolve({
     jsnext: true,
     main: true
   }), commonjs()]

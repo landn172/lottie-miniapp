@@ -1,6 +1,6 @@
 export const defaultCurveSegments = 200;
 
-export const raf = (function requestAnimationFrame() {
+function rafFactory() {
   if (typeof requestAnimationFrame !== 'undefined') return requestAnimationFrame;
   let lastTime = 0;
   return function Raf(callback) {
@@ -12,7 +12,9 @@ export const raf = (function requestAnimationFrame() {
     lastTime = currTime + timeToCall;
     return id;
   };
-}());
+}
+
+export const raf = rafFactory();
 
 export function createSizedArray(len) {
   return Array.apply(null, {

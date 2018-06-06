@@ -1,5 +1,5 @@
 import lottie, { configProxy, proxyCtx } from '../lottie/index'
-import animationData from './data.json'
+import animationData from '../data/data.json'
 
 const app = getApp()
 

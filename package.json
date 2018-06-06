@@ -1,9 +1,24 @@
 {
+  "version": "1.0.0",
+  "main": "lib/lottie-miniapp.js",
   "scripts": {
     "build:debug": "babel src/ --out-dir example/",
     "build": "rollup -c",
-    "lint": "eslint --fix src"
+    "lint": "eslint --fix src",
+    "prepublish": "npm run lint && npm run build"
   },
+  "keywords": [
+    "lottie",
+    "miniapp",
+    "minapp",
+    "小程序",
+    "weapp"
+  ],
+  "author": {
+    "name": "landn172",
+    "email": "landn172@gmail.com"
+  },
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
