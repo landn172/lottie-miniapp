@@ -1,0 +1,5 @@
+node_modules
+example
+lib
+src/lottie/utils/mixin.js
+src/lottie/utils/expressions/ExpressionManager.js

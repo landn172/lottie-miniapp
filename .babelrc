@@ -1,0 +1,9 @@
+{
+  "presets": [["env", {
+    "modules": false
+  }]],
+  "plugins": ["transform-class-properties", "transform-decorators-legacy", "external-helpers"],
+  "ignore": [
+    "dist/*.js"
+  ]
+}
