@@ -1,4 +1,5 @@
 {
+  "name": "lottie-miniapp",
   "version": "1.0.0",
   "main": "lib/lottie-miniapp.js",
   "scripts": {
