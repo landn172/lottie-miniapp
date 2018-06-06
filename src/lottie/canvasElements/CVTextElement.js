@@ -220,7 +220,7 @@ class CVTextElement extends Mixin(BaseElement, TransformElement, CVBaseElement, 
       if (renderedLetter) {
         this.globalData.renderer.restore();
       }
-      ctx.draw(true);
+      // ctx.draw(true);
     }
   /* if(this.data.hasMask){
    this.globalData.renderer.restore(true);

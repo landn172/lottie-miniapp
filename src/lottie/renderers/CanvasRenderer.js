@@ -270,7 +270,6 @@ class CanvasRenderer extends BaseRenderer {
     if (!this.completeLayers) {
       this.checkLayers(num);
     }
-
     for (i = 0; i < len; i++) {
       if (this.completeLayers || this.elements[i]) {
         this.elements[i].prepareFrame(num - this.layers[i].st);
@@ -287,6 +286,7 @@ class CanvasRenderer extends BaseRenderer {
           this.elements[i].renderFrame();
         }
       }
+      this.canvasContext.draw(true);
       if (this.renderConfig.clearCanvas !== true) {
         this.restore();
       }

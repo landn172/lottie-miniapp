@@ -23,7 +23,7 @@ class CVSolidElement {
     let ctx = this.canvasContext;
     ctx.setFillStyle(this.data.sc);
     ctx.fillRect(0, 0, this.data.sw, this.data.sh);
-    ctx.draw(true);
+    // ctx.draw(true);
   }
 }
 

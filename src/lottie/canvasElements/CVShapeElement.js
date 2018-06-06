@@ -324,12 +324,12 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
           }
           if (type === 'st') {
             ctx.stroke();
-            ctx.draw(true);
+            // ctx.draw(true);
           }
         }
         if (type !== 'st') {
           ctx.fill(currentStyle.r);
-          ctx.draw(true);
+          // ctx.draw(true);
         }
       }
 
