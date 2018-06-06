@@ -8,6 +8,17 @@
     "lint": "eslint --fix src",
     "prepublish": "npm run lint && npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:landn172/lottie-miniapp.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/landn172/lottie-miniapp",
+  "files": [
+    "lib"
+  ],
   "keywords": [
     "lottie",
     "miniapp",
