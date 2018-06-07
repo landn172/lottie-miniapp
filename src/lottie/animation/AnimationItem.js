@@ -68,8 +68,12 @@ class AnimationItem extends BaseEvent {
     this.assetsPath = params.assetsPath;
     if (params.animationData) {
       this.configAnimation(params.animationData);
-    } else {
-      throw new Error('can not get animationData');
+    } else if (params.path) {
+      const path = params.path;
+      this.path = path;
+      this.fileName = path.substr(params.path.lastIndexOf('/') + 1);
+
+      assetLoader.load(path, this.configAnimation.bind(this));
     }
   }
 

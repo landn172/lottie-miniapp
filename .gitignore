@@ -1,4 +1,5 @@
 node_modules
 example/lottie
+example/project.config.json
 lib
 yarn-error*

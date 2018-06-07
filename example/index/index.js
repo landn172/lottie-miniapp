@@ -10,15 +10,15 @@ Page({
   error(e) {
     console.error(e)
   },
-  onReady: function() {
+  onLoad: function(opts = {}) {
     const canvasContext = wx.createCanvasContext('test-canvas')
     const ctx = canvasContext
     // proxyCtx(ctx)
-    lottieTest(ctx)
+    lottieTest(ctx, opts)
   },
 })
 
-function lottieTest(canvasContext) {
+function lottieTest(canvasContext, opts) {
 
   const systemInfo = wx.getSystemInfoSync()
 
@@ -38,12 +38,14 @@ function lottieTest(canvasContext) {
     }
   })
   canvasContext.globalAlpha = 1
+  const { path } = opts
 
   lottie.loadAnimation({
     renderer: 'canvas',
     loop: true,
     autoplay: true,
-    animationData: animationData,
+    animationData: !path ? animationData : '',
+    path,
     rendererSettings: {
       context: canvasContext,
       clearCanvas: true
