@@ -1,6 +1,6 @@
 {
   "name": "lottie-miniapp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "lib/lottie-miniapp.min.js",
   "scripts": {
     "build:debug": "babel src/ --out-dir example/",
