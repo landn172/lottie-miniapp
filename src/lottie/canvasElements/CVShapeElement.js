@@ -13,6 +13,15 @@ import RenderableElement from '../elements/RenderableElement';
 import { bm_floor } from '../utils/common';
 import DashProperty from '../shapes/DashProperty';
 import ShapeModifiers from '../shapes/ShapeModifiers';
+import RoundCornersModifier from '../shapes/RoundCornersModifier';
+import MouseModifier from '../shapes/MouseModifier';
+import RepeaterModifier from '../shapes/RepeaterModifier';
+import TrimModifier from '../shapes/TrimModifier';
+
+ShapeModifiers.registerModifier('rd', RoundCornersModifier);
+ShapeModifiers.registerModifier('ms', MouseModifier);
+ShapeModifiers.registerModifier('rp', RepeaterModifier);
+ShapeModifiers.registerModifier('tm', TrimModifier);
 
 class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement, IShapeElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
@@ -324,12 +333,12 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
           }
           if (type === 'st') {
             ctx.stroke();
-            // ctx.draw(true);
+          // ctx.draw(true);
           }
         }
         if (type !== 'st') {
           ctx.fill(currentStyle.r);
-          // ctx.draw(true);
+        // ctx.draw(true);
         }
       }
 

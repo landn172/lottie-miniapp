@@ -1,12 +1,10 @@
 import pooling from './pooling';
+import { createSizedArray } from '../index';
 
-export default function (initialLength, _create, _release, /* _clone */) {
+export default function (initialLength, _create, _release, _clone) {
   let _length = 0;
   let _maxLength = initialLength;
-  let pool = Array.apply(null, {
-    length: _maxLength
-  });
-
+  let pool = createSizedArray(_maxLength);
 
   function newElement() {
     let element;
@@ -31,14 +29,14 @@ export default function (initialLength, _create, _release, /* _clone */) {
     _length += 1;
   }
 
-  // function clone() {
-  //   let clonedElement = newElement();
-  //   return _clone(clonedElement);
-  // }
+  function clone() {
+    let clonedElement = newElement();
+    return _clone(clonedElement);
+  }
 
-  let ob = {
-    newElement: newElement,
-    release: release
+  return {
+    clone,
+    newElement,
+    release
   };
-  return ob;
 }

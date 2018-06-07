@@ -1,7 +1,7 @@
 import shapeCollection_pool from '../utils/pooling/shapeCollection_pool';
 import DynamicPropertyContainer from '../utils/dynamicProperties';
 
-export default class ShapeModifiers extends DynamicPropertyContainer {
+export class ShapeModifier extends DynamicPropertyContainer {
   initModifierProperties() {}
   addShapeToModifier() {}
   addShape(data) {
@@ -40,3 +40,16 @@ export default class ShapeModifiers extends DynamicPropertyContainer {
     this.iterateDynamicProperties();
   }
 }
+
+const modifiers = {};
+
+export default {
+  registerModifier: function registerModifier(nm, factory) {
+    if (!modifiers[nm]) {
+      modifiers[nm] = factory;
+    }
+  },
+  getModifier: function getModifier(nm, elem, data) {
+    return new modifiers[nm](elem, data);
+  }
+};

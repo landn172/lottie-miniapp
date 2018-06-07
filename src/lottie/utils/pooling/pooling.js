@@ -5,5 +5,5 @@ function double(arr) {
 }
 
 export default {
-  double: double
+  double
 };
