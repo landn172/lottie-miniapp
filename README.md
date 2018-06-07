@@ -36,3 +36,9 @@ lottie.loadAnimation({
   }
 });
 ```
+
+## 调试
+
+```cmd
+yarn run build:debug --watch // 编译文件到example
+```
