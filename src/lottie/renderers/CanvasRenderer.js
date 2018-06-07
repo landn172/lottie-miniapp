@@ -286,7 +286,7 @@ class CanvasRenderer extends BaseRenderer {
           this.elements[i].renderFrame();
         }
       }
-      this.canvasContext.draw(true);
+      this.canvasContext.draw();
       if (this.renderConfig.clearCanvas !== true) {
         this.restore();
       }
