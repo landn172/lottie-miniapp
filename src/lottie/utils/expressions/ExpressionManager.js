@@ -1,6 +1,7 @@
 import { createTypedArray } from '../index';
 import shape_pool from '../pooling/shape_pool';
 import BMMath from '../common';
+import interpreter from '../../3rd_party/interpreterWrap';
 
 let ob = {};
 const degToRads = Math.PI / 180;
@@ -401,16 +402,41 @@ function initiateExpression(elem, data, property) {
   let valueAtTime;
   let velocityAtTime;
   let __expression_functions = [];
+  let scoped_bm_rt;
+
+  /** append Api */
+  interpreter.appendApis({
+    thisProperty: thisProperty,
+    _needsRandom: _needsRandom,
+    loopInDuration: loopInDuration,
+    loopOutDuration: loopOutDuration,
+    outPoint: outPoint,
+    inPoint: inPoint,
+    width: width,
+    height: height,
+    lookAt: lookAt,
+    easeOut: easeOut,
+    sourceRectAtTime: sourceRectAtTime,
+    easeIn: easeIn,
+    key: key,
+    timeToFrames: timeToFrames,
+    nearestKey: nearestKey,
+    'scoped_bm_rt': scoped_bm_rt
+  })
+
   if (data.xf) {
     let i;
     let len = data.xf.length;
+
     for (i = 0; i < len; i += 1) {
-      __expression_functions[i] = eval('(function(){ return ' + data.xf[i] + '}())');
+      // __expression_functions[i] = eval('(function(){ return ' + data.xf[i] + '}())');
+      __expression_functions[i] = interpreter.run(`module.exports = ${data.xf[i]}`)
     }
   }
 
-  let scoped_bm_rt;
-  let expression_function = eval('[function _expression_function(){' + val + ';scoped_bm_rt=$bm_rt}' + ']')[0];
+
+  // let expression_function = eval('[function _expression_function(){' + val + ';scoped_bm_rt=$bm_rt}' + ']')[0];
+
   let numKeys = property.kf ? data.k.length : 0;
 
   let wiggle = function wiggle(freq, amp) {
@@ -644,7 +670,16 @@ function initiateExpression(elem, data, property) {
     if (needsVelocity) {
       velocity = velocityAtTime(time);
     }
-    expression_function();
+
+    try {
+      interpreter.appendApis({
+        'transform': transform
+      })
+      scoped_bm_rt = interpreter.run(`${val};module.exports = $bm_rt`)
+    } catch (error) {
+      console.error(error)
+    }
+
     this.frameExpressionId = elem.globalData.frameId;
 
     // TODO: Check if it's possible to return on ShapeInterface the .v value

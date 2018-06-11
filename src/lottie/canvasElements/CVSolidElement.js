@@ -1,7 +1,15 @@
-import IImageElement from '../elements/ImageElement';
+import RenderableDOMElement from '../elements/RenderableDOMElement';
+import Mixin from '../utils/mixin';
+import BaseElement from '../elements/BaseElement';
+import TransformElement from '../elements/TransformElement';
+import CVBaseElement from '../canvasElements/CVBaseElement';
+import HierarchyElement from '../elements/HierarchyElement';
+import FrameElement from '../elements/FrameElement';
+import RenderableElement from '../elements/RenderableElement';
 
-class CVSolidElement {
+class CVSolidElement extends Mixin(BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
+    super();
     this.initElement(data, globalData, comp);
   }
 
@@ -18,12 +26,11 @@ class CVSolidElement {
     this.hide();
   }
 
-  prepareFrame =IImageElement.prototype.prepareFrame
+  prepareFrame = RenderableDOMElement.prototype.prepareFrame
   renderInnerContent() {
     let ctx = this.canvasContext;
     ctx.setFillStyle(this.data.sc);
     ctx.fillRect(0, 0, this.data.sw, this.data.sh);
-    // ctx.draw(true);
   }
 }
 

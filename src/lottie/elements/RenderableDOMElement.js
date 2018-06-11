@@ -13,23 +13,8 @@ class RenderableDOMElement extends RenderableElement {
     this.createContent();
     this.hide();
   }
-  hide() {
-    if (!this.hidden && (!this.isInRange || this.isTransparent)) {
-      let elem = this.baseElement || this.layerElement;
-      elem.style.display = 'none';
-      this.hidden = true;
-    }
-  }
-  show() {
-    if (this.isInRange && !this.isTransparent) {
-      if (!this.data.hd) {
-        let elem = this.baseElement || this.layerElement;
-        elem.style.display = 'block';
-      }
-      this.hidden = false;
-      this._isFirstFrame = true;
-    }
-  }
+  hide() {}
+  show() {}
   renderFrame() {
     // If it is exported as hidden (data.hd === true) no need to render
     // If it is not visible no need to render

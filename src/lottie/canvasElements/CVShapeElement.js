@@ -219,7 +219,7 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
         ownModifiers.push(modifier);
       } else if (arr[i].ty === 'rp') {
         if (!processedPos) {
-          modifier = this.ShapeModifiers.getModifier(arr[i].ty);
+          modifier = ShapeModifiers.getModifier(arr[i].ty);
           itemsData[i] = modifier;
           modifier.init(this, arr, i, itemsData);
           this.shapeModifiers.push(modifier);
