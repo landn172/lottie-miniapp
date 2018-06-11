@@ -1,6 +1,6 @@
 node_modules
 example
 lib
-src/3rd_party/interpreter.js
+src/lottie/3rd_party/interpreter.js
 src/lottie/utils/mixin.js
 src/lottie/utils/expressions/ExpressionManager.js
