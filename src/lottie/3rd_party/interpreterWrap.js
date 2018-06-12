@@ -1,4 +1,5 @@
-import * as interpreter from './interpreter';
+// const interpreter = require('./interpreter');
+import { run } from './interpreter';
 
 let appendApis = Object.create(null);
 
@@ -12,6 +13,6 @@ export default {
     });
   },
   run(code, appendApi = {}) {
-    return interpreter.run(code, Object.assign(appendApis, appendApi));
+    return run(code, Object.assign(appendApis, appendApi));
   }
 };
