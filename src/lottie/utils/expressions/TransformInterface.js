@@ -1,6 +1,6 @@
 import ExpressionValue from './ExpressionValue';
 
-const degToRads = Math / 180;
+const degToRads = Math.PI / 180;
 
 export default (transform) => {
   /* eslint consistent-return: 0 */

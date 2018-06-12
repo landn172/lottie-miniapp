@@ -24,7 +24,8 @@ export default function (elementProp, mult, type) {
     }
   } else if (elementProp.propType === 'unidimensional') {
     val = elementProp.v * mult;
-    expressionValue = +val;
+    /* eslint no-new-wrappers: 0 */
+    expressionValue = new Number(val);
     expressionValue.value = val;
   } else {
     len = elementProp.pv.length;
