@@ -10,7 +10,7 @@ Page({
   error(e) {
     console.error(e)
   },
-  onLoad: function(opts = {}) {
+  onReady: function(opts = {}) {
     const canvasContext = wx.createCanvasContext('test-canvas')
     const ctx = canvasContext
     // proxyCtx(ctx)
