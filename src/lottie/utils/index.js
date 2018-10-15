@@ -1,14 +1,14 @@
 export const defaultCurveSegments = 200;
 
 function rafFactory() {
-  if (typeof requestAnimationFrame !== 'undefined') return requestAnimationFrame;
-  let lastTime = 0;
+  // if (typeof requestAnimationFrame !== 'undefined') return requestAnimationFrame;
+  let lastTime = Date.now();
   return function Raf(callback) {
-    let currTime = +new Date();
+    let currTime = Date.now();
     // pref：优化js密集计算 资源竞争恶性循环
     let timeToCall = Math.max(0, 16 + (currTime - lastTime));
     // let timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    let id = setTimeout(function setTimeout() {
+    let id = setTimeout(() => {
       callback(currTime + timeToCall);
     }, timeToCall);
     lastTime = currTime + timeToCall;

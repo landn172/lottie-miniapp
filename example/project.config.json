@@ -11,8 +11,8 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.91",
-	"appid": "touristappid",
+	"libVersion": "2.3.0",
+	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"condition": {
 		"search": {
