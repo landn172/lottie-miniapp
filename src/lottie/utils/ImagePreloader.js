@@ -36,7 +36,7 @@ class ImagePreloader {
   }
 
   loadImage(path, cb) {
-    const imageLoaded = this.imageLoaded;
+    const imageLoaded = this.imageLoaded.bind(this);
     wx.downloadFile({
       url: path,
       success: (res) => {
@@ -53,11 +53,10 @@ class ImagePreloader {
   loadAssets(assets, cb) {
     this.imagesLoadedCb = cb;
     this.totalAssets = assets.length;
-    const { getAssetsPath, loadImage } = this;
     let i;
     for (i = 0; i < this.totalAssets; i += 1) {
       if (!assets[i].layers) {
-        loadImage(getAssetsPath(assets[i]), loadImageCB);
+        this.loadImage(this.getAssetsPath(assets[i]), loadImageCB);
         this.totalImages += 1;
       }
     }

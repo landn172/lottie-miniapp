@@ -1,8 +1,16 @@
 import IImageElement from '../elements/ImageElement';
 import { createTag } from '../utils/index';
+import Mixin from '../utils/mixin';
+import CVBaseElement from '../canvasElements/CVBaseElement';
+import BaseElement from '../elements/BaseElement';
+import HierarchyElement from '../elements/HierarchyElement';
+import FrameElement from '../elements/FrameElement';
+import RenderableElement from '../elements/RenderableElement';
+import TransformElement from '../elements/TransformElement';
 
-class CVImageElement {
+class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
+    super();
     this.failed = false;
     this.img = {};
     this.assetData = globalData.getAssetData(data.refId);
@@ -72,7 +80,7 @@ class CVImageElement {
           }
         });
       },
-      fail() {
+      fail: () => {
         this.imageFailed();
       }
     });
