@@ -1,5 +1,5 @@
 
-const FontManager = {};
+import { FontManager } from '../FontManager';
 
 export default class TextProperty {
   constructor(elem, data) {
