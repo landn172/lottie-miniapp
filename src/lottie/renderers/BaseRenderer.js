@@ -1,3 +1,5 @@
+import { FontManager } from '../utils/FontManager';
+
 class BaseRenderer {
   checkLayers(num) {
     let i;
@@ -116,10 +118,10 @@ class BaseRenderer {
     }
   }
 
-  setupGlobalData(animData/* , fontsContainer */) {
-    // this.globalData.fontManager = new FontManager();
-    // this.globalData.fontManager.addChars(animData.chars);
-    // this.globalData.fontManager.addFonts(animData.fonts, fontsContainer);
+  setupGlobalData(animData, fontsContainer) {
+    this.globalData.fontManager = new FontManager();
+    this.globalData.fontManager.addChars(animData.chars);
+    this.globalData.fontManager.addFonts(animData.fonts, fontsContainer);
     this.globalData.getAssetData = this.animationItem.getAssetData.bind(this.animationItem);
     this.globalData.getAssetsPath = this.animationItem.getAssetsPath.bind(this.animationItem);
     this.globalData.elementLoaded = this.animationItem.elementLoaded.bind(this.animationItem);
