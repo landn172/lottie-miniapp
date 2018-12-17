@@ -32,13 +32,18 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
 					"name": "path",
-					"pathName": "index/index",
+					"pathName": "pages/index/index",
 					"query": "path=https://img1.tuhu.org/ActivityPageAe/dbf1/6269/ee0b86f8cb06bbe58b535eec.json"
+				},
+				{
+					"id": -1,
+					"name": "component",
+					"pathName": "pages/component/index"
 				}
 			]
 		}

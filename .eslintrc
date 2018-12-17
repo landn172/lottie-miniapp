@@ -9,7 +9,8 @@
     "Float32Array": true,
     "Int16Array": true,
     "Uint8ClampedArray": true,
-    "Proxy": true
+    "Proxy": true,
+    "Component": true
   },
   "rules": {
     "no-underscore-dangle": 0,

@@ -1,0 +1,3 @@
+<view class="lottie-wrap">
+  <lottie id="lottie" path="{{aniPath}}" width="{{width}}" height="{{height}}" animation-data="{{anidata}}"></lottie>
+</view>
