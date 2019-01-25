@@ -1,6 +1,9 @@
 {
   "root": true,
   "parser": "babel-eslint",
+  "env": {
+    "es6": true
+  },
   "extends": [
     "airbnb-base/legacy"
   ],
@@ -13,6 +16,10 @@
     "Component": true
   },
   "rules": {
+    "no-use-before-define": ["error", {
+      "functions": false,
+      "classes": false
+    }],
     "no-underscore-dangle": 0,
     "camelcase": 0,
     "class-methods-use-this": 0,

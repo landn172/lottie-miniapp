@@ -12,11 +12,11 @@ Page({
   error(e) {
     console.error(e)
   },
-  onReady: function(opts = {}) {
+  onReady: function() {
     const canvasContext = wx.createCanvasContext('test-canvas')
     const ctx = canvasContext
     // proxyCtx(ctx)
-    lottieTest(ctx, opts)
+    lottieTest(ctx, this.options)
   },
 })
 

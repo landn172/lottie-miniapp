@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.0",
+	"libVersion": "2.5.1",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"condition": {
@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -43,7 +43,15 @@
 				{
 					"id": -1,
 					"name": "component",
-					"pathName": "pages/component/index"
+					"pathName": "pages/component/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "zip",
+					"pathName": "pages/index/index",
+					"query": "path=https://img1.tuhu.org/9a/b90a/9725ea8936fcd41ff828c70af5.zip",
+					"scene": null
 				}
 			]
 		}

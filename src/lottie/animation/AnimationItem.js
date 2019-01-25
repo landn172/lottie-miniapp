@@ -73,7 +73,7 @@ class AnimationItem extends BaseEvent {
       this.path = path;
       this.fileName = path.substr(params.path.lastIndexOf('/') + 1);
 
-      assetLoader.load(path, this.configAnimation.bind(this));
+      assetLoader.load.call(this, path, this.configAnimation.bind(this));
     }
   }
 
