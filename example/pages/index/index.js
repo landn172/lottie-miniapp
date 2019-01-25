@@ -1,7 +1,7 @@
-import lottie, { configProxy, proxyCtx } from '../lottie/index'
-import animationData from '../data/data2.json';
-import imageLoadAnimateData from '../data/image.json';
-import fontAnimateData from '../data/font.json'
+import lottie, { configProxy, proxyCtx } from '../../lottie/index'
+import animationData from '../../data/data2.json';
+import imageLoadAnimateData from '../../data/image.json';
+import fontAnimateData from '../../data/font.json'
 
 const app = getApp()
 

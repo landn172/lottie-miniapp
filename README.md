@@ -24,6 +24,8 @@ import lottie from 'lottie-miniapp';
 const canvasContext = wx.createCanvasContext('test-canvas');
 //  请求到的lottie json数据
 const animationData = {};
+// 请求lottie的路径。注意开启downloadFile域名并且返回格式是json
+const animationPath = 'https://xxxxx';
 
 // 指定canvas大小
 canvasContext.canvas = {
@@ -31,17 +33,50 @@ canvasContext.canvas = {
   height: 100
 };
 
+// 如果同时指定 animationData 和 path， 优先取 animationData
 lottie.loadAnimation({
   renderer: 'canvas', // 只支持canvas
   loop: true,
   autoplay: true,
   animationData: animationData,
+  path: animationPath,
   rendererSettings: {
     context: canvasContext,
     clearCanvas: true
   }
 });
 ```
+
+## Component
+
+（v1.4.0）增加小程序自定义组件
+
+### 使用
+
+使用小程序自带npm安装组件包
+
+```json
+{
+    "usingComponents":{
+        "lottie": "lottie-miniapp/lottie"
+    }
+}
+```
+
+### 参数
+
+| 参数名        | 描述                                                         | 默认值 |
+| ------------- | ------------------------------------------------------------ | ------ |
+| width         | 指定显示宽度                                                 | 100    |
+| height        | 指定显示高度                                                 | 100    |
+| path          | 请求lottie的路径。注意开启downloadFile域名并且返回格式是json | null   |
+| animationData | 请求到的lottie的json数据                                     | null   |
+|               |                                                              |        |
+
+### 注意
+
+- canvas默认样式宽高100%,需要一个container指定宽高
+
 
 ## 调试
 
