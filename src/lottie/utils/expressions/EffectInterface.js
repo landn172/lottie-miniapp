@@ -37,13 +37,6 @@ function createGroupInterface(data, elements, propertyGroup, elem) {
     }
   }
 
-  function _propertyGroup(val) {
-    if (val === 1) {
-      return groupInterface;
-    }
-    return propertyGroup(val - 1);
-  }
-
   let groupInterface = function (name) {
     let effects = data.ef;
     // let i = 0;
@@ -59,6 +52,13 @@ function createGroupInterface(data, elements, propertyGroup, elem) {
     }
     return effectElements[0]();
   };
+
+  function _propertyGroup(val) {
+    if (val === 1) {
+      return groupInterface;
+    }
+    return propertyGroup(val - 1);
+  }
 
   groupInterface.propertyGroup = _propertyGroup;
 
