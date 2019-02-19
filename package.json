@@ -9,7 +9,7 @@
     "lint": "eslint --fix src",
     "prepublish": "npm run lint && npm run build && gulp publish && npm run build:mini"
   },
-  "miniprogram": "lib/component",
+  "miniprogram": "lib",
   "repository": {
     "type": "git",
     "url": "git@github.com:landn172/lottie-miniapp.git"
