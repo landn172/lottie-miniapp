@@ -58,7 +58,7 @@ lottie.loadAnimation({
 ```json
 {
     "usingComponents":{
-        "lottie": "lottie-miniapp/lottie"
+        "lottie": "lottie-miniapp/component/lottie"
     }
 }
 ```
