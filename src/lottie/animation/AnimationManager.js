@@ -1,5 +1,5 @@
-import AnimationItem from './AnimationItem';
 import { raf } from '../utils/index';
+import AnimationItem from './AnimationItem';
 
 class AnimationManager {
   constructor() {
@@ -149,6 +149,8 @@ class AnimationManager {
     for (i = (this.len - 1); i >= 0; i -= 1) {
       registeredAnimations[i].animation.destroy(animation);
     }
+    this.registeredAnimations.length = 0;
+    this.len = 0;
   }
 
   resize() {

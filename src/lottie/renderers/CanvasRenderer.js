@@ -1,13 +1,13 @@
 import Matrix from '../3rd_party/transformation-matrix';
-import CVContextData from '../canvasElements/CVContextData';
-import BaseRenderer from './BaseRenderer';
 import CVCompElementFactory from '../canvasElements/CVCompElement';
-import CVShapeElement from '../canvasElements/CVShapeElement';
-import CVTextElement from '../canvasElements/CVTextElement';
+import CVContextData from '../canvasElements/CVContextData';
 import CVImageElement from '../canvasElements/CVImageElement';
+import CVShapeElement from '../canvasElements/CVShapeElement';
 import CVSolidElement from '../canvasElements/CVSolidElement';
+import CVTextElement from '../canvasElements/CVTextElement';
 import NullElement from '../elements/NullElement';
 import { createSizedArray } from '../utils/index';
+import BaseRenderer from './BaseRenderer';
 
 let CVCompElement;
 
@@ -259,6 +259,7 @@ class CanvasRenderer extends BaseRenderer {
     if ((this.renderedFrame === num && this.renderConfig.clearCanvas === true) || this.destroyed || num === -1) {
       return;
     }
+
     this.renderedFrame = num;
     this.globalData.frameNum = num - this.animationItem._isFirstFrame;
     this.globalData.frameId += 1;

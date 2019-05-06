@@ -1,5 +1,3 @@
-import fontAnimateData from '../../data/font.json'
-
 Page({
   data: {
     anidata: null,
@@ -17,7 +15,7 @@ function func1() {
   const lottie = this.selectComponent('#lottie')
   const info = wx.getSystemInfoSync()
 
-  lottie.init(fontAnimateData, info.windowWidth, info.windowHeight)
+  lottie.init('https://github.com/landn172/lottie-miniapp/files/3146712/font.txt', info.windowWidth, info.windowHeight)
 }
 
 /** setData: <lottie animation-data="{{*}}" />  */

@@ -3,10 +3,12 @@ export const defaultCurveSegments = 200;
 function rafFactory() {
   // if (typeof requestAnimationFrame !== 'undefined') return requestAnimationFrame;
   let lastTime = Date.now();
+  const FPS60 = 1000 / 60;
+  const FPS24 = 1000 / 24;
   return function Raf(callback) {
     let currTime = Date.now();
     // pref：优化js密集计算 资源竞争恶性循环
-    let timeToCall = Math.max(0, 16 + (currTime - lastTime));
+    let timeToCall = Math.min(FPS24, Math.max(FPS60, FPS60 + (currTime - lastTime)));
     // let timeToCall = Math.max(0, 16 - (currTime - lastTime));
     let id = setTimeout(() => {
       callback(currTime + timeToCall);

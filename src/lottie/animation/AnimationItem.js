@@ -1,12 +1,12 @@
-import ProjectInterface from '../utils/ProjectInterface';
-import { randomString, subframeEnabled } from '../utils/index';
-import BaseEvent from '../utils/BaseEvent';
 import CanvasRenderer from '../renderers/CanvasRenderer';
-import ImagePreloader from '../utils/ImagePreloader';
-import expressionsPlugin from '../utils/expressions/Expressions';
-import dataManager from '../utils/DataManager';
 import assetLoader from '../utils/assetLoader';
-import { BMEnterFrameEvent, BMCompleteLoopEvent, BMCompleteEvent, BMSegmentStartEvent, BMDestroyEvent } from '../utils/common';
+import BaseEvent from '../utils/BaseEvent';
+import { BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent } from '../utils/common';
+import dataManager from '../utils/DataManager';
+import expressionsPlugin from '../utils/expressions/Expressions';
+import ImagePreloader from '../utils/ImagePreloader';
+import { randomString, subframeEnabled } from '../utils/index';
+import ProjectInterface from '../utils/ProjectInterface';
 
 class AnimationItem extends BaseEvent {
   constructor() {
@@ -74,6 +74,25 @@ class AnimationItem extends BaseEvent {
       this.fileName = path.substr(params.path.lastIndexOf('/') + 1);
 
       assetLoader.load.call(this, path, this.configAnimation.bind(this));
+    }
+
+    // 判断是否在可视区域内
+    if (wx.createIntersectionObserver) {
+      const canvasId = params.rendererSettings.context.canvasId;
+      const observer = wx.createIntersectionObserver();
+      this.$observer = observer;
+      observer.relativeToViewport({
+        bottom: 10,
+        top: 10,
+        left: 0,
+        right: 10
+      }).observe(`#${canvasId}`, (res) => {
+        if (res.intersectionRatio > 0) {
+          this.play();
+        } else {
+          this.stop();
+        }
+      });
     }
   }
 
@@ -433,6 +452,9 @@ class AnimationItem extends BaseEvent {
     this._cbs = null;
     this.onEnterFrame = this.onLoopComplete = this.onComplete = this.onSegmentStart = this.onDestroy = null;
     this.renderer = null;
+    if (this.$observer) {
+      this.$observer.disconnect();
+    }
   }
 
   setCurrentRawFrameValue(value) {

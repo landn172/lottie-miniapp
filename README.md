@@ -18,6 +18,11 @@ Lottie 小程序版 [LottieWeb](https://github.com/airbnb/lottie-web)
 
 使用
 
+```xml
+// 指定canvas-id 及 id 需一样
+<canvas id="test-canvas" canvas-id="test-canvas"></canvas>
+```
+
 ```es6
 import lottie from 'lottie-miniapp';
 

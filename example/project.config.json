@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": 0,
@@ -51,6 +51,13 @@
 					"name": "zip",
 					"pathName": "pages/index/index",
 					"query": "path=https://img1.tuhu.org/9a/b90a/9725ea8936fcd41ff828c70af5.zip",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "bug",
+					"pathName": "pages/index/index",
+					"query": "path=https://github.com/landn172/lottie-miniapp/files/3121029/data.txt",
 					"scene": null
 				}
 			]
