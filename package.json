@@ -1,15 +1,15 @@
 {
   "name": "lottie-miniapp",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "main": "lib/lottie-miniapp.min.js",
   "scripts": {
     "build:debug": "gulp",
     "build": "rollup -c",
     "build:mini": "rollup -c rollup.config.min.js ",
     "lint": "eslint --fix src",
-    "prepublish": "npm run lint && npm run build && gulp publish && npm run build:mini"
+    "prepublish": "rimraf ./lib && npm run lint && gulp publish && npm run build:mini"
   },
-  "miniprogram": "lib/component",
+  "miniprogram": "lib",
   "repository": {
     "type": "git",
     "url": "git@github.com:landn172/lottie-miniapp.git"

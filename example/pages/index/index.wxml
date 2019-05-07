@@ -1,1 +1,4 @@
-<canvas canvas-id="test-canvas" class="test-canvas" binderror="error"></canvas>
+<picker mode="selector" range="{{json}}" range-key="name" value="0" bindchange="onChange">
+  {{currentValue || '请选择'}}
+</picker>
+<canvas id="test-canvas" canvas-id="test-canvas" class="test-canvas" binderror="error"></canvas>
