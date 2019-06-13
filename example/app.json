@@ -1,5 +1,8 @@
 {
-  "pages": ["pages/index/index", "pages/component/index"],
+  "pages": [
+    "pages/index/index",
+    "pages/component/index"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -9,5 +12,6 @@
   "networkTimeout": {
     "request": 6000000,
     "downloadFile": 6000000
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
