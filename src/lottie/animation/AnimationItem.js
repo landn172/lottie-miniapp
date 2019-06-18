@@ -69,11 +69,24 @@ class AnimationItem extends BaseEvent {
     if (params.animationData) {
       this.configAnimation(params.animationData);
     } else if (params.path) {
-      const path = params.path;
-      this.path = path;
-      this.fileName = path.substr(params.path.lastIndexOf('/') + 1);
+      if (params.path.substr(-4) !== 'json') {
+        if (params.path.substr(-1, 1) !== '/') {
+          params.path += '/';
+        }
+        params.path += 'data.json';
+      }
 
-      assetLoader.load.call(this, path, this.configAnimation.bind(this));
+      if (params.path.lastIndexOf('\\') !== -1) {
+        this.path = params.path.substr(0, params.path.lastIndexOf('\\') + 1);
+      } else {
+        this.path = params.path.substr(0, params.path.lastIndexOf('/') + 1);
+      }
+      this.fileName = params.path.substr(params.path.lastIndexOf('/') + 1);
+      this.fileName = this.fileName.substr(0, this.fileName.lastIndexOf('.json'));
+
+      assetLoader.load.call(this, params.path, this.configAnimation.bind(this), function () {
+        this.trigger('data_failed');
+      }.bind(this));
     }
 
     // 判断是否在可视区域内

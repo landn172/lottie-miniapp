@@ -14,6 +14,8 @@
 	"libVersion": "2.5.1",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -54,10 +56,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "bug",
 					"pathName": "pages/index/index",
-					"query": "path=https://github.com/landn172/lottie-miniapp/files/3121029/data.txt",
+					"query": "path=http://cdn.biglao.cn/images/1560509118343_data.json",
 					"scene": null
 				}
 			]

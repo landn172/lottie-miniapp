@@ -69,7 +69,7 @@ function lottieTest(canvasContext, lottieData) {
   canvasContext.globalAlpha = 1
 
   if (typeof lottieData === 'string') {
-    if (lottieData.startsWith('https')) {
+    if (lottieData.startsWith('http')) {
       return lottie.loadAnimation({
         renderer: 'canvas',
         loop: true,
