@@ -5,17 +5,16 @@ import HierarchyElement from '../elements/HierarchyElement';
 import IImageElement from '../elements/ImageElement';
 import RenderableElement from '../elements/RenderableElement';
 import TransformElement from '../elements/TransformElement';
-import { createTag } from '../utils/index';
 import Mixin from '../utils/mixin';
 
 class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
     super();
     this.failed = false;
-    this.img = {};
     this.assetData = globalData.getAssetData(data.refId);
+    this.img = globalData.imageLoader.getImage(this.assetData);
     this.initElement(data, globalData, comp);
-    this.globalData.addPendingElement();
+    // this.globalData.addPendingElement();
   }
 
   initElement(data, globalData, comp) {
@@ -33,82 +32,42 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
 
   prepareFrame=IImageElement.prototype.prepareFrame
 
-  imageLoaded() {
-    this.globalData.elementLoaded();
-    // 压缩图片比例
-    if (this.assetData.w !== this.img.width || this.assetData.h !== this.img.height) {
-      let canvas = createTag('canvas');
-      canvas.width = this.assetData.w;
-      canvas.height = this.assetData.h;
-      let ctx = canvas.getContext('2d');
-
-      let imgW = this.img.width;
-      let imgH = this.img.height;
-      let imgRel = imgW / imgH;
-      let canvasRel = this.assetData.w / this.assetData.h;
-      let widthCrop;
-      let heightCrop;
-      if (imgRel > canvasRel) {
-        heightCrop = imgH;
-        widthCrop = heightCrop * canvasRel;
-      } else {
-        widthCrop = imgW;
-        heightCrop = widthCrop / canvasRel;
-      }
-      ctx.drawImage(this.img, (imgW - widthCrop) / 2, (imgH - heightCrop) / 2, widthCrop, heightCrop, 0, 0, this.assetData.w, this.assetData.h);
-      this.img = canvas;
-    }
-  }
-
-  imageFailed() {
-    this.failed = true;
-    this.globalData.elementLoaded();
-  }
-
   createContent() {
-    let assetPath = this.globalData.getAssetsPath(this.assetData);
-    loadImage(assetPath).then(({ width, height, path }) => {
-      this.img.src = path;
-      this.img.width = width;
-      this.img.height = height;
-      this.imageLoaded();
-    }, () => {
-      this.imageFailed();
-    });
+    // 压缩图片比例
+    // if (this.assetData.w !== this.img.width || this.assetData.h !== this.img.height) {
+    //   let canvas = createTag('canvas');
+    //   canvas.width = this.assetData.w;
+    //   canvas.height = this.assetData.h;
+    //   let ctx = canvas.getContext('2d');
+
+    //   let imgW = this.img.width;
+    //   let imgH = this.img.height;
+    //   let imgRel = imgW / imgH;
+    //   let canvasRel = this.assetData.w / this.assetData.h;
+    //   let widthCrop;
+    //   let heightCrop;
+    //   if (imgRel > canvasRel) {
+    //     heightCrop = imgH;
+    //     widthCrop = heightCrop * canvasRel;
+    //   } else {
+    //     widthCrop = imgW;
+    //     heightCrop = widthCrop / canvasRel;
+    //   }
+    //   ctx.drawImage(this.img, (imgW - widthCrop) / 2, (imgH - heightCrop) / 2, widthCrop, heightCrop, 0, 0, this.assetData.w, this.assetData.h);
+    //   this.img = canvas;
+    // }
   }
 
   renderInnerContent() {
     if (this.failed) {
       return;
     }
-    this.canvasContext.drawImage(this.img.src, 0, 0);
+    this.canvasContext.drawImage(this.img.src || this.img, 0, 0);
   }
 
   destroy() {
     this.img = null;
   }
-}
-
-const cacheImage = new Map();
-
-function loadImage(path) {
-  return new Promise((resolve, reject) => {
-    if (cacheImage.has(path)) {
-      resolve(cacheImage.get(path));
-      return;
-    }
-
-    wx.getImageInfo({
-      src: path,
-      success: (result) => {
-        cacheImage.set(path, result);
-        resolve(result);
-      },
-      fail() {
-        reject();
-      }
-    });
-  });
 }
 
 export default CVImageElement;

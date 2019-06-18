@@ -38,6 +38,7 @@ class AnimationItem extends BaseEvent {
     this.segments = [];
     this._idle = true;
     this.projectInterface = ProjectInterface();
+    this.imagePreloader = new ImagePreloader();
   }
 
   setParams(params) {
@@ -172,7 +173,6 @@ class AnimationItem extends BaseEvent {
   }
 
   preloadImages() {
-    this.imagePreloader = new ImagePreloader();
     this.imagePreloader.setAssetsPath(this.assetsPath);
     this.imagePreloader.setPath(this.path);
     this.imagePreloader.loadAssets(this.animationData.assets, function (err) {
