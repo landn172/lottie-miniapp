@@ -1,12 +1,12 @@
-import IImageElement from '../elements/ImageElement';
-import { createTag } from '../utils/index';
-import Mixin from '../utils/mixin';
 import CVBaseElement from '../canvasElements/CVBaseElement';
 import BaseElement from '../elements/BaseElement';
-import HierarchyElement from '../elements/HierarchyElement';
 import FrameElement from '../elements/FrameElement';
+import HierarchyElement from '../elements/HierarchyElement';
+import IImageElement from '../elements/ImageElement';
 import RenderableElement from '../elements/RenderableElement';
 import TransformElement from '../elements/TransformElement';
+import { createTag } from '../utils/index';
+import Mixin from '../utils/mixin';
 
 class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
@@ -67,22 +67,13 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
 
   createContent() {
     let assetPath = this.globalData.getAssetsPath(this.assetData);
-    wx.downloadFile({
-      url: assetPath,
-      success: (res) => {
-        wx.getImageInfo({
-          src: res.tempFilePath,
-          success: ({ width, height }) => {
-            this.img.src = res.tempFilePath;
-            this.img.width = width;
-            this.img.height = height;
-            this.imageLoaded();
-          }
-        });
-      },
-      fail: () => {
-        this.imageFailed();
-      }
+    loadImage(assetPath).then(({ width, height, path }) => {
+      this.img.src = path;
+      this.img.width = width;
+      this.img.height = height;
+      this.imageLoaded();
+    }, () => {
+      this.imageFailed();
     });
   }
 
@@ -96,6 +87,28 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
   destroy() {
     this.img = null;
   }
+}
+
+const cacheImage = new Map();
+
+function loadImage(path) {
+  return new Promise((resolve, reject) => {
+    if (cacheImage.has(path)) {
+      resolve(cacheImage.get(path));
+      return;
+    }
+
+    wx.getImageInfo({
+      src: path,
+      success: (result) => {
+        cacheImage.set(path, result);
+        resolve(result);
+      },
+      fail() {
+        reject();
+      }
+    });
+  });
 }
 
 export default CVImageElement;
