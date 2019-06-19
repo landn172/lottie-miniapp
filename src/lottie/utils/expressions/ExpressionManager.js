@@ -1,29 +1,13 @@
+import BezierFactory from '../../3rd_party/BezierEaser';
+import interpreter from '../../3rd_party/interpreterWrap';
+import BMMath from '../common';
 import { createTypedArray } from '../index';
 import shape_pool from '../pooling/shape_pool';
-import BMMath from '../common';
-import interpreter from '../../3rd_party/interpreterWrap';
 
 let ob = {};
 const degToRads = Math.PI / 180;
 
-// function duplicatePropertyValue(value, mult) {
-//   mult = mult || 1;
-
-//   if (typeof value === 'number' || value instanceof Number) {
-//     return value * mult;
-//   } else if (value.i) {
-//     return shape_pool.clone(value);
-//   }
-//   let arr = createTypedArray('float32', value.length);
-//   let i,
-//     len = value.length;
-//   for (i = 0; i < len; i += 1) {
-//     arr[i] = value[i] * mult;
-//   }
-//   return arr;
-// }
-
-function isTypeOfArray(arr) {
+function $bm_isInstanceOfArray(arr) {
   return arr.constructor === Array || arr.constructor === Float32Array;
 }
 
@@ -31,46 +15,54 @@ function isNumerable(tOfV, v) {
   return tOfV === 'number' || tOfV === 'boolean' || tOfV === 'string' || v instanceof Number;
 }
 
-// function $bm_neg(a) {
-//   let tOfA = typeof a;
-//   if (tOfA === 'number' || tOfA === 'boolean' || a instanceof Number) {
-//     return -a;
-//   }
-//   if (isTypeOfArray(a)) {
-//     let i;
-//     let lenA = a.length;
-//     let retArr = [];
-//     for (i = 0; i < lenA; i += 1) {
-//       retArr[i] = -a[i];
-//     }
-//     return retArr;
-//   }
-// }
+function $bm_neg(a) {
+  var tOfA = typeof a;
+  if (tOfA === 'number' || tOfA === 'boolean' || a instanceof Number) {
+    return -a;
+  }
+  if ($bm_isInstanceOfArray(a)) {
+    var i,
+      lenA = a.length;
+    var retArr = [];
+    for (i = 0; i < lenA; i += 1) {
+      retArr[i] = -a[i];
+    }
+    return retArr;
+  }
+  if (a.propType) {
+    return a.v;
+  }
+}
+
+const easeInBez = BezierFactory.getBezierEasing(0.333, 0, .833, .833, 'easeIn').get;
+const easeOutBez = BezierFactory.getBezierEasing(0.167, 0.167, .667, 1, 'easeOut').get;
+const easeInOutBez = BezierFactory.getBezierEasing(.33, 0, .667, 1, 'easeInOut').get;
 
 function sum(a, b) {
-  let tOfA = typeof a;
-  let tOfB = typeof b;
+  var tOfA = typeof a;
+  var tOfB = typeof b;
   if (tOfA === 'string' || tOfB === 'string') {
     return a + b;
   }
   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
     return a + b;
   }
-  if (isTypeOfArray(a) && isNumerable(tOfB, b)) {
+  if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
     a = a.slice(0);
-    a[0] += b;
+    a[0] = a[0] + b;
     return a;
   }
-  if (isNumerable(tOfA, a) && isTypeOfArray(b)) {
+  if (isNumerable(tOfA, a) && $bm_isInstanceOfArray(b)) {
     b = b.slice(0);
     b[0] = a + b[0];
     return b;
   }
-  if (isTypeOfArray(a) && isTypeOfArray(b)) {
-    let i = 0;
-    let lenA = a.length;
-    let lenB = b.length;
-    let retArr = [];
+  if ($bm_isInstanceOfArray(a) && $bm_isInstanceOfArray(b)) {
+
+    var i = 0,
+      lenA = a.length,
+      lenB = b.length;
+    var retArr = [];
     while (i < lenA || i < lenB) {
       if ((typeof a[i] === 'number' || a[i] instanceof Number) && (typeof b[i] === 'number' || b[i] instanceof Number)) {
         retArr[i] = a[i] + b[i];
@@ -83,294 +75,298 @@ function sum(a, b) {
   }
   return 0;
 }
+const add = sum;
 
-// let add = sum;
+function sub(a, b) {
+  var tOfA = typeof a;
+  var tOfB = typeof b;
+  if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
+    if (tOfA === 'string') {
+      a = parseInt(a);
+    }
+    if (tOfB === 'string') {
+      b = parseInt(b);
+    }
+    return a - b;
+  }
+  if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
+    a = a.slice(0);
+    a[0] = a[0] - b;
+    return a;
+  }
+  if (isNumerable(tOfA, a) && $bm_isInstanceOfArray(b)) {
+    b = b.slice(0);
+    b[0] = a - b[0];
+    return b;
+  }
+  if ($bm_isInstanceOfArray(a) && $bm_isInstanceOfArray(b)) {
+    var i = 0,
+      lenA = a.length,
+      lenB = b.length;
+    var retArr = [];
+    while (i < lenA || i < lenB) {
+      if ((typeof a[i] === 'number' || a[i] instanceof Number) && (typeof b[i] === 'number' || b[i] instanceof Number)) {
+        retArr[i] = a[i] - b[i];
+      } else {
+        retArr[i] = b[i] === undefined ? a[i] : a[i] || b[i];
+      }
+      i += 1;
+    }
+    return retArr;
+  }
+  return 0;
+}
 
-// function sub(a, b) {
-//   let tOfA = typeof a;
-//   let tOfB = typeof b;
-//   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
-//     if (tOfA === 'string') {
-//       a = parseInt(a, 10);
-//     }
-//     if (tOfB === 'string') {
-//       b = parseInt(b, 10);
-//     }
-//     return a - b;
-//   }
-//   if (isTypeOfArray(a) && isNumerable(tOfB, b)) {
-//     a = a.slice(0);
-//     a[0] -= b;
-//     return a;
-//   }
-//   if (isNumerable(tOfA, a) && isTypeOfArray(b)) {
-//     b = b.slice(0);
-//     b[0] = a - b[0];
-//     return b;
-//   }
-//   if (isTypeOfArray(a) && isTypeOfArray(b)) {
-//     let i = 0;
-//     let lenA = a.length;
-//     let lenB = b.length;
-//     let retArr = [];
-//     while (i < lenA || i < lenB) {
-//       if ((typeof a[i] === 'number' || a[i] instanceof Number) && (typeof b[i] === 'number' || b[i] instanceof Number)) {
-//         retArr[i] = a[i] - b[i];
-//       } else {
-//         retArr[i] = b[i] === undefined ? a[i] : a[i] || b[i];
-//       }
-//       i += 1;
-//     }
-//     return retArr;
-//   }
-//   return 0;
-// }
+function mul(a, b) {
+  var tOfA = typeof a;
+  var tOfB = typeof b;
+  var arr;
+  if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
+    return a * b;
+  }
 
-// function mul(a, b) {
-//   let tOfA = typeof a;
-//   let tOfB = typeof b;
-//   let arr;
-//   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
-//     return a * b;
-//   }
+  var i,
+    len;
+  if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
+    len = a.length;
+    arr = createTypedArray('float32', len);
+    for (i = 0; i < len; i += 1) {
+      arr[i] = a[i] * b;
+    }
+    return arr;
+  }
+  if (isNumerable(tOfA, a) && $bm_isInstanceOfArray(b)) {
+    len = b.length;
+    arr = createTypedArray('float32', len);
+    for (i = 0; i < len; i += 1) {
+      arr[i] = a * b[i];
+    }
+    return arr;
+  }
+  return 0;
+}
 
-//   let i;
-//   let len;
-//   if (isTypeOfArray(a) && isNumerable(tOfB, b)) {
-//     len = a.length;
-//     arr = createTypedArray('float32', len);
-//     for (i = 0; i < len; i += 1) {
-//       arr[i] = a[i] * b;
-//     }
-//     return arr;
-//   }
-//   if (isNumerable(tOfA, a) && isTypeOfArray(b)) {
-//     len = b.length;
-//     arr = createTypedArray('float32', len);
-//     for (i = 0; i < len; i += 1) {
-//       arr[i] = a * b[i];
-//     }
-//     return arr;
-//   }
-//   return 0;
-// }
+function div(a, b) {
+  var tOfA = typeof a;
+  var tOfB = typeof b;
+  var arr;
+  if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
+    return a / b;
+  }
+  var i,
+    len;
+  if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
+    len = a.length;
+    arr = createTypedArray('float32', len);
+    for (i = 0; i < len; i += 1) {
+      arr[i] = a[i] / b;
+    }
+    return arr;
+  }
+  if (isNumerable(tOfA, a) && $bm_isInstanceOfArray(b)) {
+    len = b.length;
+    arr = createTypedArray('float32', len);
+    for (i = 0; i < len; i += 1) {
+      arr[i] = a / b[i];
+    }
+    return arr;
+  }
+  return 0;
+}
 
-// function div(a, b) {
-//   let tOfA = typeof a;
-//   let tOfB = typeof b;
-//   let arr;
-//   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
-//     return a / b;
-//   }
-//   let i;
-//   let len;
-//   if (isTypeOfArray(a) && isNumerable(tOfB, b)) {
-//     len = a.length;
-//     arr = createTypedArray('float32', len);
-//     for (i = 0; i < len; i += 1) {
-//       arr[i] = a[i] / b;
-//     }
-//     return arr;
-//   }
-//   if (isNumerable(tOfA, a) && isTypeOfArray(b)) {
-//     len = b.length;
-//     arr = createTypedArray('float32', len);
-//     for (i = 0; i < len; i += 1) {
-//       arr[i] = a / b[i];
-//     }
-//     return arr;
-//   }
-//   return 0;
-// }
+function mod(a, b) {
+  if (typeof a === 'string') {
+    a = parseInt(a);
+  }
+  if (typeof b === 'string') {
+    b = parseInt(b);
+  }
+  return a % b;
+}
 
-// function mod(a, b) {
-//   if (typeof a === 'string') {
-//     a = parseInt(a, 10);
-//   }
-//   if (typeof b === 'string') {
-//     b = parseInt(b, 10);
-//   }
-//   return a % b;
-// }
+const $bm_sum = sum;
+const $bm_sub = sub;
+const $bm_mul = mul;
+const $bm_div = div;
+const $bm_mod = mod;
 
-// function clamp(num, min, max) {
-//   if (min > max) {
-//     let mm = max;
-//     max = min;
-//     min = mm;
-//   }
-//   return Math.min(Math.max(num, min), max);
-// }
+function clamp(num, min, max) {
+  if (min > max) {
+    let mm = max;
+    max = min;
+    min = mm;
+  }
+  return Math.min(Math.max(num, min), max);
+}
 
-// function radiansToDegrees(val) {
-//   return val / degToRads;
-// }
+function radiansToDegrees(val) {
+  return val / degToRads;
+}
 
-// let radians_to_degrees = radiansToDegrees;
+let radians_to_degrees = radiansToDegrees;
 
-// function degreesToRadians(val) {
-//   return val * degToRads;
-// }
+function degreesToRadians(val) {
+  return val * degToRads;
+}
 
-// let degrees_to_radians = radiansToDegrees;
+let degrees_to_radians = radiansToDegrees;
 
 let helperLengthArray = [0, 0, 0, 0, 0, 0];
 
-// function length(arr1, arr2) {
-//   if (typeof arr1 === 'number' || arr1 instanceof Number) {
-//     arr2 = arr2 || 0;
-//     return Math.abs(arr1 - arr2);
-//   }
-//   if (!arr2) {
-//     arr2 = helperLengthArray;
-//   }
-//   let i;
-//   let len = Math.min(arr1.length, arr2.length);
-//   let addedLength = 0;
-//   for (i = 0; i < len; i += 1) {
-//     addedLength += Math.pow(arr2[i] - arr1[i], 2);
-//   }
-//   return Math.sqrt(addedLength);
-// }
+function length(arr1, arr2) {
+  if (typeof arr1 === 'number' || arr1 instanceof Number) {
+    arr2 = arr2 || 0;
+    return Math.abs(arr1 - arr2);
+  }
+  if (!arr2) {
+    arr2 = helperLengthArray;
+  }
+  let i;
+  let len = Math.min(arr1.length, arr2.length);
+  let addedLength = 0;
+  for (i = 0; i < len; i += 1) {
+    addedLength += Math.pow(arr2[i] - arr1[i], 2);
+  }
+  return Math.sqrt(addedLength);
+}
 
-// function normalize(vec) {
-//   return div(vec, length(vec));
-// }
+function normalize(vec) {
+  return div(vec, length(vec));
+}
 
-// function rgbToHsl(val) {
-//   let r = val[0];
-//   let g = val[1];
-//   let b = val[2];
-//   let max = Math.max(r, g, b),
-//     min = Math.min(r, g, b);
-//   let h,
-//     s,
-//     l = (max + min) / 2;
+function rgbToHsl(val) {
+  let r = val[0];
+  let g = val[1];
+  let b = val[2];
+  let max = Math.max(r, g, b)
+  let min = Math.min(r, g, b);
+  let h;
+  let s;
+  let l = (max + min) / 2;
 
-//   if (max == min) {
-//     h = s = 0; // achromatic
-//   } else {
-//     let d = max - min;
-//     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-//     switch (max) {
-//       case r:
-//         h = (g - b) / d + (g < b ? 6 : 0);
-//         break;
-//       case g:
-//         h = (b - r) / d + 2;
-//         break;
-//       case b:
-//         h = (r - g) / d + 4;
-//         break;
-//     }
-//     h /= 6;
-//   }
+  if (max == min) {
+    h = s = 0; // achromatic
+  } else {
+    let d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+  return [h, s, l, val[3]];
+}
 
-//   return [h, s, l, val[3]];
-// }
+function hue2rgb(p, q, t) {
+  if (t < 0) {
+    t += 1;
+  }
+  if (t > 1) {
+    t -= 1;
+  }
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+  return p;
+}
 
-// function hue2rgb(p, q, t) {
-//   if (t < 0) {
-//     t += 1;
-//   }
-//   if (t > 1) {
-//     t -= 1;
-//   }
-//   if (t < 1 / 6) return p + (q - p) * 6 * t;
-//   if (t < 1 / 2) return q;
-//   if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-//   return p;
-// }
+function hslToRgb(val) {
+  let h = val[0];
+  let s = val[1];
+  let l = val[2];
 
-// function hslToRgb(val) {
-//   let h = val[0];
-//   let s = val[1];
-//   let l = val[2];
+  let r,
+    g,
+    b;
 
-//   let r,
-//     g,
-//     b;
+  if (s === 0) {
+    r = g = b = l; // achromatic
+  } else {
+    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    let p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
 
-//   if (s === 0) {
-//     r = g = b = l; // achromatic
-//   } else {
-//     let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-//     let p = 2 * l - q;
-//     r = hue2rgb(p, q, h + 1 / 3);
-//     g = hue2rgb(p, q, h);
-//     b = hue2rgb(p, q, h - 1 / 3);
-//   }
+  return [r, g, b, val[3]];
+}
 
-//   return [r, g, b, val[3]];
-// }
+function linear(t, tMin, tMax, value1, value2) {
+  if (value1 === undefined || value2 === undefined) {
+    return linear(t, 0, 1, tMin, tMax);
+  }
+  if (t <= tMin) {
+    return value1;
+  } else if (t >= tMax) {
+    return value2;
+  }
+  let perc = tMax === tMin ? 0 : (t - tMin) / (tMax - tMin);
+  if (!value1.length) {
+    return value1 + (value2 - value1) * perc;
+  }
+  let i;
+  let len = value1.length;
+  let arr = createTypedArray('float32', len);
+  for (i = 0; i < len; i += 1) {
+    arr[i] = value1[i] + (value2[i] - value1[i]) * perc;
+  }
+  return arr;
+}
 
-// function linear(t, tMin, tMax, value1, value2) {
-//   if (value1 === undefined || value2 === undefined) {
-//     return linear(t, 0, 1, tMin, tMax);
-//   }
-//   if (t <= tMin) {
-//     return value1;
-//   } else if (t >= tMax) {
-//     return value2;
-//   }
-//   let perc = tMax === tMin ? 0 : (t - tMin) / (tMax - tMin);
-//   if (!value1.length) {
-//     return value1 + (value2 - value1) * perc;
-//   }
-//   let i;
-//   let len = value1.length;
-//   let arr = createTypedArray('float32', len);
-//   for (i = 0; i < len; i += 1) {
-//     arr[i] = value1[i] + (value2[i] - value1[i]) * perc;
-//   }
-//   return arr;
-// }
+function random(min, max) {
+  if (max === undefined) {
+    if (min === undefined) {
+      min = 0;
+      max = 1;
+    } else {
+      max = min;
+      min = undefined;
+    }
+  }
+  if (max.length) {
+    let i;
+    let len = max.length;
+    if (!min) {
+      min = createTypedArray('float32', len);
+    }
+    let arr = createTypedArray('float32', len);
+    let rnd = BMMath.random();
+    for (i = 0; i < len; i += 1) {
+      arr[i] = min[i] + rnd * (max[i] - min[i]);
+    }
+    return arr;
+  }
+  if (min === undefined) {
+    min = 0;
+  }
+  let rndm = BMMath.random();
+  return min + rndm * (max - min);
+}
 
-// function random(min, max) {
-//   if (max === undefined) {
-//     if (min === undefined) {
-//       min = 0;
-//       max = 1;
-//     } else {
-//       max = min;
-//       min = undefined;
-//     }
-//   }
-//   if (max.length) {
-//     let i;
-//     let len = max.length;
-//     if (!min) {
-//       min = createTypedArray('float32', len);
-//     }
-//     let arr = createTypedArray('float32', len);
-//     let rnd = BMMath.random();
-//     for (i = 0; i < len; i += 1) {
-//       arr[i] = min[i] + rnd * (max[i] - min[i]);
-//     }
-//     return arr;
-//   }
-//   if (min === undefined) {
-//     min = 0;
-//   }
-//   let rndm = BMMath.random();
-//   return min + rndm * (max - min);
-// }
-
-// function createPath(points, inTangents, outTangents, closed) {
-//   let i;
-//   let len = points.length;
-//   let path = shape_pool.newElement();
-//   path.setPathData(!!closed, len);
-//   let arrPlaceholder = [0, 0];
-//   let inVertexPoint;
-//   let outVertexPoint;
-//   for (i = 0; i < len; i += 1) {
-//     inVertexPoint = inTangents ? inTangents[i] : arrPlaceholder;
-//     outVertexPoint = outTangents ? outTangents[i] : arrPlaceholder;
-//     path.setTripleAt(points[i][0], points[i][1], outVertexPoint[0] + points[i][0], outVertexPoint[1] + points[i][1], inVertexPoint[0] + points[i][0], inVertexPoint[1] + points[i][1], i, true);
-//   }
-//   return path;
-// }
+function createPath(points, inTangents, outTangents, closed) {
+  let i;
+  let len = points.length;
+  let path = shape_pool.newElement();
+  path.setPathData(!!closed, len);
+  let arrPlaceholder = [0, 0];
+  let inVertexPoint;
+  let outVertexPoint;
+  for (i = 0; i < len; i += 1) {
+    inVertexPoint = inTangents ? inTangents[i] : arrPlaceholder;
+    outVertexPoint = outTangents ? outTangents[i] : arrPlaceholder;
+    path.setTripleAt(points[i][0], points[i][1], outVertexPoint[0] + points[i][0], outVertexPoint[1] + points[i][1], inVertexPoint[0] + points[i][0], inVertexPoint[1] + points[i][1], i, true);
+  }
+  return path;
+}
 
 function initiateExpression(elem, data, property) {
   let val = data.x;

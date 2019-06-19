@@ -208,7 +208,7 @@ function dataFunctionManager() {
     };
   }());
 
-  let checkColors = (function () {
+  const checkColors = (function () {
     let minimumVersion = [4, 1, 9];
 
     function iterateShapes(shapes) {
@@ -272,11 +272,12 @@ function dataFunctionManager() {
     };
   }());
 
-  let checkShapes = (function () {
+  const checkShapes = (function () {
     let minimumVersion = [4, 4, 18];
 
 
-    function completeShapesLocal(arr) {
+    // eslint-disable-next-line no-shadow
+    function completeShapes(arr) {
       let i;
       let len = arr.length;
       let j;
@@ -334,7 +335,7 @@ function dataFunctionManager() {
           }
         }
         if (layerData.ty === 4) {
-          completeShapesLocal(layerData.shapes);
+          completeShapes(layerData.shapes);
         }
       }
     }
