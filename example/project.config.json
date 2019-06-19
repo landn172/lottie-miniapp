@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -57,9 +57,23 @@
 				},
 				{
 					"id": 3,
+					"name": "bug2",
+					"pathName": "pages/index/index",
+					"query": "path=https://img-asset.chemm.com/test/lottie-demo/base64/data.json",
+					"scene": null
+				},
+				{
+					"id": 4,
 					"name": "bug",
 					"pathName": "pages/index/index",
-					"query": "path=http://cdn.biglao.cn/images/1560509118343_data.json",
+					"query": "path=https://img1.tuhu.org/mp/FuRTWQaIi98kIz8M-84-n5xd1Ne9.json",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "bug3",
+					"pathName": "pages/index/index",
+					"query": "path=https://img-asset.chemm.com/test/lottie-demo/navidad/data.json",
 					"scene": null
 				}
 			]

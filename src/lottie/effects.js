@@ -1,4 +1,4 @@
-import { SliderEffect, AngleEffect, ColorEffect, PointEffect, CheckboxEffect, NoValueEffect } from './effects/SliderEffect';
+import { AngleEffect, CheckboxEffect, ColorEffect, NoValueEffect, PointEffect, SliderEffect } from './effects/SliderEffect';
 
 export function EffectsManager(data, element, dynamicProperties) {
   let effects = data.ef || [];
@@ -66,13 +66,13 @@ GroupEffect.prototype.init = function (data, element, dynamicProperties) {
         eff = new EffectsManager(effects[i], element, dynamicProperties);
         this.effectElements.push(eff);
         break;
-      case 6:
+      default:
         eff = new NoValueEffect(effects[i], element, dynamicProperties);
         this.effectElements.push(eff);
         break;
-      default: break;
     }
   }
 };
 
 export { GroupEffect };
+
