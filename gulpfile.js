@@ -36,7 +36,7 @@ gulp.task('build:lottie', () => {
 
 gulp.task('publish', () => {
   return createTask(componetGlob, './lib/component')
-    .pipe(replace('../lottie/index.js', '../lottie-miniapp.min.js'))
+    .pipe(replace('../lottie/index.js', '../index.js'))
     .pipe(gulp.dest('./lib/component'));
 });
 
