@@ -3,7 +3,9 @@ import DynamicPropertyContainer from '../utils/dynamicProperties';
 
 export class ShapeModifier extends DynamicPropertyContainer {
   initModifierProperties() {}
+
   addShapeToModifier() {}
+
   addShape(data) {
     if (!this.closed) {
       const shapeData = {
@@ -18,6 +20,7 @@ export class ShapeModifier extends DynamicPropertyContainer {
       }
     }
   }
+
   init(elem, data) {
     this.shapes = [];
     this.elem = elem;
@@ -32,6 +35,7 @@ export class ShapeModifier extends DynamicPropertyContainer {
       this.getValue(true);
     }
   }
+
   processKeys() {
     if (this.elem.globalData.frameId === this.frameId) {
       return;

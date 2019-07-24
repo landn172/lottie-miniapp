@@ -1,4 +1,6 @@
-import { interpolateShape, processEffectsSequence, resetShape, addEffect } from './index';
+import {
+  interpolateShape, processEffectsSequence, resetShape, addEffect
+} from './index';
 import shape_pool from '../pooling/shape_pool';
 import shapeCollection_pool from '../pooling/shapeCollection_pool';
 import ShapeExpressions from '../expressions/ShapeExpressions';
@@ -25,7 +27,9 @@ class ShapeProperty extends ShapeExpressions {
   }
 
   addEffect=addEffect
+
   interpolateShape=interpolateShape
+
   getValue =processEffectsSequence
 }
 

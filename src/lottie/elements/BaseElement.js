@@ -40,6 +40,7 @@ class BaseElement {
       this.layerInterface.text = this.layerInterface.textInterface;
     }
   }
+
   get blendModeEnums() {
     return {
       1: 'multiply',
@@ -59,15 +60,18 @@ class BaseElement {
       15: 'luminosity'
     };
   }
+
   getBlendMode() {
     return this.blendModeEnums[this.data.bm] || '';
   }
+
   setBlendMode() {
     let blendModeValue = this.getBlendMode();
     let elem = this.baseElement || this.layerElement;
 
     elem.style['mix-blend-mode'] = blendModeValue;
   }
+
   initBaseData(data, globalData, comp) {
     this.globalData = globalData;
     this.comp = comp;
@@ -81,6 +85,7 @@ class BaseElement {
     // effects manager
     this.effectsManager = new EffectsManager(this.data, this, this.dynamicProperties);
   }
+
   getType() {
     return this.type;
   }

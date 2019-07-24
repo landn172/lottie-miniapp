@@ -29,7 +29,9 @@ class CVTextElement extends Mixin(BaseElement, TransformElement, CVBaseElement, 
     };
     this.initElement(data, globalData, comp);
   }
+
   tHelper = createTag('canvas')
+
   buildNewText() {
     let documentData = this.textProperty.currentData;
     this.renderedLetters = createSizedArray(documentData.l ? documentData.l.length : 0);

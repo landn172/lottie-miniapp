@@ -24,34 +24,36 @@ function createTask(glob) {
     .pipe(gulpif('*.js', babel(babelConfig)));
 }
 
-gulp.task('build:component', () => {
-  return createTask(componetGlob)
-    .pipe(gulp.dest('./example/component'));
-});
-
-gulp.task('build:lottie', () => {
+function buildLottie() {
   return createTask(lottieGlob)
     .pipe(gulp.dest('./example/lottie'));
-});
+}
 
-gulp.task('publish', () => {
+function publish() {
   return createTask(componetGlob, './lib/component')
     .pipe(replace('../lottie/index.js', '../index.js'))
     .pipe(gulp.dest('./lib/component'));
-});
-
-function watch() {
-  gulp.watch(componetGlob, ['build:component']);
-  return gulp.watch(lottieGlob, ['build:lottie']);
 }
 
-gulp.task('default', ['build:component', 'build:lottie'], () => {
+function watch() {
+  gulp.watch(componetGlob, buildComponent);
+  return gulp.watch(lottieGlob, buildLottie);
+}
+
+function buildComponent() {
+  return createTask(componetGlob)
+    .pipe(gulp.dest('./example/component'));
+}
+
+const build = gulp.series(buildComponent, buildLottie);
+const buldWithWatch = gulp.parallel(build, watch);
+function defaultFunc() {
   const args = process.argv.slice(2);
   if (args.includes('--watch')) {
-    return watch();
+    return buldWithWatch;
   }
-});
+  return build;
+}
 
-gulp.task('watch', () => {
-  watch();
-});
+exports.default = defaultFunc();
+exports.publish = publish;

@@ -97,6 +97,7 @@ class TransformProperty extends DynamicPropertyContainer {
       mat.translate(this.p.v[0], this.p.v[1], -this.p.v[2]);
     }
   }
+
   getValue(forceRender) {
     if (this.elem.globalData.frameId === this.frameId) {
       return;
@@ -187,7 +188,9 @@ class TransformProperty extends DynamicPropertyContainer {
       this.appliedTransformations = 4;
     }
   }
+
   autoOrient() {}
+
   addDynamicProperty(prop) {
     super.addDynamicProperty(prop);
     this.elem.addDynamicProperty(prop);

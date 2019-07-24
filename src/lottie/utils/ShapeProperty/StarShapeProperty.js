@@ -41,6 +41,7 @@ class StarShapeProperty extends DynamicPropertyContainer {
   }
 
   reset= resetShape
+
   getValue() {
     if (this.elem.globalData.frameId === this.frameId) {
       return;

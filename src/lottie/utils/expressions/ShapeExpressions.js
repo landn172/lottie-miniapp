@@ -22,18 +22,23 @@ class ShapeExpressions {
     }
     return arr;
   }
+
   points(time) {
     return this.vertices('v', time);
   }
+
   inTangents(time) {
     return this.vertices('i', time);
   }
+
   outTangents(time) {
     return this.vertices('o', time);
   }
+
   isClosed() {
     return this.v.c;
   }
+
   pointOnPath(perc, time) {
     let shapePath = this.v;
     if (time !== undefined) {
@@ -69,6 +74,7 @@ class ShapeExpressions {
     }
     return pt;
   }
+
   vectorOnPath(perc, time, vectorType) {
     // perc doesn't use triple equality because it can be a Number object as well as a primitive.
     perc = perc === 1 ? this.v.c ? 0 : 0.999 : perc;
@@ -80,13 +86,17 @@ class ShapeExpressions {
     let unitVector = vectorType === 'tangent' ? [xLength / magnitude, yLength / magnitude] : [-yLength / magnitude, xLength / magnitude];
     return unitVector;
   }
+
   tangentOnPath(perc, time) {
     return this.vectorOnPath(perc, time, 'tangent');
   }
+
   normalOnPath(perc, time) {
     return this.vectorOnPath(perc, time, 'normal');
   }
+
   setGroupProperty= setGroupProperty
+
   getValueAtTime= getStaticValueAtTime
 }
 

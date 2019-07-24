@@ -31,6 +31,7 @@ class EllShapeProperty extends DynamicPropertyContainer {
   }
 
   reset=resetShape
+
   getValue() {
     if (this.elem.globalData.frameId === this.frameId) {
       return;

@@ -28,6 +28,7 @@ export default class TextAnimatorProperty {
   addDynamicProperty() {
     console.log('see:', 'https://github.com/airbnb/lottie-web/blob/adb67aaed3058a331d93fe0b87df5129f9fcab57/player/js/utils/text/TextAnimatorProperty.js#L21:53');
   }
+
   searchProperties() {
     let i;
     let len = this._textData.a.length;

@@ -27,6 +27,7 @@ class CVSolidElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
   }
 
   prepareFrame = RenderableDOMElement.prototype.prepareFrame
+
   renderInnerContent() {
     let ctx = this.canvasContext;
     ctx.setFillStyle(this.data.sc);

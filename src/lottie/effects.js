@@ -1,4 +1,6 @@
-import { AngleEffect, CheckboxEffect, ColorEffect, NoValueEffect, PointEffect, SliderEffect } from './effects/SliderEffect';
+import {
+  AngleEffect, CheckboxEffect, ColorEffect, NoValueEffect, PointEffect, SliderEffect
+} from './effects/SliderEffect';
 
 export function EffectsManager(data, element, dynamicProperties) {
   let effects = data.ef || [];
@@ -75,4 +77,3 @@ GroupEffect.prototype.init = function (data, element, dynamicProperties) {
 };
 
 export { GroupEffect };
-

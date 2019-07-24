@@ -20,6 +20,7 @@ class TransformElement {
       // this.createElements();
     }
   }
+
   renderTransform() {
     this.finalTransform._opMdf = this.finalTransform.mProp.o._mdf || this._isFirstFrame;
     this.finalTransform._matMdf = this.finalTransform.mProp._mdf || this._isFirstFrame;
@@ -50,6 +51,7 @@ class TransformElement {
       }
     }
   }
+
   globalToLocal(pt) {
     let transforms = [];
     transforms.push(this.finalTransform);
@@ -75,6 +77,7 @@ class TransformElement {
     }
     return pt;
   }
+
   mHelper= new Matrix()
 }
 

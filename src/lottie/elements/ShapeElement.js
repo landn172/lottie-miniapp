@@ -8,6 +8,7 @@ class IShapeElement {
       this.shapeModifiers[i].addShape(data);
     }
   }
+
   isShapeInAnimatedModifiers(data) {
     let i = 0;
     let len = this.shapeModifiers.length;
@@ -18,6 +19,7 @@ class IShapeElement {
     }
     return false;
   }
+
   renderModifiers() {
     if (!this.shapeModifiers.length) {
       return;
@@ -33,6 +35,7 @@ class IShapeElement {
       this.shapeModifiers[i].processShapes(this._isFirstFrame);
     }
   }
+
   get lcEnum() {
     return {
       1: 'butt',
@@ -40,6 +43,7 @@ class IShapeElement {
       3: 'square'
     };
   }
+
   get ljEnum() {
     return {
       1: 'miter',
@@ -47,6 +51,7 @@ class IShapeElement {
       3: 'butt'
     };
   }
+
   searchProcessedElement(elem) {
     let elements = this.processedElements;
     let i = 0;
@@ -59,6 +64,7 @@ class IShapeElement {
     }
     return 0;
   }
+
   addProcessedElement(elem, pos) {
     let elements = this.processedElements;
     let i = elements.length;
@@ -71,6 +77,7 @@ class IShapeElement {
     }
     elements.push(new ProcessedElement(elem, pos));
   }
+
   prepareFrame(num) {
     this.prepareRenderableFrame(num);
     this.prepareProperties(num, this.isInRange);

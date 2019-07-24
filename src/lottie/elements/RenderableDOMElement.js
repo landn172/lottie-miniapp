@@ -13,8 +13,11 @@ class RenderableDOMElement extends RenderableElement {
     this.createContent();
     this.hide();
   }
+
   hide() {}
+
   show() {}
+
   renderFrame() {
     // If it is exported as hidden (data.hd === true) no need to render
     // If it is not visible no need to render
@@ -29,13 +32,16 @@ class RenderableDOMElement extends RenderableElement {
       this._isFirstFrame = false;
     }
   }
+
   renderInnerContent() {}
+
   prepareFrame(num) {
     this._mdf = false;
     this.prepareRenderableFrame(num);
     this.prepareProperties(num, this.isInRange);
     this.checkTransparency();
   }
+
   destroy() {
     this.innerElem = null;
     this.destroyBaseElement();

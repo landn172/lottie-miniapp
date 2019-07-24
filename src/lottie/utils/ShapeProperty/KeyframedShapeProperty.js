@@ -1,4 +1,6 @@
-import { interpolateShape, processEffectsSequence, resetShape, addEffect, interpolateShapeCurrentTime, initFrame } from './index';
+import {
+  interpolateShape, processEffectsSequence, resetShape, addEffect, interpolateShapeCurrentTime, initFrame
+} from './index';
 import shape_pool from '../pooling/shape_pool';
 import shapeCollection_pool from '../pooling/shapeCollection_pool';
 import ShapeExpressions from '../expressions/ShapeExpressions';
@@ -35,9 +37,13 @@ class KeyframedShapeProperty extends ShapeExpressions {
   }
 
   getValue=processEffectsSequence
+
   interpolateShape =interpolateShape
+
   addEffect=addEffect
+
   getShapeValueAtTime=getShapeValueAtTime
+
   initiateExpression=ExpressionManager.initiateExpression
 }
 

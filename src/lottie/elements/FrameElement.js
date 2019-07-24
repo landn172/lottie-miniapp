@@ -12,6 +12,7 @@ class FrameElement {
     // If layer has been modified in current tick this will be true
     this._mdf = false;
   }
+
   /**
    * @function
    * Calculates all dynamic values
@@ -35,6 +36,7 @@ class FrameElement {
       }
     }
   }
+
   addDynamicProperty(prop) {
     if (this.dynamicProperties.indexOf(prop) === -1) {
       this.dynamicProperties.push(prop);

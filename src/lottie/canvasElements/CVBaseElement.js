@@ -4,12 +4,16 @@ import CVMaskElement from './CVMaskElement';
 
 class CVBaseElement {
   createElements() {}
+
   initRendererElement() {}
+
   createContainerElements() {
     this.canvasContext = this.globalData.canvasContext;
     this.renderableEffectsManager = new CVEffects(this);
   }
+
   createContent() {}
+
   setBlendMode() {
     let globalData = this.globalData;
     if (globalData.blendMode !== this.data.bm) {
@@ -18,14 +22,17 @@ class CVBaseElement {
       globalData.canvasContext.globalCompositeOperation = blendModeValue;
     }
   }
+
   addMasks() {
     this.maskManager = new CVMaskElement(this.data, this);
   }
+
   hideElement() {
     if (!this.hidden && (!this.isInRange || this.isTransparent)) {
       this.hidden = true;
     }
   }
+
   showElement() {
     if (this.isInRange && !this.isTransparent) {
       this.hidden = false;
@@ -33,6 +40,7 @@ class CVBaseElement {
       this.maskManager._isFirstFrame = true;
     }
   }
+
   renderFrame() {
     if (this.hidden || this.data.hd) {
       return;
@@ -52,6 +60,7 @@ class CVBaseElement {
       this._isFirstFrame = false;
     }
   }
+
   destroy() {
     this.canvasContext = null;
     this.data = null;

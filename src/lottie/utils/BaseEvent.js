@@ -7,6 +7,7 @@ class BaseEvent {
       }
     }
   }
+
   addEventListener(eventName, callback) {
     if (!this._cbs[eventName]) {
       this._cbs[eventName] = [];
@@ -17,6 +18,7 @@ class BaseEvent {
       this.removeEventListener(eventName, callback);
     }.bind(this);
   }
+
   removeEventListener(eventName, callback) {
     if (!callback) {
       this._cbs[eventName] = null;
