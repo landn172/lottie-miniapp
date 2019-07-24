@@ -17,6 +17,7 @@ class BaseRenderer {
     }
     this.checkPendingElements();
   }
+
   createItem(layer) {
     switch (layer.ty) {
       case 2:
@@ -41,6 +42,7 @@ class BaseRenderer {
   createCamera() {
     throw new Error('You\'re using a 3d camera. Try the html renderer.');
   }
+
   buildAllItems() {
     let i;
     let len = this.layers.length;

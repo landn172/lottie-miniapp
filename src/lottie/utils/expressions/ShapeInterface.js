@@ -103,7 +103,7 @@ function fillInterfaceFactory(shape, view, propertyGroup) {
   function interfaceFunction(val) {
     if (val === 'Color' || val === 'color') {
       return interfaceFunction.color;
-    } else if (val === 'Opacity' || val === 'opacity') {
+    } if (val === 'Opacity' || val === 'opacity') {
       return interfaceFunction.opacity;
     }
   }
@@ -164,9 +164,9 @@ function strokeInterfaceFactory(shape, view, propertyGroup) {
   function interfaceFunction(val) {
     if (val === 'Color' || val === 'color') {
       return interfaceFunction.color;
-    } else if (val === 'Opacity' || val === 'opacity') {
+    } if (val === 'Opacity' || val === 'opacity') {
       return interfaceFunction.opacity;
-    } else if (val === 'Stroke Width' || val === 'stroke width') {
+    } if (val === 'Stroke Width' || val === 'stroke width') {
       return interfaceFunction.strokeWidth;
     }
   }
@@ -564,7 +564,7 @@ function repeaterInterfaceFactory(shape, view, propertyGroup) {
   function interfaceFunction(value) {
     if (shape.c.ix === value || value === 'Copies') {
       return interfaceFunction.copies;
-    } else if (shape.o.ix === value || value === 'Offset') {
+    } if (shape.o.ix === value || value === 'Offset') {
       return interfaceFunction.offset;
     }
   }

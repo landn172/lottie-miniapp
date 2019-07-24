@@ -143,6 +143,7 @@ class Font {
     }
     return this.fonts[0];
   }
+
   measureText(/* char, fontName, size */) {
     return 0;
   }

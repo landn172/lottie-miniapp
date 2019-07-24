@@ -9,19 +9,23 @@ class RenderableElement {
     // list of animated components
     this.renderableComponents = [];
   }
+
   addRenderableComponent(component) {
     if (this.renderableComponents.indexOf(component) === -1) {
       this.renderableComponents.push(component);
     }
   }
+
   removeRenderableComponent(component) {
     if (this.renderableComponents.indexOf(component) !== -1) {
       this.renderableComponents.splice(this.renderableComponents.indexOf(component), 1);
     }
   }
+
   prepareRenderableFrame(num) {
     this.checkLayerLimits(num);
   }
+
   checkTransparency() {
     if (this.finalTransform.mProp.o.v <= 0) {
       if (!this.isTransparent && this.globalData.renderConfig.hideOnTransparent) {
@@ -33,6 +37,7 @@ class RenderableElement {
       this.show();
     }
   }
+
   /**
    * @function
    * Initializes frame related properties.
@@ -55,6 +60,7 @@ class RenderableElement {
       this.hide();
     }
   }
+
   renderRenderable() {
     let i;
     let len = this.renderableComponents.length;
@@ -64,6 +70,7 @@ class RenderableElement {
   /* this.maskManager.renderFrame(this.finalTransform.mat);
   this.renderableEffectsManager.renderFrame(this._isFirstFrame); */
   }
+
   sourceRectAtTime() {
     return {
       top: 0,
@@ -72,6 +79,7 @@ class RenderableElement {
       height: 100
     };
   }
+
   getLayerSize() {
     if (this.data.ty === 5) {
       return {

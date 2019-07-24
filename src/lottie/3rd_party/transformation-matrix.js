@@ -32,6 +32,7 @@ class Matrix {
     this.props[15] = 1;
     return this;
   }
+
   rotate(angle) {
     if (angle === 0) {
       return this;
@@ -40,6 +41,7 @@ class Matrix {
     let mSin = _sin(angle);
     return this._t(mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   }
+
   rotateX(angle) {
     if (angle === 0) {
       return this;
@@ -48,6 +50,7 @@ class Matrix {
     let mSin = _sin(angle);
     return this._t(1, 0, 0, 0, 0, mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1);
   }
+
   rotateY(angle) {
     if (angle === 0) {
       return this;
@@ -228,18 +231,22 @@ class Matrix {
    y: x * me.b + y * me.d + me.f
    }; */
   }
+
   applyToX(x, y, z) {
     const props = this.props;
     return x * props[0] + y * props[4] + z * props[8] + props[12];
   }
+
   applyToY(x, y, z) {
     const props = this.props;
     return x * props[1] + y * props[5] + z * props[9] + props[13];
   }
+
   applyToZ(x, y, z) {
     const props = this.props;
     return x * props[2] + y * props[6] + z * props[10] + props[14];
   }
+
   inversePoint(pt) {
     const props = this.props;
     let determinant = props[0] * props[5] - props[1] * props[4];

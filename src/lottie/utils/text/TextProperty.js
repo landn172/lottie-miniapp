@@ -54,12 +54,15 @@ export default class TextProperty {
       this.keysIndex = 0;
     }
   }
+
   defaultBoxWidth =[0, 0]
+
   copyFromDocumentData(data) {
     Object.keys(data).forEach(s => {
       this.currentData[s] = data[s];
     });
   }
+
   setCurrentData = function (data, currentTextValue) {
     if (this.currentData !== data) {
       if (!data.__complete) {

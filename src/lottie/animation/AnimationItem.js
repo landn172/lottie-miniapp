@@ -1,7 +1,9 @@
 import CanvasRenderer from '../renderers/CanvasRenderer';
 import assetLoader from '../utils/assetLoader';
 import BaseEvent from '../utils/BaseEvent';
-import { BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent } from '../utils/common';
+import {
+  BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent
+} from '../utils/common';
 import dataManager from '../utils/DataManager';
 import expressionsPlugin from '../utils/expressions/Expressions';
 import ImagePreloader from '../utils/ImagePreloader';

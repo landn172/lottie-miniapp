@@ -15,6 +15,7 @@ class LetterProps {
       p: true
     };
   }
+
   update(o, sw, sc, fc, m, p) {
     this._mdf.o = false;
     this._mdf.sw = false;

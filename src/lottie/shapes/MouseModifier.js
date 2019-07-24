@@ -7,9 +7,11 @@ export default class MouseModifier extends ShapeModifier {
     }
     this._mdf = true;
   }
+
   addShapeToModifier() {
     this.positions.push([]);
   }
+
   processPath(path, mouseCoords, positions) {
     let i;
     let len = path.v.length;
@@ -84,6 +86,7 @@ export default class MouseModifier extends ShapeModifier {
       c: path.c
     };
   }
+
   processShapes() {
     let mouseX = this.elem.globalData.mouseX;
     let mouseY = this.elem.globalData.mouseY;

@@ -13,6 +13,7 @@ class NullElement extends Mixin(BaseElement, TransformElement, HierarchyElement,
     this.initTransform(data, globalData, comp);
     this.initHierarchy();
   }
+
   prepareFrame(num) {
     this.prepareProperties(num, true);
   }

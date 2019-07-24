@@ -29,9 +29,11 @@ class ShapePropertyFactory {
     }
     return prop;
   }
+
   getConstructorFunction() {
     return ShapeProperty;
   }
+
   getKeyframedConstructorFunction() {
     return KeyframedShapeProperty;
   }

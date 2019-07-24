@@ -78,7 +78,9 @@ class ITextElement {
   buildColor(colorData) {
     return 'rgb(' + Math.round(colorData[0] * 255) + ',' + Math.round(colorData[1] * 255) + ',' + Math.round(colorData[2] * 255) + ')';
   }
+
   emptyProp = new LetterProps()
+
   destroy() {}
 }
 

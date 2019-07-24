@@ -6,6 +6,7 @@ class DynamicPropertyContainer {
       this._isAnimated = true;
     }
   }
+
   iterateDynamicProperties() {
     this._mdf = false;
     let i;
@@ -17,6 +18,7 @@ class DynamicPropertyContainer {
       }
     }
   }
+
   initDynamicPropertyContainer(container) {
     this.container = container;
     this.dynamicProperties = [];

@@ -15,9 +15,11 @@ export default class TrimModifier extends ShapeModifier {
     this.m = data.m;
     this._isAnimated = !!this.s.effectsSequence.length || !!this.e.effectsSequence.length || !!this.o.effectsSequence.length;
   }
+
   addShapeToModifier(shapeData) {
     shapeData.pathsData = [];
   }
+
   calculateShapeEdges(s, e, shapeLength, addedLength, totalModifierLength) {
     let segments = [];
     if (e <= 1) {
@@ -69,6 +71,7 @@ export default class TrimModifier extends ShapeModifier {
     }
     return shapeSegments;
   }
+
   releasePathsData(pathsData) {
     let i;
     let len = pathsData.length;
@@ -215,6 +218,7 @@ export default class TrimModifier extends ShapeModifier {
       }
     }
   }
+
   addPaths(newPaths, localShapeCollection) {
     let i;
     let len = newPaths.length;
@@ -222,6 +226,7 @@ export default class TrimModifier extends ShapeModifier {
       localShapeCollection.addShape(newPaths[i]);
     }
   }
+
   addSegment(pt1, pt2, pt3, pt4, shapePath, pos, newShape) {
     shapePath.setXYAt(pt2[0], pt2[1], 'o', pos);
     shapePath.setXYAt(pt3[0], pt3[1], 'i', pos + 1);

@@ -457,6 +457,7 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
       styleElem.wi = itemData.w.v;
     }
   }
+
   destroy() {
     this.shapesData = null;
     this.globalData = null;

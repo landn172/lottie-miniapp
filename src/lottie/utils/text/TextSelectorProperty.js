@@ -117,6 +117,7 @@ class TextSelectorProp extends DynamicPropertyContainer {
     }
     return mult * this.a.v;
   }
+
   getValue(newCharsFlag) {
     this.iterateDynamicProperties();
     this._mdf = newCharsFlag || this._mdf;

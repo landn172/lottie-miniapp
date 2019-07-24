@@ -7,6 +7,7 @@ class ShapeCollection {
     this._maxLength = 4;
     this.shapes = createSizedArray(this._maxLength);
   }
+
   addShape(shapeData) {
     if (this._length === this._maxLength) {
       this.shapes = this.shapes.concat(createSizedArray(this._maxLength));
@@ -15,6 +16,7 @@ class ShapeCollection {
     this.shapes[this._length] = shapeData;
     this._length += 1;
   }
+
   releaseShapes() {
     let i;
     for (i = 0; i < this._length; i += 1) {

@@ -9,6 +9,7 @@ export default class RoundCornersModifier extends ShapeModifier {
     this.rd = PropertyFactory.getProp(elem, data.r, 0, null, this);
     this._isAnimated = !!this.rd.effectsSequence.length;
   }
+
   processPath(path, round) {
     let cloned_path = shape_pool.newElement();
     cloned_path.c = path.c;
@@ -75,6 +76,7 @@ export default class RoundCornersModifier extends ShapeModifier {
     }
     return cloned_path;
   }
+
   processShapes(_isFirstFrame) {
     let shapePaths;
     let i;
