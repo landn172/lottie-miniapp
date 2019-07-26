@@ -1,8 +1,9 @@
+import api from '../platform/index';
 import CanvasRenderer from '../renderers/CanvasRenderer';
 import assetLoader from '../utils/assetLoader';
 import BaseEvent from '../utils/BaseEvent';
 import {
-  BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent
+ BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent 
 } from '../utils/common';
 import dataManager from '../utils/DataManager';
 import expressionsPlugin from '../utils/expressions/Expressions';
@@ -93,9 +94,9 @@ class AnimationItem extends BaseEvent {
     }
 
     // 判断是否在可视区域内
-    if (wx.createIntersectionObserver) {
+    if (api.createIntersectionObserver) {
       const canvasId = params.rendererSettings.context.canvasId;
-      const observer = wx.createIntersectionObserver();
+      const observer = api.createIntersectionObserver();
       this.$observer = observer;
       observer.relativeToViewport({
         bottom: 10,

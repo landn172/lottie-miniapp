@@ -1,3 +1,4 @@
+import api, { getUserDataPath } from '../platform/index';
 export default {
   // load json
   load: function assetLoader(path, callback, error_callback) {
@@ -10,7 +11,7 @@ export default {
           callback(data);
         });
     }
-    wx.request({
+    api.request({
       url: path,
       success(res) {
         callback(res.data);
@@ -23,11 +24,11 @@ export default {
   }
 };
 
-const fs = wx.getFileSystemManager();
+const fs = api.getFileSystemManager();
 
 export function downloadZip(url) {
   return new Promise(resolve => {
-    wx.downloadFile({
+    api.downloadFile({
       url,
       success(res) {
         console.log('downloadZip', res);
@@ -37,7 +38,7 @@ export function downloadZip(url) {
   });
 }
 
-export function unzipFile(tempFilePath, targetPath = `${wx.env.USER_DATA_PATH}/tmp-unzip`) {
+export function unzipFile(tempFilePath, targetPath = `${getUserDataPath()}/tmp-unzip`) {
   return new Promise(resolve => {
     try {
       fs.rmdirSync(targetPath, true);

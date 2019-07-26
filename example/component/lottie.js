@@ -46,7 +46,7 @@ Component({
 
       this.destory();
 
-      var canvasContext = wx.createCanvasContext('lottie-canvas', this);
+      var canvasContext = _index.api.createCanvasContext('lottie-canvas', this);
       canvasContext.canvas = {
         width: width,
         height: height

@@ -1,3 +1,5 @@
+import api from '../platform/index';
+
 /* eslint-disable vars-on-top */
 var emptyChar = {
   w: 0,
@@ -77,8 +79,8 @@ class Font {
         _pendingFonts -= 1;
       } else if (fontArr[i].fOrigin === 'p' || fontArr[i].origin === 3) {
         if (shouldLoadFont) {
-          if (wx.loadFontFace) {
-            wx.loadFontFace({
+          if (api.loadFontFace) {
+            api.loadFontFace({
               family: fontArr[i].fFamily,
               source: fontArr[i].fPath,
               fail(e) {
@@ -154,3 +156,4 @@ class Font {
 }
 
 export { Font, Font as FontManager };
+
