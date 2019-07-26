@@ -156,4 +156,3 @@ class Font {
 }
 
 export { Font, Font as FontManager };
-

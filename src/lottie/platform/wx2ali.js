@@ -64,7 +64,7 @@ function changeOpts(options, updateOrRemoveOpt = {}, extraOpt = {}) {
   let opts = {};
 
   Object.keys(options).forEach(key => {
-    let myKey = updateOrRemoveOpt.hasOwnProperty(key) ? updateOrRemoveOpt[key] : key;
+    let myKey = Object.prototype.hasOwnProperty.call(updateOrRemoveOpt, key) ? updateOrRemoveOpt[key] : key;
     if (myKey !== '') {
       opts[myKey] = options[key];
     }
