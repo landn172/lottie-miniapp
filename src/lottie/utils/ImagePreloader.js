@@ -1,3 +1,5 @@
+import api, { getUserDataPath } from '../platform/index';
+
 class ImagePreloader {
   constructor() {
     this.assetsPath = '';
@@ -54,7 +56,7 @@ class ImagePreloader {
     };
     this.loadImage(path, (tmpPath) => {
       if (tmpPath) {
-        wx.getImageInfo({
+        api.getImageInfo({
           src: tmpPath,
           success(res) {
             const { width, height } = res;
@@ -81,7 +83,7 @@ class ImagePreloader {
           imageLoaded();
         });
     } else {
-      wx.downloadFile({
+      api.downloadFile({
         url: path,
         success: (res) => {
           // 本地路径
@@ -120,17 +122,16 @@ class ImagePreloader {
   }
 }
 
-const fsm = wx.getFileSystemManager();
-
 function loadBase64Image(base64data) {
+  const fsm = api.getFileSystemManager();
   return new Promise((resolve, reject) => {
     const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
     if (!format) {
       reject(new Error('ERROR_BASE64SRC_PARSE'));
     }
     const filename = `${Math.random()}`.substr(2);
-    const filePath = `${wx.env.USER_DATA_PATH}/${filename}.${format}`;
-    const buffer = wx.base64ToArrayBuffer(bodyData);
+    const filePath = `${getUserDataPath()}/${filename}.${format}`;
+    const buffer = api.base64ToArrayBuffer(bodyData);
     fsm.writeFile({
       filePath,
       data: buffer,

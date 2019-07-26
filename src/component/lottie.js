@@ -1,5 +1,5 @@
 
-import lottie from '../lottie/index.js';
+import lottie, { api } from '../lottie/index.js';
 
 Component({
   properties: {
@@ -37,7 +37,7 @@ Component({
 
       this.destory();
 
-      let canvasContext = wx.createCanvasContext('lottie-canvas', this);
+      let canvasContext = api.createCanvasContext('lottie-canvas', this);
       canvasContext.canvas = {
         width: width,
         height: height
