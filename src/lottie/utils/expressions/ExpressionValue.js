@@ -1,3 +1,4 @@
+/* eslint-disable no-new-wrappers */
 import { createTypedArray } from '../index';
 
 export default function (elementProp, mult, type) {
@@ -24,7 +25,6 @@ export default function (elementProp, mult, type) {
     }
   } else if (elementProp.propType === 'unidimensional') {
     val = elementProp.v * mult;
-    /* eslint no-new-wrappers: 0 */
     expressionValue = new Number(val);
     expressionValue.value = val;
   } else {
@@ -48,5 +48,10 @@ export default function (elementProp, mult, type) {
   expressionValue.speedAtTime = elementProp.getSpeedAtTime;
   expressionValue.velocityAtTime = elementProp.getVelocityAtTime;
   expressionValue.propertyGroup = elementProp.propertyGroup;
+  Object.defineProperty(expressionValue, 'velocity', {
+    get: function () {
+      return elementProp.getVelocityAtTime(elementProp.comp.currentFrame);
+    }
+  });
   return expressionValue;
 }

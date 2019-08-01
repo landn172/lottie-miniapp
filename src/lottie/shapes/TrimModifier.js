@@ -49,7 +49,7 @@ export default class TrimModifier extends ShapeModifier {
     for (i = 0; i < len; i += 1) {
       segmentOb = segments[i];
       if (segmentOb.e * totalModifierLength < addedLength || segmentOb.s * totalModifierLength > addedLength + shapeLength) {
-        continue;
+        // ignore
       } else {
         let shapeS;
         let shapeE;
@@ -90,17 +90,18 @@ export default class TrimModifier extends ShapeModifier {
       if (o < 0) {
         o += 1;
       }
-      s = this.s.v + o;
-      e = this.e.v + o;
-      // if (s === e) {
-      // }
+      s = (this.s.v > 1 ? 1 : this.s.v < 0 ? 0 : this.s.v) + o;
+      e = (this.e.v > 1 ? 1 : this.e.v < 0 ? 0 : this.e.v) + o;
+      if (s === e) {
+        // ignore
+      }
       if (s > e) {
         let _s = s;
         s = e;
         e = _s;
       }
-      s = Math.round(s * 1000) / 1000;
-      e = Math.round(e * 1000) / 1000;
+      s = Math.round(s * 10000) * 0.0001;
+      e = Math.round(e * 10000) * 0.0001;
       this.sValue = s;
       this.eValue = e;
     } else {
@@ -197,7 +198,8 @@ export default class TrimModifier extends ShapeModifier {
             let newShapesData = this.addShapes(shapeData, segments[0]);
             if (segments[0].s !== segments[0].e) {
               if (segments.length > 1) {
-                if (shapeData.shape.v.c) {
+                let lastShapeInCollection = shapeData.shape.paths.shapes[shapeData.shape.paths._length - 1];
+                if (lastShapeInCollection.c) {
                   let lastShape = newShapesData.pop();
                   this.addPaths(newShapesData, localShapeCollection);
                   newShapesData = this.addShapes(shapeData, segments[1], lastShape);
@@ -214,6 +216,9 @@ export default class TrimModifier extends ShapeModifier {
       }
     } else if (this._mdf) {
       for (i = 0; i < len; i += 1) {
+        // Releasign Trim Cached paths data when no trim applied in case shapes are modified inbetween.
+        // Don't remove this even if it's losing cached info.
+        this.shapes[i].pathsData.length = 0;
         this.shapes[i].shape._mdf = true;
       }
     }
@@ -296,7 +301,7 @@ export default class TrimModifier extends ShapeModifier {
           segmentCount += 1;
         }
       }
-      if (shapePaths[i].c) {
+      if (shapePaths[i].c && lengths.length) {
         currentLengthData = lengths[j - 1];
         if (addedLength <= shapeSegment.e) {
           let segmentLength = lengths[j - 1].addedLength;

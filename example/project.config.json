@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.1",
+	"libVersion": "2.0.4",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"simulatorType": "wechat",
@@ -66,7 +66,7 @@
 					"id": 4,
 					"name": "bug",
 					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/mp/FuRTWQaIi98kIz8M-84-n5xd1Ne9.json",
+					"query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
 					"scene": null
 				},
 				{
@@ -74,6 +74,13 @@
 					"name": "bug3",
 					"pathName": "pages/index/index",
 					"query": "path=https://img-asset.chemm.com/test/lottie-demo/navidad/data.json",
+					"scene": null
+				},
+				{
+					"id": 6,
+					"name": "bug4",
+					"pathName": "pages/index/index",
+					"query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
 					"scene": null
 				}
 			]

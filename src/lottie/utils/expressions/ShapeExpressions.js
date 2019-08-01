@@ -1,9 +1,12 @@
-import { setGroupProperty, getStaticValueAtTime } from './Decorator';
+import * as expressionHelpers from './expressionHelpers';
 import { createSizedArray } from '../index';
 import bez from '../bez';
 
 class ShapeExpressions {
   vertices(prop, time) {
+    if (this.k) {
+      this.getValue();
+    }
     let shapePath = this.v;
     if (time !== undefined) {
       shapePath = this.getValueAtTime(time, 0);
@@ -83,6 +86,9 @@ class ShapeExpressions {
     let xLength = pt2[0] - pt1[0];
     let yLength = pt2[1] - pt1[1];
     let magnitude = Math.sqrt(Math.pow(xLength, 2) + Math.pow(yLength, 2));
+    if (magnitude === 0) {
+      return [0, 0];
+    }
     let unitVector = vectorType === 'tangent' ? [xLength / magnitude, yLength / magnitude] : [-yLength / magnitude, xLength / magnitude];
     return unitVector;
   }
@@ -95,9 +101,9 @@ class ShapeExpressions {
     return this.vectorOnPath(perc, time, 'normal');
   }
 
-  setGroupProperty= setGroupProperty
+  setGroupProperty= expressionHelpers.setGroupProperty
 
-  getValueAtTime= getStaticValueAtTime
+  getValueAtTime= expressionHelpers.getStaticValueAtTime
 }
 
 export default ShapeExpressions;

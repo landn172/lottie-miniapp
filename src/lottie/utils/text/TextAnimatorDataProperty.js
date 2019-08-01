@@ -5,9 +5,9 @@ const degToRads = Math.PI / 180;
 
 export default class TextAnimatorDataProperty {
   constructor(elem, animatorProps, container) {
-    var defaultData = { propType: false };
-    var getProp = PropertyFactory.getProp;
-    var textAnimator_animatables = animatorProps.a;
+    let defaultData = { propType: false };
+    let getProp = PropertyFactory.getProp;
+    let textAnimator_animatables = animatorProps.a;
     this.a = {
       r: textAnimator_animatables.r ? getProp(elem, textAnimator_animatables.r, 0, degToRads, container) : defaultData,
       rx: textAnimator_animatables.rx ? getProp(elem, textAnimator_animatables.rx, 0, degToRads, container) : defaultData,

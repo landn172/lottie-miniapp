@@ -1,6 +1,7 @@
 import Matrix from '../3rd_party/transformation-matrix';
 import CVEffects from './CVEffects';
 import CVMaskElement from './CVMaskElement';
+import { getBlendMode } from '../utils/helpers/blendModes';
 
 class CVBaseElement {
   createElements() {}
@@ -18,9 +19,13 @@ class CVBaseElement {
     let globalData = this.globalData;
     if (globalData.blendMode !== this.data.bm) {
       globalData.blendMode = this.data.bm;
-      let blendModeValue = this.getBlendMode();
+      let blendModeValue = getBlendMode(this.data.bm);
       globalData.canvasContext.globalCompositeOperation = blendModeValue;
     }
+  }
+
+  createRenderableComponents() {
+    this.maskManager = new CVMaskElement(this.data, this);
   }
 
   addMasks() {

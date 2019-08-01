@@ -1,21 +1,21 @@
 import { createSizedArray } from '../index';
+import Matrix from '../../3rd_party/transformation-matrix';
 import PropertyFactory from '../PropertyFactory';
 import TextAnimatorDataProperty from './TextAnimatorDataProperty';
 import bez from '../bez';
 import { addHueToRGB, addSaturationToRGB, addBrightnessToRGB } from '../common';
 import LetterProps from '../LetterProps';
+import DynamicPropertyContainer from '../dynamicProperties';
 
-export default class TextAnimatorProperty {
+export default class TextAnimatorProperty extends DynamicPropertyContainer {
   constructor(textData, renderType, elem) {
-    this._mdf = false;
+    super();
     this._isFirstFrame = true;
     this._hasMaskedPath = false;
     this._frameId = -1;
-    this.dynamicProperties = [];
     this._textData = textData;
     this._renderType = renderType;
     this._elem = elem;
-    this.container = elem;
     this._animatorsData = createSizedArray(this._textData.a.length);
     this._pathData = {};
     this._moreOptions = {
@@ -23,6 +23,7 @@ export default class TextAnimatorProperty {
     };
     this.renderedLetters = [];
     this.lettersChangedFlag = false;
+    this.initDynamicPropertyContainer(elem);
   }
 
   addDynamicProperty() {
@@ -98,32 +99,26 @@ export default class TextAnimatorProperty {
           segments: []
         };
         len = paths._length - 1;
-        let pathData;
+        let bezierData;
         totalLength = 0;
         for (i = 0; i < len; i += 1) {
-          pathData = {
-            s: paths.v[i],
-            e: paths.v[i + 1],
-            to: [paths.o[i][0] - paths.v[i][0], paths.o[i][1] - paths.v[i][1]],
-            ti: [paths.i[i + 1][0] - paths.v[i + 1][0], paths.i[i + 1][1] - paths.v[i + 1][1]]
-          };
-          bez.buildBezierData(pathData);
-          pathInfo.tLength += pathData.bezierData.segmentLength;
-          pathInfo.segments.push(pathData);
-          totalLength += pathData.bezierData.segmentLength;
+          bezierData = bez.buildBezierData(paths.v[i],
+            paths.v[i + 1],
+            [paths.o[i][0] - paths.v[i][0], paths.o[i][1] - paths.v[i][1]],
+            [paths.i[i + 1][0] - paths.v[i + 1][0], paths.i[i + 1][1] - paths.v[i + 1][1]]);
+          pathInfo.tLength += bezierData.segmentLength;
+          pathInfo.segments.push(bezierData);
+          totalLength += bezierData.segmentLength;
         }
         i = len;
         if (mask.v.c) {
-          pathData = {
-            s: paths.v[i],
-            e: paths.v[0],
-            to: [paths.o[i][0] - paths.v[i][0], paths.o[i][1] - paths.v[i][1]],
-            ti: [paths.i[0][0] - paths.v[0][0], paths.i[0][1] - paths.v[0][1]]
-          };
-          bez.buildBezierData(pathData);
-          pathInfo.tLength += pathData.bezierData.segmentLength;
-          pathInfo.segments.push(pathData);
-          totalLength += pathData.bezierData.segmentLength;
+          bezierData = bez.buildBezierData(paths.v[i],
+            paths.v[0],
+            [paths.o[i][0] - paths.v[i][0], paths.o[i][1] - paths.v[i][1]],
+            [paths.i[0][0] - paths.v[0][0], paths.i[0][1] - paths.v[0][1]]);
+          pathInfo.tLength += bezierData.segmentLength;
+          pathInfo.segments.push(bezierData);
+          totalLength += bezierData.segmentLength;
         }
         this._pathData.pi = pathInfo;
       }
@@ -140,23 +135,24 @@ export default class TextAnimatorProperty {
           currentLength = -Math.abs(currentLength) % pathInfo.tLength;
         }
         segmentInd = segments.length - 1;
-        points = segments[segmentInd].bezierData.points;
+        points = segments[segmentInd].points;
         pointInd = points.length - 1;
         while (currentLength < 0) {
           currentLength += points[pointInd].partialLength;
           pointInd -= 1;
           if (pointInd < 0) {
             segmentInd -= 1;
-            points = segments[segmentInd].bezierData.points;
+            points = segments[segmentInd].points;
             pointInd = points.length - 1;
           }
         }
       }
-      points = segments[segmentInd].bezierData.points;
+      points = segments[segmentInd].points;
       prevPoint = points[pointInd - 1];
       currentPoint = points[pointInd];
       partialLength = currentPoint.partialLength;
     }
+
 
     len = letters.length;
     xPos = 0;
@@ -255,7 +251,7 @@ export default class TextAnimatorProperty {
         if (this._hasMaskedPath) {
           segmentInd = initSegmentInd;
           pointInd = initPointInd;
-          points = segments[segmentInd].bezierData.points;
+          points = segments[segmentInd].points;
           prevPoint = points[pointInd - 1];
           currentPoint = points[pointInd];
           partialLength = currentPoint.partialLength;
@@ -266,6 +262,7 @@ export default class TextAnimatorProperty {
       } else {
         if (this._hasMaskedPath) {
           if (currentLine !== letters[i].line) {
+            // eslint-disable-next-line default-case
             switch (documentData.j) {
               case 1:
                 currentLength += totalLength - documentData.lineWidths[letters[i].line];
@@ -273,7 +270,6 @@ export default class TextAnimatorProperty {
               case 2:
                 currentLength += (totalLength - documentData.lineWidths[letters[i].line]) / 2;
                 break;
-              default: break;
             }
             currentLine = letters[i].line;
           }
@@ -325,13 +321,13 @@ export default class TextAnimatorProperty {
                   if (mask.v.c) {
                     pointInd = 0;
                     segmentInd = 0;
-                    points = segments[segmentInd].bezierData.points;
+                    points = segments[segmentInd].points;
                   } else {
                     segmentLength -= currentPoint.partialLength;
                     points = null;
                   }
                 } else {
-                  points = segments[segmentInd].bezierData.points;
+                  points = segments[segmentInd].points;
                 }
               }
               if (points) {
@@ -461,9 +457,9 @@ export default class TextAnimatorProperty {
           if (documentData.strokeColorAnim && animatorProps.sc.propType) {
             for (k = 0; k < 3; k += 1) {
               if (mult.length) {
-                sc[k] += (animatorProps.sc.v[k] - sc[k]) * mult[0];
+                sc[k] = sc[k] + (animatorProps.sc.v[k] - sc[k]) * mult[0];
               } else {
-                sc[k] += (animatorProps.sc.v[k] - sc[k]) * mult;
+                sc[k] = sc[k] + (animatorProps.sc.v[k] - sc[k]) * mult;
               }
             }
           }
@@ -471,9 +467,9 @@ export default class TextAnimatorProperty {
             if (animatorProps.fc.propType) {
               for (k = 0; k < 3; k += 1) {
                 if (mult.length) {
-                  fc[k] += ((animatorProps.fc.v[k] - fc[k]) * mult[0]);
+                  fc[k] = fc[k] + (animatorProps.fc.v[k] - fc[k]) * mult[0];
                 } else {
-                  fc[k] += ((animatorProps.fc.v[k] - fc[k]) * mult);
+                  fc[k] = fc[k] + (animatorProps.fc.v[k] - fc[k]) * mult;
                 }
               }
             }
@@ -555,6 +551,7 @@ export default class TextAnimatorProperty {
             // matrixHelper.translate(documentData.ps[0],documentData.ps[1],0);
             matrixHelper.translate(documentData.ps[0], documentData.ps[1] + documentData.ascent, 0);
           }
+          // eslint-disable-next-line default-case
           switch (documentData.j) {
             case 1:
               matrixHelper.translate(letters[i].animatorJustifyOffset + documentData.justifyOffset + (documentData.boxWidth - documentData.lineWidths[letters[i].line]), 0, 0);
@@ -562,7 +559,6 @@ export default class TextAnimatorProperty {
             case 2:
               matrixHelper.translate(letters[i].animatorJustifyOffset + documentData.justifyOffset + (documentData.boxWidth - documentData.lineWidths[letters[i].line]) / 2, 0, 0);
               break;
-            default: break;
           }
           matrixHelper.translate(0, -documentData.ls);
           matrixHelper.translate(offf, 0, 0);
@@ -590,4 +586,16 @@ export default class TextAnimatorProperty {
       }
     }
   }
+
+  getValue() {
+    if (this._elem.globalData.frameId === this._frameId) {
+      return;
+    }
+    this._frameId = this._elem.globalData.frameId;
+    this.iterateDynamicProperties();
+  }
+
+  mHelper = new Matrix()
+
+  defaultPropsArray = []
 }

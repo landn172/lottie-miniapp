@@ -16,14 +16,14 @@ function isNumerable(tOfV, v) {
 }
 
 function $bm_neg(a) {
-  var tOfA = typeof a;
+  let tOfA = typeof a;
   if (tOfA === 'number' || tOfA === 'boolean' || a instanceof Number) {
     return -a;
   }
   if ($bm_isInstanceOfArray(a)) {
-    var i,
+    let i,
       lenA = a.length;
-    var retArr = [];
+    let retArr = [];
     for (i = 0; i < lenA; i += 1) {
       retArr[i] = -a[i];
     }
@@ -39,8 +39,8 @@ const easeOutBez = BezierFactory.getBezierEasing(0.167, 0.167, .667, 1, 'easeOut
 const easeInOutBez = BezierFactory.getBezierEasing(.33, 0, .667, 1, 'easeInOut').get;
 
 function sum(a, b) {
-  var tOfA = typeof a;
-  var tOfB = typeof b;
+  let tOfA = typeof a;
+  let tOfB = typeof b;
   if (tOfA === 'string' || tOfB === 'string') {
     return a + b;
   }
@@ -59,10 +59,10 @@ function sum(a, b) {
   }
   if ($bm_isInstanceOfArray(a) && $bm_isInstanceOfArray(b)) {
 
-    var i = 0,
+    let i = 0,
       lenA = a.length,
       lenB = b.length;
-    var retArr = [];
+    let retArr = [];
     while (i < lenA || i < lenB) {
       if ((typeof a[i] === 'number' || a[i] instanceof Number) && (typeof b[i] === 'number' || b[i] instanceof Number)) {
         retArr[i] = a[i] + b[i];
@@ -78,8 +78,8 @@ function sum(a, b) {
 const add = sum;
 
 function sub(a, b) {
-  var tOfA = typeof a;
-  var tOfB = typeof b;
+  let tOfA = typeof a;
+  let tOfB = typeof b;
   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
     if (tOfA === 'string') {
       a = parseInt(a);
@@ -100,10 +100,10 @@ function sub(a, b) {
     return b;
   }
   if ($bm_isInstanceOfArray(a) && $bm_isInstanceOfArray(b)) {
-    var i = 0,
+    let i = 0,
       lenA = a.length,
       lenB = b.length;
-    var retArr = [];
+    let retArr = [];
     while (i < lenA || i < lenB) {
       if ((typeof a[i] === 'number' || a[i] instanceof Number) && (typeof b[i] === 'number' || b[i] instanceof Number)) {
         retArr[i] = a[i] - b[i];
@@ -118,14 +118,14 @@ function sub(a, b) {
 }
 
 function mul(a, b) {
-  var tOfA = typeof a;
-  var tOfB = typeof b;
-  var arr;
+  let tOfA = typeof a;
+  let tOfB = typeof b;
+  let arr;
   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
     return a * b;
   }
 
-  var i,
+  let i,
     len;
   if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
     len = a.length;
@@ -147,13 +147,13 @@ function mul(a, b) {
 }
 
 function div(a, b) {
-  var tOfA = typeof a;
-  var tOfB = typeof b;
-  var arr;
+  let tOfA = typeof a;
+  let tOfB = typeof b;
+  let arr;
   if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
     return a / b;
   }
-  var i,
+  let i,
     len;
   if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
     len = a.length;
@@ -353,16 +353,16 @@ function random(min, max) {
 }
 
 function createPath(points, inTangents, outTangents, closed) {
-  let i;
-  let len = points.length;
+  let i,
+    len = points.length;
   let path = shape_pool.newElement();
   path.setPathData(!!closed, len);
-  let arrPlaceholder = [0, 0];
-  let inVertexPoint;
-  let outVertexPoint;
+  let arrPlaceholder = [0, 0],
+    inVertexPoint,
+    outVertexPoint;
   for (i = 0; i < len; i += 1) {
-    inVertexPoint = inTangents ? inTangents[i] : arrPlaceholder;
-    outVertexPoint = outTangents ? outTangents[i] : arrPlaceholder;
+    inVertexPoint = (inTangents && inTangents[i]) ? inTangents[i] : arrPlaceholder;
+    outVertexPoint = (outTangents && outTangents[i]) ? outTangents[i] : arrPlaceholder;
     path.setTripleAt(points[i][0], points[i][1], outVertexPoint[0] + points[i][0], outVertexPoint[1] + points[i][1], inVertexPoint[0] + points[i][0], inVertexPoint[1] + points[i][1], i, true);
   }
   return path;
@@ -373,32 +373,44 @@ function initiateExpression(elem, data, property) {
   let needsVelocity = /velocity(?![\w\d])/.test(val);
   let _needsRandom = val.indexOf('random') !== -1;
   let elemType = elem.data.ty;
-  let transform;
-  let content;
-  let effect;
+  let transform,
+    $bm_transform,
+    content,
+    effect;
   let thisProperty = property;
+  thisProperty.valueAtTime = thisProperty.getValueAtTime;
+  Object.defineProperty(thisProperty, 'value', {
+    get: function() {
+      return thisProperty.v
+    }
+  })
   elem.comp.frameDuration = 1 / elem.comp.globalData.frameRate;
+  elem.comp.displayStartTime = 0;
   let inPoint = elem.data.ip / elem.comp.globalData.frameRate;
   let outPoint = elem.data.op / elem.comp.globalData.frameRate;
   let width = elem.data.sw ? elem.data.sw : 0;
   let height = elem.data.sh ? elem.data.sh : 0;
-  let loopIn;
-  let loop_in;
-  let loopOut;
-  let loop_out;
-  let toWorld;
-  let fromWorld;
-  let fromComp;
-  let toComp;
-  let fromCompToSurface;
-  let anchorPoint;
-  let thisLayer;
-  let thisComp;
-  let mask;
-  let valueAtTime;
-  let velocityAtTime;
+  let name = elem.data.nm;
+  let loopIn,
+    loop_in,
+    loopOut,
+    loop_out,
+    smooth;
+  let toWorld,
+    fromWorld,
+    fromComp,
+    toComp,
+    fromCompToSurface,
+    position,
+    rotation,
+    anchorPoint,
+    scale,
+    thisLayer,
+    thisComp,
+    mask,
+    valueAtTime,
+    velocityAtTime;
   let __expression_functions = [];
-  let scoped_bm_rt;
 
   /** append Api */
   interpreter.appendApis({
@@ -414,7 +426,12 @@ function initiateExpression(elem, data, property) {
     easeOut: easeOut,
     sourceRectAtTime: sourceRectAtTime,
     easeIn: easeIn,
+    ease: ease,
     key: key,
+    wiggle: wiggle,
+    substring: substring,
+    substr: substr,
+    framesToTime: framesToTime,
     timeToFrames: timeToFrames,
     nearestKey: nearestKey,
     'scoped_bm_rt': scoped_bm_rt
@@ -430,41 +447,43 @@ function initiateExpression(elem, data, property) {
     }
   }
 
-
+  let scoped_bm_rt;
   // let expression_function = eval('[function _expression_function(){' + val + ';scoped_bm_rt=$bm_rt}' + ']')[0];
 
   let numKeys = property.kf ? data.k.length : 0;
+  let active = !this.data || this.data.hd !== true;
 
   let wiggle = function wiggle(freq, amp) {
-    let i;
-    let j;
-    let len = this.pv.length ? this.pv.length : 1;
+    let i,
+      j,
+      len = this.pv.length ? this.pv.length : 1;
     let addedAmps = createTypedArray('float32', len);
     freq = 5;
     let iterations = Math.floor(time * freq);
     i = 0;
     j = 0;
     while (i < iterations) {
-      // let rnd = BMMath.random();
+      //let rnd = BMMath.random();
       for (j = 0; j < len; j += 1) {
         addedAmps[j] += -amp + amp * 2 * BMMath.random();
-      // addedAmps[j] += -amp + amp*2*rnd;
+      //addedAmps[j] += -amp + amp*2*rnd;
       }
       i += 1;
     }
-    // let rnd2 = BMMath.random();
+    //let rnd2 = BMMath.random();
     let periods = time * freq;
     let perc = periods - Math.floor(periods);
     let arr = createTypedArray('float32', len);
     if (len > 1) {
       for (j = 0; j < len; j += 1) {
         arr[j] = this.pv[j] + addedAmps[j] + (-amp + amp * 2 * BMMath.random()) * perc;
-      // arr[j] = this.pv[j] + addedAmps[j] + (-amp + amp*2*rnd)*perc;
-      // arr[i] = this.pv[i] + addedAmp + amp1*perc + amp2*(1-perc);
+      //arr[j] = this.pv[j] + addedAmps[j] + (-amp + amp*2*rnd)*perc;
+      //arr[i] = this.pv[i] + addedAmp + amp1*perc + amp2*(1-perc);
       }
       return arr;
+    } else {
+      return this.pv + addedAmps[0] + (-amp + amp * 2 * BMMath.random()) * perc;
     }
-    return this.pv + addedAmps[0] + (-amp + amp * 2 * BMMath.random()) * perc;
   }.bind(this);
 
   if (thisProperty.loopIn) {
@@ -475,6 +494,10 @@ function initiateExpression(elem, data, property) {
   if (thisProperty.loopOut) {
     loopOut = thisProperty.loopOut.bind(thisProperty);
     loop_out = loopOut;
+  }
+
+  if (thisProperty.smooth) {
+    smooth = thisProperty.smooth.bind(thisProperty);
   }
 
   function loopInDuration(type, duration) {
@@ -503,30 +526,44 @@ function initiateExpression(elem, data, property) {
   }
 
   function easeOut(t, tMin, tMax, val1, val2) {
-    if (val1 === undefined) {
-      val1 = tMin;
-      val2 = tMax;
-    } else {
-      t = (t - tMin) / (tMax - tMin);
-    }
-    return -(val2 - val1) * t * (t - 2) + val1;
+    return applyEase(easeOutBez, t, tMin, tMax, val1, val2);
   }
 
   function easeIn(t, tMin, tMax, val1, val2) {
+    return applyEase(easeInBez, t, tMin, tMax, val1, val2);
+  }
+
+  function ease(t, tMin, tMax, val1, val2) {
+    return applyEase(easeInOutBez, t, tMin, tMax, val1, val2);
+  }
+
+  function applyEase(fn, t, tMin, tMax, val1, val2) {
     if (val1 === undefined) {
       val1 = tMin;
       val2 = tMax;
     } else {
       t = (t - tMin) / (tMax - tMin);
     }
-    return (val2 - val1) * t * t + val1;
+    t = t > 1 ? 1 : t < 0 ? 0 : t;
+    var mult = fn(t);
+    if ($bm_isInstanceOfArray(val1)) {
+      var i,
+        len = val1.length;
+      var arr = createTypedArray('float32', len);
+      for (i = 0; i < len; i += 1) {
+        arr[i] = (val2[i] - val1[i]) * mult + val1[i];
+      }
+      return arr;
+    } else {
+      return (val2 - val1) * mult + val1;
+    }
   }
 
   function nearestKey(time) {
-    let i;
-    let len = data.k.length;
-    let index;
-    let keyTime;
+    var i,
+      len = data.k.length,
+      index,
+      keyTime;
     if (!data.k.length || typeof (data.k[0]) === 'number') {
       index = 0;
       keyTime = 0;
@@ -558,33 +595,32 @@ function initiateExpression(elem, data, property) {
           keyTime = data.k[i].t;
         }
       }
+
     }
-    let ob = {};
+    var ob = {};
     ob.index = index;
     ob.time = keyTime / elem.comp.globalData.frameRate;
     return ob;
   }
 
   function key(ind) {
-    let ob;
-    let i;
-    let len;
+    var ob,
+      i,
+      len;
     if (!data.k.length || typeof (data.k[0]) === 'number') {
       throw new Error('The property has no keyframe at index ' + ind);
     }
     ind -= 1;
     ob = {
-      time: data.k[ind].t / elem.comp.globalData.frameRate
+      time: data.k[ind].t / elem.comp.globalData.frameRate,
+      value: []
     };
-    let arr;
-    if (ind === data.k.length - 1 && !data.k[ind].h) {
-      arr = data.k[ind - 1].e;
-    } else {
-      arr = data.k[ind].s;
-    }
+    var arr = data.k[ind].hasOwnProperty('s') ? data.k[ind].s : data.k[ind - 1].e;
+
     len = arr.length;
     for (i = 0; i < len; i += 1) {
       ob[i] = arr[i];
+      ob.value[i] = arr[i]
     }
     return ob;
   }
@@ -614,16 +650,39 @@ function initiateExpression(elem, data, property) {
     return elem.sourceRectAtTime();
   }
 
-  let time;
-  let velocity;
-  let value;
-  let textIndex;
-  let textTotal;
-  let selectorValue;
-  let index = elem.data.ind;
-  let hasParent = !!(elem.hierarchy && elem.hierarchy.length);
-  let parent;
-  let randSeed = Math.floor(Math.random() * 1000000);
+  function substring(init, end) {
+    if (typeof value === 'string') {
+      if (end === undefined) {
+        return value.substring(init)
+      }
+      return value.substring(init, end)
+    }
+    return '';
+  }
+
+  function substr(init, end) {
+    if (typeof value === 'string') {
+      if (end === undefined) {
+        return value.substr(init)
+      }
+      return value.substr(init, end)
+    }
+    return '';
+  }
+
+  var time,
+    velocity,
+    value,
+    text,
+    textIndex,
+    textTotal,
+    selectorValue;
+  var index = elem.data.ind;
+  var hasParent = !!(elem.hierarchy && elem.hierarchy.length);
+  var parent;
+  var randSeed = Math.floor(Math.random() * 1000000);
+  var globalData = elem.globalData;
+
   function executeExpression(_value) {
     value = _value;
     if (_needsRandom) {
@@ -638,6 +697,7 @@ function initiateExpression(elem, data, property) {
       selectorValue = this.selectorValue;
     }
     if (!thisLayer) {
+      text = elem.layerInterface.text;
       thisLayer = elem.layerInterface;
       thisComp = elem.comp.compInterface;
       toWorld = thisLayer.toWorld.bind(thisLayer);
@@ -648,8 +708,14 @@ function initiateExpression(elem, data, property) {
       fromCompToSurface = fromComp;
     }
     if (!transform) {
-      transform = elem.layerInterface('ADBE Transform Group');
-      anchorPoint = transform.anchorPoint;
+      transform = elem.layerInterface("ADBE Transform Group");
+      $bm_transform = transform;
+      if (transform) {
+        anchorPoint = transform.anchorPoint;
+      /*position = transform.position;
+      rotation = transform.rotation;
+      scale = transform.scale;*/
+      }
     }
 
     if (elemType === 4 && !content) {
@@ -669,7 +735,27 @@ function initiateExpression(elem, data, property) {
 
     try {
       interpreter.appendApis({
-        'transform': transform
+        velocity,
+        parent,
+        anchorPoint,
+        textIndex,
+        textTotal,
+        selectorValue,
+        index,
+        'transform': transform,
+        loopOut: loopOut,
+        loop_out: loop_out,
+        loop_in: loop_in,
+        smooth: smooth,
+        text: text,
+        thisLayer: thisLayer,
+        toWorld: toWorld,
+        fromWorld: fromWorld,
+        fromComp: fromComp,
+        toComp: toComp,
+        mask: mask,
+        fromCompToSurface: fromCompToSurface,
+        $bm_transform: $bm_transform
       })
       scoped_bm_rt = interpreter.run(`${val};module.exports = $bm_rt`)
     } catch (error) {

@@ -59,22 +59,22 @@ class EllShapeProperty extends DynamicPropertyContainer {
     _v.v[2][1] = p1 + s1;
     _v.v[3][0] = _cw ? p0 - s0 : p0 + s0;
     _v.v[3][1] = p1;
-    _v.i[0][0] = _cw ? p0 - ((s0 * cPoint)) : p0 + ((s0 * cPoint));
+    _v.i[0][0] = _cw ? p0 - s0 * cPoint : p0 + s0 * cPoint;
     _v.i[0][1] = p1 - s1;
     _v.i[1][0] = _cw ? p0 + s0 : p0 - s0;
-    _v.i[1][1] = p1 - ((s1 * cPoint));
-    _v.i[2][0] = _cw ? p0 + ((s0 * cPoint)) : p0 - ((s0 * cPoint));
+    _v.i[1][1] = p1 - s1 * cPoint;
+    _v.i[2][0] = _cw ? p0 + s0 * cPoint : p0 - s0 * cPoint;
     _v.i[2][1] = p1 + s1;
     _v.i[3][0] = _cw ? p0 - s0 : p0 + s0;
-    _v.i[3][1] = p1 + (s1 * cPoint);
-    _v.o[0][0] = _cw ? p0 + (s0 * cPoint) : p0 - (s0 * cPoint);
+    _v.i[3][1] = p1 + s1 * cPoint;
+    _v.o[0][0] = _cw ? p0 + s0 * cPoint : p0 - s0 * cPoint;
     _v.o[0][1] = p1 - s1;
     _v.o[1][0] = _cw ? p0 + s0 : p0 - s0;
-    _v.o[1][1] = p1 + (s1 * cPoint);
-    _v.o[2][0] = _cw ? p0 - (s0 * cPoint) : p0 + (s0 * cPoint);
+    _v.o[1][1] = p1 + s1 * cPoint;
+    _v.o[2][0] = _cw ? p0 - s0 * cPoint : p0 + s0 * cPoint;
     _v.o[2][1] = p1 + s1;
     _v.o[3][0] = _cw ? p0 - s0 : p0 + s0;
-    _v.o[3][1] = p1 - (s1 * cPoint);
+    _v.o[3][1] = p1 - s1 * cPoint;
   }
 }
 

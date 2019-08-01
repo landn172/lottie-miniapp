@@ -2,6 +2,7 @@ import PropertyFactory from '../PropertyFactory';
 import BezierFactory from '../../3rd_party/BezierEaser';
 import { GetTextSelectorProp } from '../expressions/Decorator';
 import DynamicPropertyContainer from '../dynamicProperties';
+import { addDynamicProperty } from '../helpers/dynamicProperties';
 
 let max = Math.max;
 let min = Math.min;
@@ -10,14 +11,15 @@ let floor = Math.floor;
 class TextSelectorProp extends DynamicPropertyContainer {
   constructor(elem, data) {
     super();
-    this._currentTextLength = -1;
+    this._mdf = false;
     this.k = false;
     this.data = data;
+    this.dynamicProperties = [];
     this.elem = elem;
+    this.container = elem;
     this.comp = elem.comp;
     this.finalS = 0;
     this.finalE = 0;
-    this.initDynamicPropertyContainer(elem);
     this.s = PropertyFactory.getProp(elem, data.s || {
       k: 0
     }, 0, 0, this);
@@ -42,6 +44,8 @@ class TextSelectorProp extends DynamicPropertyContainer {
       this.getValue();
     }
   }
+
+  addDynamicProperty= addDynamicProperty
 
   getMult(ind) {
     if (this._currentTextLength !== this.elem.textProperty.currentData.l.length) {
@@ -86,7 +90,7 @@ class TextSelectorProp extends DynamicPropertyContainer {
       } else {
         let tot = e - s;
         /* ind += 0.5;
-        mult = -4/(tot*tot)*(ind*ind)+(4/tot)*ind; */
+          mult = -4/(tot*tot)*(ind*ind)+(4/tot)*ind; */
         ind = min(max(0, ind + 0.5 - s), e - s);
         let x = -tot / 2 + ind;
         let a = tot / 2;
@@ -100,9 +104,9 @@ class TextSelectorProp extends DynamicPropertyContainer {
         ind = min(max(0, ind + 0.5 - s), e - s);
         mult = (1 + (Math.cos((Math.PI + Math.PI * 2 * (ind) / (e - s))))) / 2;
       /*
-       ind = Math.min(Math.max(s,ind),e-1);
-       mult = (1+(Math.cos((Math.PI+Math.PI*2*(ind-s)/(e-1-s)))))/2;
-       mult = Math.max(mult,(1/(e-1-s))/(e-1-s)); */
+         ind = Math.min(Math.max(s,ind),e-1);
+         mult = (1+(Math.cos((Math.PI+Math.PI*2*(ind-s)/(e-1-s)))))/2;
+         mult = Math.max(mult,(1/(e-1-s))/(e-1-s)); */
       }
       mult = easer(mult);
     } else {
@@ -125,9 +129,9 @@ class TextSelectorProp extends DynamicPropertyContainer {
     if (newCharsFlag && this.data.r === 2) {
       this.e.v = this._currentTextLength;
     }
-    let divisor = this.data.r === 2 ? 1 : 100 / this._currentTextLength;
+    let divisor = this.data.r === 2 ? 1 : 100 / this.data.totalChars;
     let o = this.o.v / divisor;
-    let s = (this.s.v / divisor) + o;
+    let s = this.s.v / divisor + o;
     let e = (this.e.v / divisor) + o;
     if (s > e) {
       let _s = s;

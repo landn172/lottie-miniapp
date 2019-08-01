@@ -57,8 +57,8 @@ class StarShapeProperty extends DynamicPropertyContainer {
     let numPts = Math.floor(this.pt.v) * 2;
     let angle = Math.PI * 2 / numPts;
     /* this.v.v.length = numPts;
-    this.v.i.length = numPts;
-    this.v.o.length = numPts; */
+                this.v.i.length = numPts;
+                this.v.o.length = numPts; */
     let longFlag = true;
     let longRad = this.or.v;
     let shortRad = this.ir.v;
@@ -87,9 +87,9 @@ class StarShapeProperty extends DynamicPropertyContainer {
       this.v.setTripleAt(x, y, x - ox * perimSegment * roundness * dir, y - oy * perimSegment * roundness * dir, x + ox * perimSegment * roundness * dir, y + oy * perimSegment * roundness * dir, i, true);
 
       /* this.v.v[i] = [x,y];
-      this.v.i[i] = [x+ox*perimSegment*roundness*dir,y+oy*perimSegment*roundness*dir];
-      this.v.o[i] = [x-ox*perimSegment*roundness*dir,y-oy*perimSegment*roundness*dir];
-      this.v._length = numPts; */
+                    this.v.i[i] = [x+ox*perimSegment*roundness*dir,y+oy*perimSegment*roundness*dir];
+                    this.v.o[i] = [x-ox*perimSegment*roundness*dir,y-oy*perimSegment*roundness*dir];
+                    this.v._length = numPts; */
       longFlag = !longFlag;
       currentAng += angle * dir;
     }

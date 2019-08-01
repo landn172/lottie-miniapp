@@ -58,7 +58,6 @@ class CVMaskElement {
     }
     this.element.globalData.renderer.save(true);
     ctx.clip();
-  // ctx.draw(true);
   }
 
   getMaskProperty(pos) {

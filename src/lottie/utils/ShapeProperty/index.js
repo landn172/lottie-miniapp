@@ -20,11 +20,12 @@ export function interpolateShape(frameNum, previousValue, caching) {
     isHold = true;
     iterationIndex = 0;
   } else if (frameNum >= kf[kf.length - 1].t - this.offsetTime) {
-    if (kf[kf.length - 2].h === 1) {
-      keyPropS = kf[kf.length - 1].s[0];
-    } else {
-      keyPropS = kf[kf.length - 2].e[0];
-    }
+    keyPropS = kf[kf.length - 1].s ? kf[kf.length - 1].s[0] : kf[kf.length - 2].e[0];
+    /* if(kf[kf.length - 1].s){
+        keyPropS = kf[kf.length - 1].s[0];
+    }else{
+        keyPropS = kf[kf.length - 2].e[0];
+    } */
     isHold = true;
   } else {
     let i = iterationIndex;
@@ -61,7 +62,7 @@ export function interpolateShape(frameNum, previousValue, caching) {
         }
         perc = fnc((frameNum - (keyData.t - this.offsetTime)) / ((nextKeyData.t - this.offsetTime) - (keyData.t - this.offsetTime)));
       }
-      keyPropE = keyData.e[0];
+      keyPropE = nextKeyData.s ? nextKeyData.s[0] : keyData.e[0];
     }
     keyPropS = keyData.s[0];
   }
@@ -107,36 +108,51 @@ export function shapesEqual(shape1, shape2) {
   let i;
   let len = shape1._length;
   for (i = 0; i < len; i += 1) {
-    if (shape1.v[i][0] !== shape2.v[i][0] || shape1.v[i][1] !== shape2.v[i][1] || shape1.o[i][0] !== shape2.o[i][0] || shape1.o[i][1] !== shape2.o[i][1] || shape1.i[i][0] !== shape2.i[i][0] || shape1.i[i][1] !== shape2.i[i][1]) {
+    if (shape1.v[i][0] !== shape2.v[i][0]
+      || shape1.v[i][1] !== shape2.v[i][1]
+      || shape1.o[i][0] !== shape2.o[i][0]
+      || shape1.o[i][1] !== shape2.o[i][1]
+      || shape1.i[i][0] !== shape2.i[i][0]
+      || shape1.i[i][1] !== shape2.i[i][1]) {
       return false;
     }
   }
   return true;
 }
 
+export function setVValue(newPath) {
+  if (!shapesEqual(this.v, newPath)) {
+    this.v = shape_pool.clone(newPath);
+    this.localShapeCollection.releaseShapes();
+    this.localShapeCollection.addShape(this.v);
+    this._mdf = true;
+    this.paths = this.localShapeCollection;
+  }
+}
 
 export function processEffectsSequence() {
-  if (this.lock || this.elem.globalData.frameId === this.frameId) {
+  if (this.elem.globalData.frameId === this.frameId) {
+    return;
+  }
+  if (!this.effectsSequence.length) {
+    this._mdf = false;
+    return;
+  }
+  if (this.lock) {
+    this.setVValue(this.pv);
     return;
   }
   this.lock = true;
-  this.frameId = this.elem.globalData.frameId;
   this._mdf = false;
-  /* eslint no-nested-ternary: 0 */
   let finalValue = this.kf ? this.pv : this.data.ks ? this.data.ks.k : this.data.pt.k;
   let i;
   let len = this.effectsSequence.length;
   for (i = 0; i < len; i += 1) {
     finalValue = this.effectsSequence[i](finalValue);
   }
-  if (!shapesEqual(this.v, finalValue)) {
-    this.v = shape_pool.clone(finalValue);
-    this.localShapeCollection.releaseShapes();
-    this.localShapeCollection.addShape(this.v);
-    this._mdf = true;
-    this.paths = this.localShapeCollection;
-  }
+  this.setVValue(finalValue);
   this.lock = false;
+  this.frameId = this.elem.globalData.frameId;
 }
 
 export function addEffect(effectFunction) {
