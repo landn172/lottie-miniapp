@@ -1,5 +1,5 @@
-import ExpressionValue from './ExpressionValue';
-
+// import ExpressionValue from './ExpressionValue';
+import { ExpressionPropertyInterface } from './ExpressionValueFactory';
 
 function createEffectsInterface(elem, propertyGroup) {
   if (elem.effectsManager) {
@@ -60,6 +60,7 @@ function createGroupInterface(data, elements, propertyGroup, elem) {
     return propertyGroup(val - 1);
   }
 
+
   groupInterface.propertyGroup = _propertyGroup;
 
   if (data.mn === 'ADBE Color Control') {
@@ -74,16 +75,17 @@ function createGroupInterface(data, elements, propertyGroup, elem) {
       return data.np;
     }
   });
-  groupInterface.active = data.en !== 0;
+  groupInterface.active = groupInterface.enabled = data.en !== 0;
   return groupInterface;
 }
 
 function createValueInterface(element, type, elem, propertyGroup) {
+  var expressionProperty = ExpressionPropertyInterface(element.p);
   function interfaceFunction() {
     if (type === 10) {
       return elem.comp.compInterface(element.p.v);
     }
-    return ExpressionValue(element.p);
+    return expressionProperty();
   }
 
   if (element.p.setGroupProperty) {

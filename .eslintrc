@@ -38,6 +38,8 @@
     "func-names": 0,
     "no-nested-ternary": 0,
     "no-bitwise": 0,
-    "no-restricted-globals": 0
+    "no-restricted-globals": 0,
+    "operator-assignment": 0,
+    "no-prototype-builtins": 0
   }
 }

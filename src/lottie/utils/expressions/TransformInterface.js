@@ -1,6 +1,4 @@
-import ExpressionValue from './ExpressionValue';
-
-const degToRads = Math.PI / 180;
+import { ExpressionPropertyInterface } from '../expressions/ExpressionValueFactory';
 
 export default (transform) => {
   /* eslint consistent-return: 0 */
@@ -48,86 +46,67 @@ export default (transform) => {
   }
 
   Object.defineProperty(thisFunction, 'rotation', {
-    get: function rotation() {
-      if (transform.r) {
-        return ExpressionValue(transform.r, 1 / degToRads);
-      }
-      return ExpressionValue(transform.rz, 1 / degToRads);
-    }
+    get: ExpressionPropertyInterface(transform.r || transform.rz)
+  });
+
+  Object.defineProperty(thisFunction, 'zRotation', {
+    get: ExpressionPropertyInterface(transform.rz || transform.r)
   });
 
   Object.defineProperty(thisFunction, 'xRotation', {
-    get: function () {
-      return ExpressionValue(transform.rx, 1 / degToRads);
-    }
+    get: ExpressionPropertyInterface(transform.rx)
   });
 
   Object.defineProperty(thisFunction, 'yRotation', {
-    get: function () {
-      return ExpressionValue(transform.ry, 1 / degToRads);
-    }
+    get: ExpressionPropertyInterface(transform.ry)
   });
   Object.defineProperty(thisFunction, 'scale', {
-    get: function () {
-      return ExpressionValue(transform.s, 100);
-    }
+    get: ExpressionPropertyInterface(transform.s)
   });
 
+  let _transformFactory;
+  if (transform.p) {
+    _transformFactory = ExpressionPropertyInterface(transform.p);
+  }
   Object.defineProperty(thisFunction, 'position', {
     get: function () {
       if (transform.p) {
-        return ExpressionValue(transform.p);
+        return _transformFactory();
       }
       return [transform.px.v, transform.py.v, transform.pz ? transform.pz.v : 0];
     }
   });
 
   Object.defineProperty(thisFunction, 'xPosition', {
-    get: function () {
-      return ExpressionValue(transform.px);
-    }
+    get: ExpressionPropertyInterface(transform.px)
   });
 
   Object.defineProperty(thisFunction, 'yPosition', {
-    get: function () {
-      return ExpressionValue(transform.py);
-    }
+    get: ExpressionPropertyInterface(transform.py)
   });
 
   Object.defineProperty(thisFunction, 'zPosition', {
-    get: function () {
-      return ExpressionValue(transform.pz);
-    }
+    get: ExpressionPropertyInterface(transform.pz)
   });
 
   Object.defineProperty(thisFunction, 'anchorPoint', {
-    get: function () {
-      return ExpressionValue(transform.a);
-    }
+    get: ExpressionPropertyInterface(transform.a)
   });
 
   Object.defineProperty(thisFunction, 'opacity', {
-    get: function () {
-      return ExpressionValue(transform.o, 100);
-    }
+    get: ExpressionPropertyInterface(transform.o)
   });
 
   Object.defineProperty(thisFunction, 'skew', {
-    get: function () {
-      return ExpressionValue(transform.sk);
-    }
+    get: ExpressionPropertyInterface(transform.sk)
   });
 
   Object.defineProperty(thisFunction, 'skewAxis', {
-    get: function () {
-      return ExpressionValue(transform.sa);
-    }
+    get: ExpressionPropertyInterface(transform.sa)
   });
 
   Object.defineProperty(thisFunction, 'orientation', {
-    get: function () {
-      return ExpressionValue(transform.or);
-    }
+    get: ExpressionPropertyInterface(transform.or)
   });
 
   return thisFunction;

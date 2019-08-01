@@ -31,7 +31,6 @@ export default class RoundCornersModifier extends ShapeModifier {
     let oY;
     let iX;
     let iY;
-
     for (i = 0; i < len; i += 1) {
       currentV = path.v[i];
       currentO = path.o[i];
@@ -39,6 +38,9 @@ export default class RoundCornersModifier extends ShapeModifier {
       if (currentV[0] === currentO[0] && currentV[1] === currentO[1] && currentV[0] === currentI[0] && currentV[1] === currentI[1]) {
         if ((i === 0 || i === len - 1) && !path.c) {
           cloned_path.setTripleAt(currentV[0], currentV[1], currentO[0], currentO[1], currentI[0], currentI[1], index);
+          /* cloned_path.v[index] = currentV;
+                cloned_path.o[index] = currentO;
+                cloned_path.i[index] = currentI; */
           index += 1;
         } else {
           if (i === 0) {
@@ -89,12 +91,11 @@ export default class RoundCornersModifier extends ShapeModifier {
       let shapeData;
       // let newPaths;
       let localShapeCollection;
-      const { shapes, _mdf } = this;
       for (i = 0; i < len; i += 1) {
-        shapeData = shapes[i];
+        shapeData = this.shapes[i];
         // newPaths = shapeData.shape.paths;
         localShapeCollection = shapeData.localShapeCollection;
-        if (!(!shapeData.shape._mdf && !_mdf && !_isFirstFrame)) {
+        if (!(!shapeData.shape._mdf && !this._mdf && !_isFirstFrame)) {
           localShapeCollection.releaseShapes();
           shapeData.shape._mdf = true;
           shapePaths = shapeData.shape.paths.shapes;

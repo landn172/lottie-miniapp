@@ -1,4 +1,5 @@
 import Matrix from '../3rd_party/transformation-matrix';
+import { createTypedArray } from '../utils/index';
 
 class CVContextData {
   constructor() {
@@ -8,9 +9,9 @@ class CVContextData {
     this.cO = 1;
     let i;
     let len = 15;
-    this.savedOp = new Float32Array(len);
+    this.savedOp = createTypedArray('float32', len);
     for (i = 0; i < len; i += 1) {
-      this.saved[i] = new Float32Array(16);
+      this.saved[i] = createTypedArray('float32', 16);
     }
     this._length = len;
   }
@@ -18,11 +19,11 @@ class CVContextData {
   duplicate() {
     let newLength = this._length * 2;
     let currentSavedOp = this.savedOp;
-    this.savedOp = new Float32Array(newLength);
+    this.savedOp = createTypedArray('float32', newLength);
     this.savedOp.set(currentSavedOp);
     let i = 0;
     for (i = this._length; i < newLength; i += 1) {
-      this.saved[i] = new Float32Array(16);
+      this.saved[i] = createTypedArray('float32', 16);
     }
     this._length = newLength;
   }

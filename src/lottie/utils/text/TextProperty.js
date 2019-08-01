@@ -1,5 +1,6 @@
 
 import { FontManager } from '../FontManager';
+import * as ExpressionTextPropertyDecorator from '../expressions/ExpressionTextPropertyDecorator';
 
 export default class TextProperty {
   constructor(elem, data) {
@@ -12,7 +13,7 @@ export default class TextProperty {
     this.data = data;
     this.elem = elem;
     this.comp = this.elem.comp;
-    this.keysIndex = -1;
+    this.keysIndex = 0;
     this.canResize = false;
     this.minimumFontSize = 1;
     this.effectsSequence = [];
@@ -44,40 +45,35 @@ export default class TextProperty {
       finalSize: 0,
       finalText: [],
       finalLineHeight: 0,
-      __test: true
+      __complete: false
 
     };
-    this.copyFromDocumentData(this.data.d.k[0].s);
+    this.copyData(this.currentData, this.data.d.k[0].s);
 
     if (!this.searchProperty()) {
       this.completeTextData(this.currentData);
-      this.keysIndex = 0;
     }
   }
 
   defaultBoxWidth =[0, 0]
 
-  copyFromDocumentData(data) {
-    Object.keys(data).forEach(s => {
-      this.currentData[s] = data[s];
-    });
+  copyData(obj, data) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (let s in data) {
+      if (data.hasOwnProperty(s)) {
+        obj[s] = data[s];
+      }
+    }
+    return obj;
   }
 
-  setCurrentData = function (data, currentTextValue) {
-    if (this.currentData !== data) {
-      if (!data.__complete) {
-        this.completeTextData(data);
-      }
-      this.copyFromDocumentData(data);
-      this.currentData.boxWidth = this.currentData.boxWidth || this.defaultBoxWidth;
-      this.currentData.fillColorAnim = data.fillColorAnim || this.currentData.fillColorAnim;
-      this.currentData.strokeColorAnim = data.strokeColorAnim || this.currentData.strokeColorAnim;
-      this.currentData.strokeWidthAnim = data.strokeWidthAnim || this.currentData.strokeWidthAnim;
-      this._mdf = true;
-    } else if (currentTextValue !== this.currentData.t) {
-      this._mdf = true;
+  setCurrentData = function (data) {
+    if (!data.__complete) {
       this.completeTextData(data);
     }
+    this.currentData = data;
+    this.currentData.boxWidth = this.currentData.boxWidth || this.defaultBoxWidth;
+    this._mdf = true;
   }
 
   searchProperty() {
@@ -101,10 +97,11 @@ export default class TextProperty {
     if ((this.elem.globalData.frameId === this.frameId || !this.effectsSequence.length) && !_finalValue) {
       return;
     }
-    let currentTextValue = this.currentData.t;
-
+    this.currentData.t = this.data.d.k[this.keysIndex].s.t;
+    let currentValue = this.currentData;
+    let currentIndex = this.keysIndex;
     if (this.lock) {
-      this.setCurrentData(this.currentData, currentTextValue);
+      this.setCurrentData(this.currentData);
       return;
     }
     this.lock = true;
@@ -112,34 +109,40 @@ export default class TextProperty {
     // let multipliedValue;
     let i;
     let len = this.effectsSequence.length;
-    let finalValue = _finalValue || this.currentData;
+    let finalValue = _finalValue || this.data.d.k[this.keysIndex].s;
     for (i = 0; i < len; i += 1) {
-      finalValue = this.effectsSequence[i](finalValue);
+      // Checking if index changed to prevent creating a new object every time the expression updates.
+      if (currentIndex !== this.keysIndex) {
+        finalValue = this.effectsSequence[i](finalValue, finalValue.t);
+      } else {
+        finalValue = this.effectsSequence[i](this.currentData, finalValue.t);
+      }
     }
-    this.setCurrentData(finalValue, currentTextValue);
+    if (currentValue !== finalValue) {
+      this.setCurrentData(finalValue);
+    }
     this.pv = this.v = this.currentData;
     this.lock = false;
     this.frameId = this.elem.globalData.frameId;
   }
 
-  getKeyframeValue(currentValue) {
+  getKeyframeValue() {
     let textKeys = this.data.d.k;
-    let textDocumentData;
+    // let textDocumentData;
     let frameNum = this.elem.comp.renderedFrame;
     let i = 0;
     let len = textKeys.length;
     while (i <= len - 1) {
-      textDocumentData = textKeys[i].s;
+      // textDocumentData = textKeys[i].s;
       if (i === len - 1 || textKeys[i + 1].t > frameNum) {
         break;
       }
       i += 1;
     }
     if (this.keysIndex !== i) {
-      currentValue = textDocumentData;
       this.keysIndex = i;
     }
-    return currentValue;
+    return this.data.d.k[this.keysIndex].s;
   }
 
   buildFinalText(text) {
@@ -147,9 +150,19 @@ export default class TextProperty {
     let charactersArray = [];
     let i = 0;
     let len = text.length;
+    let charCode;
     while (i < len) {
-      if (combinedCharacters.indexOf(text.charCodeAt(i)) !== -1) {
+      charCode = text.charCodeAt(i);
+      if (combinedCharacters.indexOf(charCode) !== -1) {
         charactersArray[charactersArray.length - 1] += text.charAt(i);
+      } else if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+        charCode = text.charCodeAt(i + 1);
+        if (charCode >= 0xDC00 && charCode <= 0xDFFF) {
+          charactersArray.push(text.substr(i, 2));
+          ++i;
+        } else {
+          charactersArray.push(text.charAt(i));
+        }
       } else {
         charactersArray.push(text.charAt(i));
       }
@@ -188,6 +201,7 @@ export default class TextProperty {
     let styleName;
     for (i = 0; i < len; i += 1) {
       styleName = styles[i].toLowerCase();
+      // eslint-disable-next-line default-case
       switch (styleName) {
         case 'italic':
           fStyle = 'italic';
@@ -209,16 +223,16 @@ export default class TextProperty {
         case 'thin':
           fWeight = '200';
           break;
-        default: break;
       }
     }
     documentData.fWeight = fontData.fWeight || fWeight;
     documentData.fStyle = fStyle;
-    len = documentData.t.length;
     documentData.finalSize = documentData.s;
     documentData.finalText = this.buildFinalText(documentData.t);
+    len = documentData.finalText.length;
     documentData.finalLineHeight = documentData.lh;
     let trackingOffset = documentData.tr / 1000 * documentData.finalSize;
+    let charCode;
     if (documentData.sz) {
       let flag = true;
       let boxWidth = documentData.sz[0];
@@ -233,10 +247,11 @@ export default class TextProperty {
         trackingOffset = documentData.tr / 1000 * documentData.finalSize;
         let lastSpaceIndex = -1;
         for (i = 0; i < len; i += 1) {
+          charCode = finalText[i].charCodeAt(0);
           newLineFlag = false;
           if (finalText[i] === ' ') {
             lastSpaceIndex = i;
-          } else if (finalText[i].charCodeAt(0) === 13) {
+          } else if (charCode === 13 || charCode === 3) {
             lineWidth = 0;
             newLineFlag = true;
             currentHeight += documentData.finalLineHeight || documentData.finalSize * 1.2;
@@ -282,9 +297,10 @@ export default class TextProperty {
     for (i = 0; i < len; i += 1) {
       newLineFlag = false;
       currentChar = documentData.finalText[i];
+      charCode = currentChar.charCodeAt(0);
       if (currentChar === ' ') {
         val = '\u00A0';
-      } else if (currentChar.charCodeAt(0) === 13) {
+      } else if (charCode === 13 || charCode === 3) {
         uncollapsedSpaces = 0;
         lineWidths.push(lineWidth);
         maxLineWidth = lineWidth > maxLineWidth ? lineWidth : maxLineWidth;
@@ -312,7 +328,14 @@ export default class TextProperty {
         uncollapsedSpaces = 0;
       }
       letters.push({
-        l: cLength, an: cLength, add: currentSize, n: newLineFlag, anIndexes: [], val: val, line: currentLine, animatorJustifyOffset: 0
+        l: cLength,
+        an: cLength,
+        add: currentSize,
+        n: newLineFlag,
+        anIndexes: [],
+        val: val,
+        line: currentLine,
+        animatorJustifyOffset: 0
       });
       if (anchorGrouping === 2) {
         currentSize += cLength;
@@ -421,22 +444,18 @@ export default class TextProperty {
   }
 
   updateDocumentData(newData, index) {
-    index = index === undefined
-      ? this.keysIndex === -1
-        ? 0
-        : this.keysIndex
-      : index;
-    let dData = this.data.d.k[index].s;
-    Object.keys(newData).forEach(s=>{
-      dData[s] = newData[s];
-    });
+    index = index === undefined ? this.keysIndex : index;
+    let dData = this.copyData({}, this.data.d.k[index].s);
+    dData = this.copyData(dData, newData);
+    this.data.d.k[index].s = dData;
     this.recalculate(index);
+    this.elem.addDynamicProperty(this);
   }
 
   recalculate(index) {
     var dData = this.data.d.k[index].s;
     dData.__complete = false;
-    this.keysIndex = this.kf ? -1 : 0;
+    this.keysIndex = 0;
     this._isFirstFrame = true;
     this.getValue(dData);
   }
@@ -444,10 +463,16 @@ export default class TextProperty {
   canResizeFont(_canResize) {
     this.canResize = _canResize;
     this.recalculate(this.keysIndex);
+    this.elem.addDynamicProperty(this);
   }
 
   setMinimumFontSize(_fontValue) {
     this.minimumFontSize = Math.floor(_fontValue) || 1;
     this.recalculate(this.keysIndex);
+    this.elem.addDynamicProperty(this);
   }
 }
+
+TextProperty.prototype.getExpressionValue = ExpressionTextPropertyDecorator.getExpressionValue;
+TextProperty.prototype.searchProperty = ExpressionTextPropertyDecorator.searchProperty;
+TextProperty.prototype.searchExpressions = ExpressionTextPropertyDecorator.searchExpressions;

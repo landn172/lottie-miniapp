@@ -107,50 +107,44 @@ function bezFunction() {
   let buildBezierData = (function () {
     let storedData = {};
 
-    return function (keyData) {
-      let pt1 = keyData.s;
-      let pt2 = keyData.e;
-      let pt3 = keyData.to;
-      let pt4 = keyData.ti;
+    return function (pt1, pt2, pt3, pt4) {
       let bezierName = (pt1[0] + '_' + pt1[1] + '_' + pt2[0] + '_' + pt2[1] + '_' + pt3[0] + '_' + pt3[1] + '_' + pt4[0] + '_' + pt4[1]).replace(/\./g, 'p');
-      if (storedData[bezierName]) {
-        keyData.bezierData = storedData[bezierName];
-        return;
-      }
-      let curveSegments = defaultCurveSegments;
-      let k;
-      let i;
-      let len;
-      let ptCoord;
-      let perc;
-      let addedLength = 0;
-      let ptDistance;
-      let point;
-      let lastPoint = null;
-      if (pt1.length === 2 && (pt1[0] !== pt2[0] || pt1[1] !== pt2[1]) && pointOnLine2D(pt1[0], pt1[1], pt2[0], pt2[1], pt1[0] + pt3[0], pt1[1] + pt3[1]) && pointOnLine2D(pt1[0], pt1[1], pt2[0], pt2[1], pt2[0] + pt4[0], pt2[1] + pt4[1])) {
-        curveSegments = 2;
-      }
-      let bezierData = new BezierData(curveSegments);
-      len = pt3.length;
-      for (k = 0; k < curveSegments; k += 1) {
-        point = createSizedArray(len);
-        perc = k / (curveSegments - 1);
-        ptDistance = 0;
-        for (i = 0; i < len; i += 1) {
-          ptCoord = bm_pow(1 - perc, 3) * pt1[i] + 3 * bm_pow(1 - perc, 2) * perc * (pt1[i] + pt3[i]) + 3 * (1 - perc) * bm_pow(perc, 2) * (pt2[i] + pt4[i]) + bm_pow(perc, 3) * pt2[i];
-          point[i] = ptCoord;
-          if (lastPoint !== null) {
-            ptDistance += bm_pow(point[i] - lastPoint[i], 2);
-          }
+      if (!storedData[bezierName]) {
+        let curveSegments = defaultCurveSegments;
+        let k;
+        let i;
+        let len;
+        let ptCoord;
+        let perc;
+        let addedLength = 0;
+        let ptDistance;
+        let point;
+        let lastPoint = null;
+        if (pt1.length === 2 && (pt1[0] !== pt2[0] || pt1[1] !== pt2[1]) && pointOnLine2D(pt1[0], pt1[1], pt2[0], pt2[1], pt1[0] + pt3[0], pt1[1] + pt3[1]) && pointOnLine2D(pt1[0], pt1[1], pt2[0], pt2[1], pt2[0] + pt4[0], pt2[1] + pt4[1])) {
+          curveSegments = 2;
         }
-        ptDistance = bm_sqrt(ptDistance);
-        addedLength += ptDistance;
-        bezierData.points[k] = new PointData(ptDistance, point);
-        lastPoint = point;
+        let bezierData = new BezierData(curveSegments);
+        len = pt3.length;
+        for (k = 0; k < curveSegments; k += 1) {
+          point = createSizedArray(len);
+          perc = k / (curveSegments - 1);
+          ptDistance = 0;
+          for (i = 0; i < len; i += 1) {
+            ptCoord = bm_pow(1 - perc, 3) * pt1[i] + 3 * bm_pow(1 - perc, 2) * perc * (pt1[i] + pt3[i]) + 3 * (1 - perc) * bm_pow(perc, 2) * (pt2[i] + pt4[i]) + bm_pow(perc, 3) * pt2[i];
+            point[i] = ptCoord;
+            if (lastPoint !== null) {
+              ptDistance += bm_pow(point[i] - lastPoint[i], 2);
+            }
+          }
+          ptDistance = bm_sqrt(ptDistance);
+          addedLength += ptDistance;
+          bezierData.points[k] = new PointData(ptDistance, point);
+          lastPoint = point;
+        }
+        bezierData.segmentLength = addedLength;
+        storedData[bezierName] = bezierData;
       }
-      bezierData.segmentLength = addedLength;
-      keyData.bezierData = bezierData;
-      storedData[bezierName] = bezierData;
+      return storedData[bezierName];
     };
   }());
 

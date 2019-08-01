@@ -16,24 +16,24 @@ class TransformProperty extends DynamicPropertyContainer {
     this.pre = new Matrix();
     this.appliedTransformations = 0;
     this.initDynamicPropertyContainer(container || elem);
-    if (data.p.s) {
+    if (data.p && data.p.s) {
       this.px = PropertyFactory.getProp(elem, data.p.x, 0, 0, this);
       this.py = PropertyFactory.getProp(elem, data.p.y, 0, 0, this);
       if (data.p.z) {
         this.pz = PropertyFactory.getProp(elem, data.p.z, 0, 0, this);
       }
     } else {
-      this.p = PropertyFactory.getProp(elem, data.p, 1, 0, this);
+      this.p = PropertyFactory.getProp(elem, data.p || {
+        k: [0, 0, 0]
+      }, 1, 0, this);
     }
-    if (data.r) {
-      this.r = PropertyFactory.getProp(elem, data.r, 0, degToRads, this);
-    } else if (data.rx) {
+    if (data.rx) {
       this.rx = PropertyFactory.getProp(elem, data.rx, 0, degToRads, this);
       this.ry = PropertyFactory.getProp(elem, data.ry, 0, degToRads, this);
       this.rz = PropertyFactory.getProp(elem, data.rz, 0, degToRads, this);
       if (data.or.k[0].ti) {
         let i;
-        const len = data.or.k.length;
+        let len = data.or.k.length;
         for (i = 0; i < len; i += 1) {
           data.or.k[i].to = data.or.k[i].ti = null;
         }
@@ -41,17 +41,21 @@ class TransformProperty extends DynamicPropertyContainer {
       this.or = PropertyFactory.getProp(elem, data.or, 1, degToRads, this);
       // sh Indicates it needs to be capped between -180 and 180
       this.or.sh = true;
+    } else {
+      this.r = PropertyFactory.getProp(elem, data.r || {
+        k: 0
+      }, 0, degToRads, this);
     }
     if (data.sk) {
       this.sk = PropertyFactory.getProp(elem, data.sk, 0, degToRads, this);
       this.sa = PropertyFactory.getProp(elem, data.sa, 0, degToRads, this);
     }
-    if (data.a) {
-      this.a = PropertyFactory.getProp(elem, data.a, 1, 0, this);
-    }
-    if (data.s) {
-      this.s = PropertyFactory.getProp(elem, data.s, 1, 0.01, this);
-    }
+    this.a = PropertyFactory.getProp(elem, data.a || {
+      k: [0, 0, 0]
+    }, 1, 0, this);
+    this.s = PropertyFactory.getProp(elem, data.s || {
+      k: [100, 100, 100]
+    }, 1, 0.01, this);
     // Opacity is not part of the transform properties, that's why it won't use this.dynamicProperties. That way transforms won't get updated if opacity changes.
     if (data.o) {
       this.o = PropertyFactory.getProp(elem, data.o, 0, 0.01, elem);
@@ -127,22 +131,46 @@ class TransformProperty extends DynamicPropertyContainer {
           .rotateY(this.or.v[1])
           .rotateX(this.or.v[0]);
       }
-      if (this.autoOriented && this.p.keyframes && this.p.getValueAtTime) {
+      if (this.autoOriented) {
         let v1;
         let v2;
-        if (this.p._caching.lastFrame + this.p.offsetTime <= this.p.keyframes[0].t) {
-          v1 = this.p.getValueAtTime((this.p.keyframes[0].t + 0.01) / this.elem.globalData.frameRate, 0);
-          v2 = this.p.getValueAtTime(this.p.keyframes[0].t / this.elem.globalData.frameRate, 0);
-        } else if (this.p._caching.lastFrame + this.p.offsetTime >= this.p.keyframes[this.p.keyframes.length - 1].t) {
-          v1 = this.p.getValueAtTime((this.p.keyframes[this.p.keyframes.length - 1].t / this.elem.globalData.frameRate), 0);
-          v2 = this.p.getValueAtTime((this.p.keyframes[this.p.keyframes.length - 1].t - 0.01) / this.elem.globalData.frameRate, 0);
-        } else {
-          v1 = this.p.pv;
-          v2 = this.p.getValueAtTime(((this.p._caching.lastFrame + this.p.offsetTime) - 0.01) / this.elem.globalData.frameRate, this.p.offsetTime);
+        let frameRate = this.elem.globalData.frameRate;
+        if (this.p && this.p.keyframes && this.p.getValueAtTime) {
+          if (this.p._caching.lastFrame + this.p.offsetTime <= this.p.keyframes[0].t) {
+            v1 = this.p.getValueAtTime((this.p.keyframes[0].t + 0.01) / frameRate, 0);
+            v2 = this.p.getValueAtTime(this.p.keyframes[0].t / frameRate, 0);
+          } else if (this.p._caching.lastFrame + this.p.offsetTime >= this.p.keyframes[this.p.keyframes.length - 1].t) {
+            v1 = this.p.getValueAtTime((this.p.keyframes[this.p.keyframes.length - 1].t / frameRate), 0);
+            v2 = this.p.getValueAtTime((this.p.keyframes[this.p.keyframes.length - 1].t - 0.01) / frameRate, 0);
+          } else {
+            v1 = this.p.pv;
+            v2 = this.p.getValueAtTime((this.p._caching.lastFrame + this.p.offsetTime - 0.01) / frameRate, this.p.offsetTime);
+          }
+        } else if (this.px && this.px.keyframes && this.py.keyframes && this.px.getValueAtTime && this.py.getValueAtTime) {
+          v1 = [];
+          v2 = [];
+          let px = this.px;
+          let py = this.py;
+          // let frameRate;
+          if (px._caching.lastFrame + px.offsetTime <= px.keyframes[0].t) {
+            v1[0] = px.getValueAtTime((px.keyframes[0].t + 0.01) / frameRate, 0);
+            v1[1] = py.getValueAtTime((py.keyframes[0].t + 0.01) / frameRate, 0);
+            v2[0] = px.getValueAtTime((px.keyframes[0].t) / frameRate, 0);
+            v2[1] = py.getValueAtTime((py.keyframes[0].t) / frameRate, 0);
+          } else if (px._caching.lastFrame + px.offsetTime >= px.keyframes[px.keyframes.length - 1].t) {
+            v1[0] = px.getValueAtTime((px.keyframes[px.keyframes.length - 1].t / frameRate), 0);
+            v1[1] = py.getValueAtTime((py.keyframes[py.keyframes.length - 1].t / frameRate), 0);
+            v2[0] = px.getValueAtTime((px.keyframes[px.keyframes.length - 1].t - 0.01) / frameRate, 0);
+            v2[1] = py.getValueAtTime((py.keyframes[py.keyframes.length - 1].t - 0.01) / frameRate, 0);
+          } else {
+            v1 = [px.pv, py.pv];
+            v2[0] = px.getValueAtTime((px._caching.lastFrame + px.offsetTime - 0.01) / frameRate, px.offsetTime);
+            v2[1] = py.getValueAtTime((py._caching.lastFrame + py.offsetTime - 0.01) / frameRate, py.offsetTime);
+          }
         }
         this.v.rotate(-Math.atan2(v1[1] - v2[1], v1[0] - v2[0]));
       }
-      if (this.data.p.s) {
+      if (this.data.p && this.data.p.s) {
         if (this.data.p.z) {
           this.v.translate(this.px.v, this.py.v, -this.pz.v);
         } else {
@@ -180,6 +208,8 @@ class TransformProperty extends DynamicPropertyContainer {
       if (!this.r.effectsSequence.length) {
         this.pre.rotate(-this.r.v);
         this.appliedTransformations = 4;
+      } else {
+        // ignroe
       }
     } else if (!this.rz.effectsSequence.length && !this.ry.effectsSequence.length && !this.rx.effectsSequence.length && !this.or.effectsSequence.length) {
       this.pre.rotateZ(-this.rz.v).rotateY(this.ry.v).rotateX(this.rx.v).rotateZ(-this.or.v[2])
@@ -197,6 +227,8 @@ class TransformProperty extends DynamicPropertyContainer {
     this._isDirty = true;
   }
 }
+
+TransformProperty.prototype._addDynamicProperty = DynamicPropertyContainer.prototype.addDynamicProperty;
 
 export default {
   getTransformProperty(elem, data, container) {

@@ -1,4 +1,4 @@
-import RenderableDOMElement from '../elements/RenderableDOMElement';
+// import RenderableDOMElement from '../elements/RenderableDOMElement';
 import Mixin from '../utils/mixin';
 import BaseElement from '../elements/BaseElement';
 import TransformElement from '../elements/TransformElement';
@@ -6,6 +6,7 @@ import CVBaseElement from '../canvasElements/CVBaseElement';
 import HierarchyElement from '../elements/HierarchyElement';
 import FrameElement from '../elements/FrameElement';
 import RenderableElement from '../elements/RenderableElement';
+import IImageElement from '../elements/ImageElement';
 
 class CVSolidElement extends Mixin(BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement) {
   constructor(data, globalData, comp) {
@@ -26,7 +27,7 @@ class CVSolidElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
     this.hide();
   }
 
-  prepareFrame = RenderableDOMElement.prototype.prepareFrame
+  prepareFrame = IImageElement.prototype.prepareFrame
 
   renderInnerContent() {
     let ctx = this.canvasContext;

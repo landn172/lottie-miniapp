@@ -9,6 +9,8 @@ export default class RepeaterModifier extends ShapeModifier {
     this.c = PropertyFactory.getProp(elem, data.c, 0, null, this);
     this.o = PropertyFactory.getProp(elem, data.o, 0, null, this);
     this.tr = TransformPropertyFactory.getTransformProperty(elem, data.tr, this);
+    this.so = PropertyFactory.getProp(elem, data.tr.so, 0, 0.01, this);
+    this.eo = PropertyFactory.getProp(elem, data.tr.eo, 0, 0.01, this);
     this.data = data;
     if (!this.dynamicProperties.length) {
       this.getValue(true);
@@ -104,7 +106,51 @@ export default class RepeaterModifier extends ShapeModifier {
             ty: 'gr'
           };
           group.it.push({
-            a: { a: 0, ix: 1, k: [0, 0] }, nm: 'Transform', o: { a: 0, ix: 7, k: 100 }, p: { a: 0, ix: 2, k: [0, 0] }, r: { a: 1, ix: 6, k: [{ s: 0, e: 0, t: 0 }, { s: 0, e: 0, t: 1 }] }, s: { a: 0, ix: 3, k: [100, 100] }, sa: { a: 0, ix: 5, k: 0 }, sk: { a: 0, ix: 4, k: 0 }, ty: 'tr'
+            a: {
+              a: 0,
+              ix: 1,
+              k: [0, 0]
+            },
+            nm: 'Transform',
+            o: {
+              a: 0,
+              ix: 7,
+              k: 100
+            },
+            p: {
+              a: 0,
+              ix: 2,
+              k: [0, 0]
+            },
+            r: {
+              a: 1,
+              ix: 6,
+              k: [{
+                s: 0,
+                e: 0,
+                t: 0
+              }, {
+                s: 0,
+                e: 0,
+                t: 1
+              }]
+            },
+            s: {
+              a: 0,
+              ix: 3,
+              k: [100, 100]
+            },
+            sa: {
+              a: 0,
+              ix: 5,
+              k: 0
+            },
+            sk: {
+              a: 0,
+              ix: 4,
+              k: 0
+            },
+            ty: 'tr'
           });
 
           this.arr.splice(0, 0, group);
@@ -170,6 +216,7 @@ export default class RepeaterModifier extends ShapeModifier {
         jLen = itemsTransform.length;
         items[items.length - 1].transform.mProps._mdf = true;
         items[items.length - 1].transform.op._mdf = true;
+        items[items.length - 1].transform.op.v = this.so.v + (this.eo.v - this.so.v) * (i / (this._currentCopies - 1));
         if (iteration !== 0) {
           if ((i !== 0 && dir === 1) || (i !== this._currentCopies - 1 && dir === -1)) {
             this.applyTransforms(this.pMatrix, this.rMatrix, this.sMatrix, this.tr, 1, false);
