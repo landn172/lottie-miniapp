@@ -735,7 +735,27 @@ function initiateExpression(elem, data, property) {
 
     try {
       interpreter.appendApis({
-        'transform': transform
+        velocity,
+        parent,
+        anchorPoint,
+        textIndex,
+        textTotal,
+        selectorValue,
+        index,
+        'transform': transform,
+        loopOut: loopOut,
+        loop_out: loop_out,
+        loop_in: loop_in,
+        smooth: smooth,
+        text: text,
+        thisLayer: thisLayer,
+        toWorld: toWorld,
+        fromWorld: fromWorld,
+        fromComp: fromComp,
+        toComp: toComp,
+        mask: mask,
+        fromCompToSurface: fromCompToSurface,
+        $bm_transform: $bm_transform
       })
       scoped_bm_rt = interpreter.run(`${val};module.exports = $bm_rt`)
     } catch (error) {
