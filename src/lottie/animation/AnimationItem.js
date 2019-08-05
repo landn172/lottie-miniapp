@@ -67,6 +67,7 @@ class AnimationItem extends BaseEvent {
       this.loop = parseInt(params.loop, 10);
     }
     this.autoplay = 'autoplay' in params ? params.autoplay : true;
+    this.hasTriggerplay = false;
     this.name = params.name ? params.name : '';
     this.autoloadSegments = params.autoloadSegments ? params.autoloadSegments : true;
     this.assetsPath = params.assetsPath;
@@ -104,6 +105,7 @@ class AnimationItem extends BaseEvent {
         left: 0,
         right: 10
       }).observe(`#${canvasId}`, (res) => {
+        if (!this.hasTriggerplay) return;
         if (res.intersectionRatio > 0) {
           this.play();
         } else {
@@ -245,6 +247,7 @@ class AnimationItem extends BaseEvent {
       this.isLoaded = true;
       this.gotoFrame();
       if (this.autoplay) {
+        this.hasTriggerAutoplay = true;
         this.play();
       }
     }
@@ -283,6 +286,7 @@ class AnimationItem extends BaseEvent {
       this.isPaused = false;
       if (this._idle) {
         this._idle = false;
+        this.hasTriggerplay = true;
         this.trigger('_active');
       }
     }
