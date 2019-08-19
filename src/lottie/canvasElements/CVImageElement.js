@@ -30,7 +30,7 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
     this.hide();
   }
 
-  prepareFrame=IImageElement.prototype.prepareFrame
+  prepareFrame = IImageElement.prototype.prepareFrame
 
   createContent() {
     // 压缩图片比例

@@ -56,15 +56,16 @@ class ImagePreloader {
     };
     this.loadImage(path, (tmpPath) => {
       if (tmpPath) {
-        api.getImageInfo({
+        new Promise(resolve => api.getImageInfo({
           src: tmpPath,
           success(res) {
             const { width, height } = res;
-            img.src = res.path;
+            img.src = tmpPath;
             img.width = width;
             img.height = height;
-          }
-        });
+          },
+          complete: resolve
+        })).then(() => this.imageLoaded());
       }
     });
     const ob = {
@@ -88,20 +89,24 @@ class ImagePreloader {
         success: (res) => {
           // 本地路径
           cb(res.tempFilePath);
-          imageLoaded();
         },
         fail: () => {
+          cb();
           imageLoaded();
         }
       });
     }
   }
 
+  loaded() {
+    return this.totalImages === this.loadedAssets;
+  }
+
   loadAssets(assets, cb) {
     this.imagesLoadedCb = cb;
-    this.totalAssets = assets.length;
     let i;
-    for (i = 0; i < this.totalAssets; i += 1) {
+    let len = assets.length;
+    for (i = 0; i < len; i += 1) {
       if (!assets[i].layers) {
         this.images.push(this.createImageData(assets[i]));
         this.totalImages += 1;
@@ -119,6 +124,7 @@ class ImagePreloader {
 
   destroy() {
     this.imagesLoadedCb = null;
+    this.images.length = 0;
   }
 }
 

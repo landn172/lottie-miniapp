@@ -177,14 +177,15 @@ class AnimationItem extends BaseEvent {
     this.loadNextSegment();
   }
 
+  imagesLoaded() {
+    this.trigger('loaded_images');
+    this.checkLoaded();
+  }
+
   preloadImages() {
     this.imagePreloader.setAssetsPath(this.assetsPath);
     this.imagePreloader.setPath(this.path);
-    this.imagePreloader.loadAssets(this.animationData.assets, function (err) {
-      if (!err) {
-        this.trigger('loaded_images');
-      }
-    }.bind(this));
+    this.imagePreloader.loadAssets(this.animationData.assets, this.imagesLoaded.bind(this));
   }
 
   configAnimation(animData) {
@@ -210,33 +211,21 @@ class AnimationItem extends BaseEvent {
     this.waitForFontsLoaded();
   }
 
-  completeData() {
-    dataManager.completeData(this.animationData, this.renderer.globalData.fontManager);
-    this.checkLoaded();
-  }
-
   waitForFontsLoaded() {
     if (!this.renderer) {
       return;
     }
     if (true /* this.renderer.globalData.fontManager.loaded */) {
-      this.completeData();
+      this.checkLoaded();
     } else {
       setTimeout(this.waitForFontsLoaded.bind(this), 20);
     }
   }
 
-  addPendingElement() {
-    this.pendingElements += 1;
-  }
-
-  elementLoaded() {
-    this.pendingElements -= 1;
-    this.checkLoaded();
-  }
-
   checkLoaded() {
-    if (this.pendingElements === 0) {
+    if (!this.isLoaded && this.renderer.globalData.fontManager.loaded() && (this.imagePreloader.loaded())) {
+      this.isLoaded = true;
+      dataManager.completeData(this.animationData, this.renderer.globalData.fontManager);
       if (expressionsPlugin) {
         expressionsPlugin.initExpressions(this);
       }
@@ -244,10 +233,8 @@ class AnimationItem extends BaseEvent {
       setTimeout(function () {
         this.trigger('DOMLoaded');
       }.bind(this), 0);
-      this.isLoaded = true;
       this.gotoFrame();
       if (this.autoplay) {
-        this.hasTriggerAutoplay = true;
         this.play();
       }
     }
