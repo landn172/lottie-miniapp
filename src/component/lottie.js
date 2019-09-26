@@ -22,6 +22,14 @@ Component({
       observer() {
         this.init();
       }
+    },
+    loop: {
+      type: Boolean,
+      value: true
+    },
+    autoplay: {
+      type: Boolean,
+      value: true
     }
   },
   ready() {
@@ -45,8 +53,8 @@ Component({
 
       this.lottie = lottie.loadAnimation({
         renderer: 'canvas', // 只支持canvas
-        loop: true,
-        autoplay: true,
+        loop: this.data.loop,
+        autoplay: this.data.autoplay,
         animationData: data,
         path: dataPath,
         rendererSettings: {

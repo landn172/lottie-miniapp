@@ -35,7 +35,10 @@ Page({
   },
   playLottie(lottieData) {
     const ctx = wx.createCanvasContext('test-canvas')
-    lottieTest(ctx, lottieData)
+    const l = lottieTest(ctx, lottieData);
+    l.addEventListener('loopComplete', ()=>{
+      console.log('loopComplete')
+    })
   },
   onReady: function() {
     const lottieData = this.options.path
@@ -67,7 +70,6 @@ function lottieTest(canvasContext, lottieData) {
     }
   })
   canvasContext.globalAlpha = 1
-
   if (typeof lottieData === 'string') {
     if (lottieData.startsWith('http')) {
       return lottie.loadAnimation({

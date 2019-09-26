@@ -68,6 +68,10 @@ lottie.loadAnimation({
 }
 ```
 
+```xml
+<lottie id="lottie" path="https://xxxxx" width="300" height="300"/>
+```
+
 ### 参数
 
 | 参数名        | 描述                                                         | 默认值 |
@@ -76,11 +80,25 @@ lottie.loadAnimation({
 | height        | 指定显示高度                                                 | 100    |
 | path          | 请求lottie的路径。注意开启downloadFile域名并且返回格式是json | null   |
 | animationData | 请求到的lottie的json数据                                     | null   |
-|               |                                                              |        |
+| loop          | 循环播放                                                     | true   |
+| autoplay      | 自动播放                                                     | true   |
 
 ### 注意
 
 - canvas默认样式宽高100%,需要一个container指定宽高
+- 如果想要获取`lottie`的实例
+
+```js
+Page({
+  getLottie() {
+    const lottieComponent = this.selectComponent('#lottie');
+    // here!
+    console.log(lottieComponent.lottie);
+  }
+})
+```
+
+
 
 
 ## 调试
