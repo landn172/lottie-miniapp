@@ -6,7 +6,7 @@ export function getUserDataPath() {
   return wx.env.USER_DATA_PATH;
 }
 
-const api = Object.assign({}, getEnvObj());
+const api = { ...getEnvObj() };
 
 if (!api.getFileSystemManager) {
   api.getFileSystemManager = () => {

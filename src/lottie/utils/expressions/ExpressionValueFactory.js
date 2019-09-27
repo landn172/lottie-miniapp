@@ -31,7 +31,7 @@ function completeProperty(expressionValue, property, type) {
     } else {
       value = property.keyframes[pos - 2].s;
     }
-    let valueProp = type === 'unidimensional' ? new Number(value) : Object.assign({}, value);
+    let valueProp = type === 'unidimensional' ? new Number(value) : ({ ...value });
     valueProp.time = property.keyframes[pos - 1].t / property.elem.comp.globalData.frameRate;
     return valueProp;
   };

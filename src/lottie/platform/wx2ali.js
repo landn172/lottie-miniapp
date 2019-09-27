@@ -70,7 +70,7 @@ function changeOpts(options, updateOrRemoveOpt = {}, extraOpt = {}) {
     }
   });
 
-  opts = Object.assign({}, opts, extraOpt);
+  opts = { ...opts, ...extraOpt };
 
   return opts;
 }

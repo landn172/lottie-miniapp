@@ -4,7 +4,9 @@
   "env": {
     "es6": true
   },
-  "extends": ["airbnb-base/legacy"],
+  "extends": [
+    "airbnb-base/legacy"
+  ],
   "globals": {
     "wx": true,
     "my": true,
@@ -40,6 +42,7 @@
     "no-bitwise": 0,
     "no-restricted-globals": 0,
     "operator-assignment": 0,
-    "no-prototype-builtins": 0
+    "no-prototype-builtins": 0,
+    "max-classes-per-file": 0
   }
 }
