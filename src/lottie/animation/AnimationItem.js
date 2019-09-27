@@ -74,11 +74,13 @@ class AnimationItem extends BaseEvent {
     if (params.animationData) {
       this.configAnimation(params.animationData);
     } else if (params.path) {
-      if (params.path.substr(-4) !== 'json') {
-        if (params.path.substr(-1, 1) !== '/') {
-          params.path += '/';
+      if (params.path.lastIndexOf('.zip') === -1) {
+        if (params.path.substr(-4) !== 'json') {
+          if (params.path.substr(-1, 1) !== '/') {
+            params.path += '/';
+          }
+          params.path += 'data.json';
         }
-        params.path += 'data.json';
       }
 
       if (params.path.lastIndexOf('\\') !== -1) {
