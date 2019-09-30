@@ -20,6 +20,7 @@ class CanvasRenderer extends BaseRenderer {
       context: (config && config.context) || null,
       progressiveLoad: (config && config.progressiveLoad) || false,
       preserveAspectRatio: (config && config.preserveAspectRatio) || 'xMidYMid meet',
+      imagePreserveAspectRatio: (config && config.imagePreserveAspectRatio) || 'xMidYMid slice',
       className: (config && config.className) || ''
     };
     this.renderConfig.dpr = (config && config.dpr) || 1;
@@ -35,6 +36,7 @@ class CanvasRenderer extends BaseRenderer {
     this.pendingElements = [];
     this.transformMat = new Matrix();
     this.completeLayers = false;
+    this.rendererType = 'canvas';
   }
 
   createShape(data) {

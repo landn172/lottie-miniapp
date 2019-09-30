@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.4",
+	"libVersion": "2.8.3",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"simulatorType": "wechat",
@@ -34,13 +34,14 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 8,
 			"list": [
 				{
 					"id": 0,
 					"name": "path",
 					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/ActivityPageAe/dbf1/6269/ee0b86f8cb06bbe58b535eec.json"
+					"query": "path=https://img1.tuhu.org/ae/FvW3mtaqPb8dVyhkkCRE1HDIBBz3.json",
+					"scene": null
 				},
 				{
 					"id": -1,
@@ -49,10 +50,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 2,
 					"name": "zip",
 					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/9a/b90a/9725ea8936fcd41ff828c70af5.zip",
+					"query": "path=https://img1.tuhu.org/mp/FvrRPLGpiwTIxCyDzHvBg9bKokM2.zip",
 					"scene": null
 				},
 				{
@@ -88,6 +89,13 @@
 					"name": "issuss-72",
 					"pathName": "pages/index/index",
 					"query": "path=https://ddpicture.oss-cn-shenzhen.aliyuncs.com/1565782313691_bubble.json",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "zip2",
+					"pathName": "pages/index/index",
+					"query": "path=https://img1.tuhu.org/mp/FkVqW12iSqUDLvSOjm5gx4H2Fw1X.zip",
 					"scene": null
 				}
 			]

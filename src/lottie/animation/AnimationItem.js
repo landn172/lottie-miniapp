@@ -45,6 +45,7 @@ class AnimationItem extends BaseEvent {
   }
 
   setParams(params) {
+    // 小程序中一些api需要context， 指向Page或者Component
     if (params.context) {
       this.context = params.context;
     }
@@ -99,7 +100,7 @@ class AnimationItem extends BaseEvent {
     // 判断是否在可视区域内
     if (api.createIntersectionObserver) {
       const canvasId = params.rendererSettings.context.canvasId;
-      const observer = api.createIntersectionObserver();
+      const observer = api.createIntersectionObserver(this.context);
       this.$observer = observer;
       observer.relativeToViewport({
         bottom: 10,
