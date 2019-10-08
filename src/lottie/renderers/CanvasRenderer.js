@@ -68,8 +68,6 @@ class CanvasRenderer extends BaseRenderer {
       return;
     }
     if (!this.renderConfig.clearCanvas) {
-      // this.canvasContext.setTransform(props[0], props[1], props[4], props[5], props[12], props[13]);
-
       this.canvasContext.transform(props[0], props[1], props[4], props[5], props[12], props[13]);
       return;
     }
@@ -286,11 +284,15 @@ class CanvasRenderer extends BaseRenderer {
       }
       for (i = len - 1; i >= 0; i -= 1) {
         if (this.completeLayers || this.elements[i]) {
-          this.elements[i].renderFrame();
+          this.elements[i].renderFrame(i === 0);
         }
       }
       this.canvasContext.draw();
       if (this.renderConfig.clearCanvas !== true) {
+        this.restore();
+      } else {
+        // fix draw() reset setTransform or opacity
+        this.save();
         this.restore();
       }
     }

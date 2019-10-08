@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -53,7 +53,7 @@
 					"id": 2,
 					"name": "zip",
 					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/mp/FvrRPLGpiwTIxCyDzHvBg9bKokM2.zip",
+					"query": "path=https://img1.tuhu.org/mp/FmnLB-uaIwRD6Djh2bDjti6H4qa4.zip",
 					"scene": null
 				},
 				{
