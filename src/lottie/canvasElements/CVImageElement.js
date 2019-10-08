@@ -33,6 +33,13 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
     if (this.failed) {
       return;
     }
+
+    // fix 宽高不同，导致绘制差异
+    if (this.img.width && (this.assetData.w !== this.img.width || this.assetData.h !== this.img.height)) {
+      this.canvasContext.drawImage(this.img.src || this.img, 0, 0, this.assetData.w, this.assetData.h);
+      return;
+    }
+
     this.canvasContext.drawImage(this.img.src || this.img, 0, 0);
   }
 
