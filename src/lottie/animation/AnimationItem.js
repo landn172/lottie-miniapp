@@ -45,6 +45,7 @@ class AnimationItem extends BaseEvent {
   }
 
   setParams(params) {
+    // 小程序中一些api需要context， 指向Page或者Component
     if (params.context) {
       this.context = params.context;
     }
@@ -74,11 +75,13 @@ class AnimationItem extends BaseEvent {
     if (params.animationData) {
       this.configAnimation(params.animationData);
     } else if (params.path) {
-      if (params.path.substr(-4) !== 'json') {
-        if (params.path.substr(-1, 1) !== '/') {
-          params.path += '/';
+      if (params.path.lastIndexOf('.zip') === -1) {
+        if (params.path.substr(-4) !== 'json') {
+          if (params.path.substr(-1, 1) !== '/') {
+            params.path += '/';
+          }
+          params.path += 'data.json';
         }
-        params.path += 'data.json';
       }
 
       if (params.path.lastIndexOf('\\') !== -1) {
@@ -97,7 +100,7 @@ class AnimationItem extends BaseEvent {
     // 判断是否在可视区域内
     if (api.createIntersectionObserver) {
       const canvasId = params.rendererSettings.context.canvasId;
-      const observer = api.createIntersectionObserver();
+      const observer = api.createIntersectionObserver(this.context);
       this.$observer = observer;
       observer.relativeToViewport({
         bottom: 10,

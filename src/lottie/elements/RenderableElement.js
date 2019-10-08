@@ -67,8 +67,8 @@ class RenderableElement {
     for (i = 0; i < len; i += 1) {
       this.renderableComponents[i].renderFrame(this._isFirstFrame);
     }
-  /* this.maskManager.renderFrame(this.finalTransform.mat);
-  this.renderableEffectsManager.renderFrame(this._isFirstFrame); */
+    /* this.maskManager.renderFrame(this.finalTransform.mat);
+    this.renderableEffectsManager.renderFrame(this._isFirstFrame); */
   }
 
   sourceRectAtTime() {
