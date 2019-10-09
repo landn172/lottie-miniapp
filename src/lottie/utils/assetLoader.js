@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import api, { getUserDataPath } from '../platform/index';
 export default {
   // load json
@@ -24,7 +25,7 @@ export default {
   }
 };
 
-const fs = api.getFileSystemManager();
+const fs = typeof api.getFileSystemManager === 'function' ? api.getFileSystemManager() : {};
 
 export function downloadZip(url) {
   return new Promise(resolve => {
@@ -83,9 +84,10 @@ export function getFileTree(dir, tree = {}) {
 
 export function loadZipFiles(url) {
   let tempDir = '';
+  const unzipDir = `${getUserDataPath()}/tmp-unzip/${easyHashCode(url)}`;
   return downloadZip(url)
     .then(tempFilePath => {
-      return unzipFile(tempFilePath);
+      return unzipFile(tempFilePath, unzipDir);
     })
     .then(({ targetPath }) => {
       tempDir = `${targetPath}/`;
@@ -98,4 +100,17 @@ export function loadZipFiles(url) {
         data: JSON.parse(fs.readFileSync(tree[dataJsonPath], 'utf-8') || '{}')
       };
     });
+}
+
+function easyHashCode(str = '') {
+  const len = str.length;
+  let i = 0;
+  let hash = 0;
+  while (i < len) {
+    const character = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + character;
+    hash = hash & hash;
+    i++;
+  }
+  return Math.abs(`${hash}`.toString(16));
 }
