@@ -10,6 +10,8 @@ const api = { ...getEnvObj() };
 
 if (!api.getFileSystemManager) {
   api.getFileSystemManager = () => {
+    // eslint-disable-next-line no-console
+    console.warn('当前小程序不支持 getFileSystemManager');
   };
 }
 
