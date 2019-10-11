@@ -39,13 +39,27 @@ export function downloadZip(url) {
   });
 }
 
+/**
+ * 确保路径存在
+ */
+function ensureDir(dir) {
+  const dirs = dir.split('/');
+  let len = dirs.length;
+  let i = 1;
+  while (i <= len) {
+    const targetPath = dirs.slice(0, i).join('/');
+    try {
+      fs.mkdirSync(targetPath);
+    } catch (error) {
+      console.warn(`ensureDir [${targetPath}]`, error);
+    }
+    i++;
+  }
+}
+
 export function unzipFile(tempFilePath, targetPath = `${getUserDataPath()}/tmp-unzip`) {
   return new Promise(resolve => {
-    try {
-      fs.rmdirSync(targetPath, true);
-    } catch (error) {
-      // ignore
-    }
+    ensureDir(targetPath);
     fs.unzip({
       targetPath,
       zipFilePath: tempFilePath,

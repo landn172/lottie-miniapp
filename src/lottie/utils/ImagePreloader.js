@@ -77,13 +77,15 @@ class ImagePreloader {
 
   loadImage(path, cb) {
     const imageLoaded = this.imageLoaded.bind(this);
+    // 读取base64图片
     if (path.startsWith('data:')) {
       loadBase64Image(path)
         .then(filePath => {
           cb(filePath);
           imageLoaded();
         });
-    } else {
+    } else if (path.startsWith('http')) {
+      // 下载网络图片
       api.downloadFile({
         url: path,
         success: (res) => {
@@ -95,6 +97,9 @@ class ImagePreloader {
           imageLoaded();
         }
       });
+    } else {
+      // 读取本地文件
+      cb(path);
     }
   }
 

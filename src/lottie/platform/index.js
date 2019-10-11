@@ -3,7 +3,12 @@ import { getEnvObj } from '../utils/getEnvObj';
 import wxToAliApi from './wx2ali';
 
 export function getUserDataPath() {
-  return wx.env.USER_DATA_PATH;
+  try {
+    return wx.env.USER_DATA_PATH;
+  } catch (error) {
+    console.warn('getUserDataPath error');
+    return '/';
+  }
 }
 
 const api = { ...getEnvObj() };
