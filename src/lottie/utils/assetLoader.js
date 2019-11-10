@@ -10,6 +10,9 @@ export default {
         .then(({ data, tempDir }) => {
           self.path = tempDir;
           callback(data);
+        }).catch((err) => {
+          if (typeof error_callback !== 'function') return;
+          error_callback(err);
         });
     }
     api.request({
