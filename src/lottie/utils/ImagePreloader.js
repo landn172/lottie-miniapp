@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import api, { getUserDataPath } from '../platform/index';
 
 class ImagePreloader {
@@ -77,13 +78,18 @@ class ImagePreloader {
 
   loadImage(path, cb) {
     const imageLoaded = this.imageLoaded.bind(this);
+    // 读取base64图片
     if (path.startsWith('data:')) {
       loadBase64Image(path)
         .then(filePath => {
           cb(filePath);
           imageLoaded();
+        }, () => {
+          cb();
+          imageLoaded();
         });
-    } else {
+    } else if (path.startsWith('http')) {
+      // 下载网络图片
       api.downloadFile({
         url: path,
         success: (res) => {
@@ -95,6 +101,9 @@ class ImagePreloader {
           imageLoaded();
         }
       });
+    } else {
+      // 读取本地文件
+      cb(path);
     }
   }
 
@@ -129,15 +138,23 @@ class ImagePreloader {
 }
 
 function loadBase64Image(base64data) {
-  const fsm = api.getFileSystemManager();
   return new Promise((resolve, reject) => {
+    const fsm = api.getFileSystemManager();
+    if (!fsm) {
+      return reject();
+    }
     const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
     if (!format) {
       reject(new Error('ERROR_BASE64SRC_PARSE'));
     }
-    const filename = `${Math.random()}`.substr(2);
+    const filename = `${bodyData}`.substr(0, 10);
     const filePath = `${getUserDataPath()}/${filename}.${format}`;
     const buffer = api.base64ToArrayBuffer(bodyData);
+    // 如果已经存在缓存, 直接缓存
+    if (fsm.accessSync(filePath)) {
+      return resolve(filePath);
+    }
+
     fsm.writeFile({
       filePath,
       data: buffer,
@@ -145,7 +162,8 @@ function loadBase64Image(base64data) {
       success() {
         resolve(filePath);
       },
-      fail() {
+      fail(res) {
+        console.error(res.errMsg);
         reject(new Error('ERROR_BASE64SRC_WRITE'));
       }
     });
