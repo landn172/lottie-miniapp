@@ -84,7 +84,8 @@ class ImagePreloader {
         .then(filePath => {
           cb(filePath);
           imageLoaded();
-        }, () => {
+        }, (err) => {
+          console.log('loadBase64Image:fail', err);
           cb();
           imageLoaded();
         });
@@ -137,6 +138,19 @@ class ImagePreloader {
   }
 }
 
+function easyHashCode(str = '') {
+  const len = str.length;
+  let i = 0;
+  let hash = 0;
+  while (i < len) {
+    const character = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + character;
+    hash = hash & hash;
+    i++;
+  }
+  return Math.abs(`${hash}`.toString(16));
+}
+
 function loadBase64Image(base64data) {
   return new Promise((resolve, reject) => {
     const fsm = api.getFileSystemManager();
@@ -147,12 +161,17 @@ function loadBase64Image(base64data) {
     if (!format) {
       reject(new Error('ERROR_BASE64SRC_PARSE'));
     }
-    const filename = `${bodyData}`.substr(0, 10);
+    // const filename = `${Math.random()}`.substr(2);
+    const filename = `lottie-${easyHashCode(bodyData)}`;
     const filePath = `${getUserDataPath()}/${filename}.${format}`;
     const buffer = api.base64ToArrayBuffer(bodyData);
-    // 如果已经存在缓存, 直接缓存
-    if (fsm.accessSync(filePath)) {
-      return resolve(filePath);
+    try {
+      // 如果已经存在缓存, 直接缓存
+      if (fsm.accessSync(filePath)) {
+        return resolve(filePath);
+      }
+    } catch (error) {
+      // @ignore
     }
 
     fsm.writeFile({
