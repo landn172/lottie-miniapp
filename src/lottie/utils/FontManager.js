@@ -121,6 +121,9 @@ class Font {
 
   getCharData(char, style, font) {
     let i = 0;
+    if (!this.chars) {
+      return emptyChar;
+    }
     const len = this.chars.length;
     while (i < len) {
       if (this.chars[i].ch === char && this.chars[i].style === style && this.chars[i].fFamily === font) {
@@ -128,7 +131,7 @@ class Font {
       }
       i += 1;
     }
-    if (console.warn) {
+    if ((typeof char === 'string' && char.charCodeAt(0) !== 13 || !char) && console && console.warn) {
       console.warn('Missing character from exported characters list: ', char, style, font);
     }
     return emptyChar;

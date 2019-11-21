@@ -33,6 +33,10 @@
 			"currentL": -1,
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
 			"current": 2,
 			"list": [
@@ -96,6 +100,13 @@
 					"name": "zip2",
 					"pathName": "pages/index/index",
 					"query": "path=https://img1.tuhu.org/mp/FkVqW12iSqUDLvSOjm5gx4H2Fw1X.zip",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "issues-119",
+					"pathName": "pages/index/index",
+					"query": "path=https://github.com/landn172/lottie-miniapp/files/3872556/FeHelper-20191121104350.txt",
 					"scene": null
 				}
 			]
