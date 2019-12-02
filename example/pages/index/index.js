@@ -46,6 +46,11 @@ Page({
       this.playLottie(lottieData)
     }
   },
+  toOtherPage() {
+    wx.navigateTo({
+      url: `/pages/component/index`
+    })
+  }
 })
 
 function lottieTest(canvasContext, lottieData) {

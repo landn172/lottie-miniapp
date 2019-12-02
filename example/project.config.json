@@ -108,6 +108,13 @@
 					"pathName": "pages/index/index",
 					"query": "path=https://github.com/landn172/lottie-miniapp/files/3872556/FeHelper-20191121104350.txt",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "issues-125",
+					"pathName": "pages/index/index",
+					"query": "path=https://7niu-article.galaxyeye-tech.com/miniprograme/pets/data/catLick.v1.json",
+					"scene": null
 				}
 			]
 		}
