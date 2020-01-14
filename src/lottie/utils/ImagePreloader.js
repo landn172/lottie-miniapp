@@ -153,18 +153,24 @@ function easyHashCode(str = '') {
 
 function loadBase64Image(base64data) {
   return new Promise((resolve, reject) => {
-    const fsm = api.getFileSystemManager();
-    if (!fsm) {
-      return reject();
-    }
     const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
     if (!format) {
-      reject(new Error('ERROR_BASE64SRC_PARSE'));
+      return reject(new Error('ERROR_BASE64SRC_PARSE'));
     }
-    // const filename = `${Math.random()}`.substr(2);
+
+    const buffer = api.base64ToArrayBuffer(bodyData);
+    const fsm = api.getFileSystemManager();
+    // 没有fsm 或者 支付宝
+    if (!fsm || (typeof my !== 'undefined' && !!my.ap)) {
+      // if (!fsm) {
+      try {
+        return resolve(new Uint8ClampedArray(buffer));
+      } catch (error) {
+        return reject();
+      }
+    }
     const filename = `lottie-${easyHashCode(bodyData)}`;
     const filePath = `${getUserDataPath()}/${filename}.${format}`;
-    const buffer = api.base64ToArrayBuffer(bodyData);
     try {
       // 如果已经存在缓存, 直接缓存
       if (fsm.accessSync(filePath)) {

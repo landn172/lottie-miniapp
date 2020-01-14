@@ -2,16 +2,41 @@
 import { getEnvObj } from '../utils/getEnvObj';
 import wxToAliApi from './wx2ali';
 
-export function getUserDataPath() {
-  try {
-    return wx.env.USER_DATA_PATH;
-  } catch (error) {
-    console.warn('getUserDataPath error');
-    return '/';
+
+export function canvasPutImageData({
+  canvasContext, data, x, y, width, height
+}) {
+  if (canvasContext.canvasPutImageData) {
+    canvasContext.canvasPutImageData({
+      canvasId: canvasContext.canvasId || '',
+      data,
+      x,
+      y,
+      width,
+      height
+    });
+  } else {
+    // 支付宝
+    canvasContext.putImageData({
+      data,
+      x,
+      y,
+      width,
+      height
+    });
   }
 }
 
 const api = { ...getEnvObj() };
+
+export function getUserDataPath() {
+  try {
+    return api.env.USER_DATA_PATH;
+  } catch (error) {
+    console.warn('getUserDataPath error');
+    return '/USER_DATA_PATH';
+  }
+}
 
 if (!api.getFileSystemManager) {
   api.getFileSystemManager = () => {
