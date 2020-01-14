@@ -30,7 +30,17 @@ class CVImageElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
   }
 
   renderInnerContent() {
-    if (this.failed) {
+    if (this.failed || !this.img.src) {
+      return;
+    }
+
+    if (this.img.src instanceof Uint8ClampedArray) {
+      this.canvasContext.canvasPutImageData({
+        canvasId: this.canvasContext.canvasId || '',
+        data: this.img.src,
+        x: 0,
+        y: 0
+      });
       return;
     }
 
