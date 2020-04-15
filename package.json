@@ -1,6 +1,6 @@
 {
   "name": "lottie-miniapp",
-  "version": "1.8.12",
+  "version": "1.8.13",
   "main": "lib/index.js",
   "scripts": {
     "build:debug": "gulp",
