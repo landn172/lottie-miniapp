@@ -9,6 +9,8 @@ class ImagePreloader {
     this.totalImages = 0;
     this.loadedAssets = 0;
     this.imagesLoadedCb = null;
+    // canvas type=2d 需要指定
+    this.canvas = null;
     this.images = [];
   }
 
@@ -57,6 +59,17 @@ class ImagePreloader {
     };
     this.loadImage(path, (tmpPath) => {
       if (tmpPath) {
+        if (this.canvas && this.canvas.createImage) {
+          const image = this.canvas.createImage();
+          new Promise(resolve => {
+            image.onload = resolve;
+            image.onerror = resolve;
+            img.src = image;
+            image.src = tmpPath;
+          }).then(() => this.imageLoaded());
+          return;
+        }
+
         new Promise(resolve => api.getImageInfo({
           src: tmpPath,
           success(res) {
@@ -82,12 +95,11 @@ class ImagePreloader {
     if (path.startsWith('data:')) {
       loadBase64Image(path)
         .then(filePath => {
+          console.log('loadImage base64', filePath);
           cb(filePath);
-          imageLoaded();
         }, (err) => {
           console.log('loadBase64Image:fail', err);
           cb();
-          imageLoaded();
         });
     } else if (path.startsWith('http')) {
       // 下载网络图片
@@ -130,6 +142,10 @@ class ImagePreloader {
 
   setAssetsPath(path) {
     this.assetsPath = path || '';
+  }
+
+  setCanvas(canvas) {
+    this.canvas = canvas;
   }
 
   destroy() {

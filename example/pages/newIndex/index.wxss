@@ -1,0 +1,9 @@
+page {
+  height: 100%;
+  width: 100%;
+}
+.test-canvas {
+  height: 100%;
+  width: 100%;
+  background: #333;
+}

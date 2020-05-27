@@ -45,7 +45,47 @@ class AnimationItem extends BaseEvent {
     this.imagePreloader = new ImagePreloader();
   }
 
+  fixMissingApi(context) {
+    [{
+      fn: 'setGlobalAlpha',
+      key: 'globalAlpha'
+    }, {
+      fn: 'setFillStyle',
+      key: 'fillStyle'
+    }, {
+      fn: 'setFontSize',
+      key: 'font'
+    }, {
+      fn: 'setLineCap',
+      key: 'lineCap'
+    }, {
+      fn: 'setLineJoin',
+      key: 'lineJoin'
+    }, {
+      fn: 'setLineWidth',
+      key: 'lineWidth'
+    }, {
+      fn: 'setMiterLimit',
+      key: 'miterLimit'
+    }, {
+      fn: 'setStrokeStyle',
+      key: 'strokeStyle'
+    }/* {
+      fn: 'setLineDash',
+      key: 'lineDashOffset'
+    } */].forEach(({ fn, key }) => {
+      if (typeof context[fn] !== 'function') {
+        Object.defineProperty(context, fn, {
+          value: function (value) {
+            context[key] = value;
+          }
+        });
+      }
+    });
+  }
+
   setParams(params) {
+    this.fixMissingApi(params.rendererSettings.context);
     // 小程序中一些api需要context， 指向Page或者Component
     if (params.context) {
       this.context = params.context;
@@ -189,6 +229,7 @@ class AnimationItem extends BaseEvent {
   }
 
   preloadImages() {
+    this.imagePreloader.setCanvas(this.renderer.renderConfig.canvas);
     this.imagePreloader.setAssetsPath(this.assetsPath);
     this.imagePreloader.setPath(this.path);
     this.imagePreloader.loadAssets(this.animationData.assets, this.imagesLoaded.bind(this));

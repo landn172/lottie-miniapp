@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/newIndex/index",
     "pages/component/index"
   ],
   "window": {

@@ -10,6 +10,7 @@ class AnimationManager {
     this.playingAnimationsNum = 0;
     this._stopped = true;
     this._isFrozen = false;
+    this.raf = raf;
   }
 
   removeElement(ev) {
@@ -64,6 +65,9 @@ class AnimationManager {
     let animItem = new AnimationItem();
     this.setupAnimation(animItem, null);
     animItem.setParams(params);
+    if (params.rendererSettings && params.rendererSettings.canvas && params.rendererSettings.canvas.requestAnimationFrame) {
+      this.raf = params.rendererSettings.canvas.requestAnimationFrame.bind(params.rendererSettings.canvas);
+    }
     return animItem;
   }
 
@@ -100,7 +104,7 @@ class AnimationManager {
     }
     this.initTime = nowTime;
     if (this.playingAnimationsNum && !this._isFrozen) {
-      raf(this.resume.bind(this));
+      this.raf(this.resume.bind(this));
     } else {
       this._stopped = true;
     }
@@ -108,7 +112,7 @@ class AnimationManager {
 
   first(nowTime) {
     this.initTime = nowTime;
-    raf(this.resume.bind(this));
+    this.raf(this.resume.bind(this));
   }
 
   pause(animation) {
@@ -164,7 +168,7 @@ class AnimationManager {
   activate() {
     if (!this._isFrozen && this.playingAnimationsNum) {
       if (this._stopped) {
-        raf(this.first.bind(this));
+        this.raf(this.first.bind(this));
         this._stopped = false;
       }
     }

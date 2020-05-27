@@ -18,6 +18,7 @@ class CanvasRenderer extends BaseRenderer {
     this.renderConfig = {
       clearCanvas: (config && config.clearCanvas !== undefined) ? config.clearCanvas : true,
       context: (config && config.context) || null,
+      canvas: (config && config.canvas),
       progressiveLoad: (config && config.progressiveLoad) || false,
       preserveAspectRatio: (config && config.preserveAspectRatio) || 'xMidYMid meet',
       imagePreserveAspectRatio: (config && config.imagePreserveAspectRatio) || 'xMidYMid slice',
@@ -276,6 +277,7 @@ class CanvasRenderer extends BaseRenderer {
         this.elements[i].prepareFrame(num - this.layers[i].st);
       }
     }
+
     if (this.globalData._mdf) {
       if (this.renderConfig.clearCanvas === true) {
         this.canvasContext.clearRect(0, 0, this.transformCanvas.w, this.transformCanvas.h);
@@ -287,7 +289,7 @@ class CanvasRenderer extends BaseRenderer {
           this.elements[i].renderFrame(i === 0);
         }
       }
-      this.canvasContext.draw();
+      if (this.canvasContext.draw) this.canvasContext.draw();
       if (this.renderConfig.clearCanvas !== true) {
         this.restore();
       } else {

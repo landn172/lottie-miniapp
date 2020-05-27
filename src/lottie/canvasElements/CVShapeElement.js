@@ -269,6 +269,7 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
     this.transformHelper._opMdf = false;
     this.renderModifiers();
     this.transformsManager.processSequences(this._isFirstFrame);
+
     this.renderShape(this.transformHelper, this.shapesData, this.itemsData, true);
   }
 
@@ -351,9 +352,15 @@ class CVShapeElement extends Mixin(BaseElement, TransformElement, CVBaseElement,
           }
         }
       }
+
       if (type !== 'st' && type !== 'gs') {
-        ctx.fill(currentStyle.r);
+        if (currentStyle.r === 'nonzero') {
+          ctx.fill();
+        } else {
+          ctx.fill(currentStyle.r);
+        }
       }
+
       renderer.restore();
     }
   }

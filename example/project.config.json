@@ -8,10 +8,22 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": true,
+		"autoAudits": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.3",
+	"libVersion": "2.11.0",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"simulatorType": "wechat",
@@ -114,6 +126,13 @@
 					"name": "issues-142",
 					"pathName": "pages/index/index",
 					"query": "path=https://assets9.lottiefiles.com/packages/lf20_VD7dtd.json",
+					"scene": null
+				},
+				{
+					"id": 11,
+					"name": "pages/newIndex/index",
+					"pathName": "pages/newIndex/index",
+					"query": "",
 					"scene": null
 				}
 			]
