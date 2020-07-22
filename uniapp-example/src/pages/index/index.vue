@@ -27,7 +27,7 @@ export default {
       renderer: 'canvas', // 只支持canvas
       loop: true,
       autoplay: true,
-      path: `https://github.com/landn172/lottie-miniapp/files/3711191/home_animete.-.txt`,
+      path: `http://172.16.234.74:8080/157/data.json`,
       rendererSettings: {
         context: canvasContext,
         clearCanvas: true
