@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.8.3",
+	"libVersion": "2.9.3",
 	"appid": "wx27d20205249c56a3",
 	"projectname": "lottie-miniapp-example",
 	"simulatorType": "wechat",
@@ -31,6 +31,10 @@
 		},
 		"game": {
 			"currentL": -1,
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
@@ -96,6 +100,20 @@
 					"name": "zip2",
 					"pathName": "pages/index/index",
 					"query": "path=https://img1.tuhu.org/mp/FkVqW12iSqUDLvSOjm5gx4H2Fw1X.zip",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "issues-119",
+					"pathName": "pages/index/index",
+					"query": "path=https://github.com/landn172/lottie-miniapp/files/3872556/FeHelper-20191121104350.txt",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "issues-142",
+					"pathName": "pages/index/index",
+					"query": "path=https://assets9.lottiefiles.com/packages/lf20_VD7dtd.json",
 					"scene": null
 				}
 			]

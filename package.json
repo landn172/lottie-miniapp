@@ -1,6 +1,6 @@
 {
   "name": "lottie-miniapp",
-  "version": "1.8.7",
+  "version": "1.8.13",
   "main": "lib/index.js",
   "scripts": {
     "build:debug": "gulp",
@@ -42,7 +42,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.7.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "gulp": "4.0.2",
@@ -50,7 +50,7 @@
     "gulp-cached": "^1.1.1",
     "gulp-if": "^3.0.0",
     "gulp-replace": "^1.0.0",
-    "rollup": "^1.23.0",
+    "rollup": "^1.27.5",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",

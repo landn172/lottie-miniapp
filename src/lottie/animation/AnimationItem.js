@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import api from '../platform/index';
 import CanvasRenderer from '../renderers/CanvasRenderer';
 import assetLoader from '../utils/assetLoader';
@@ -169,7 +170,9 @@ class AnimationItem extends BaseEvent {
     this.timeCompleted = segment.time * this.frameRate;
     let segmentPath = this.path + this.fileName + '_' + this.segmentPos + '.json';
     this.segmentPos += 1;
-    assetLoader.load(segmentPath, this.includeLayers.bind(this));
+    assetLoader.load(segmentPath, this.includeLayers.bind(this), function () {
+      this.trigger('data_failed');
+    }.bind(this));
   }
 
   loadSegments() {
@@ -265,7 +268,7 @@ class AnimationItem extends BaseEvent {
     if (this.isLoaded === false) {
       return;
     }
-    this.renderer.renderFrame(this.currentFrame + this.firstFrame);
+    this.renderer && this.renderer.renderFrame(this.currentFrame + this.firstFrame);
   }
 
   play(name) {
