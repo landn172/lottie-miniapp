@@ -1,6 +1,6 @@
 // @jgb-ignore
 export function getEnvObj() {
-  if (typeof wx !== 'undefined' && typeof wx.getSystemInfo === 'function') {
+  if (typeof wx !== 'undefined' && ('getSystemInfo' in wx) && typeof wx.getSystemInfo === 'function') {
     return wx;
   }
   if (typeof my !== 'undefined' && typeof my.getSystemInfo === 'function') {
@@ -15,4 +15,5 @@ export function getEnvObj() {
   if (typeof tt !== 'undefined' && typeof tt.getSystemInfo === 'function') {
     return tt;
   }
+  console.log('in uni');
 }
