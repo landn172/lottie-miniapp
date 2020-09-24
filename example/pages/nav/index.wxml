@@ -1,0 +1,2 @@
+<button bind:tap="toType2dAe">toType2dAe</button>
+<button bind:tap="toAe">toAe</button>

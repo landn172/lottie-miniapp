@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/newIndex/index",
-    "pages/component/index"
+    "pages/component/index",
+    "pages/nav/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
