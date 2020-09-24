@@ -1,141 +1,167 @@
 {
-	"description": "项目配置文件。",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"postcss": true,
-		"minified": true,
-		"newFeature": true,
-		"nodeModules": true,
-		"autoAudits": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false
-	},
-	"compileType": "miniprogram",
-	"libVersion": "2.11.0",
-	"appid": "wx27d20205249c56a3",
-	"projectname": "lottie-miniapp-example",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"currentL": -1,
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 2,
-			"list": [
-				{
-					"id": 0,
-					"name": "path",
-					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/ae/FvW3mtaqPb8dVyhkkCRE1HDIBBz3.json",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "component",
-					"pathName": "pages/component/index",
-					"query": ""
-				},
-				{
-					"id": 2,
-					"name": "zip",
-					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/mp/FmnLB-uaIwRD6Djh2bDjti6H4qa4.zip",
-					"scene": null
-				},
-				{
-					"id": 3,
-					"name": "bug2",
-					"pathName": "pages/index/index",
-					"query": "path=https://img-asset.chemm.com/test/lottie-demo/base64/data.json",
-					"scene": null
-				},
-				{
-					"id": 4,
-					"name": "bug",
-					"pathName": "pages/index/index",
-					"query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
-					"scene": null
-				},
-				{
-					"id": 5,
-					"name": "bug3",
-					"pathName": "pages/index/index",
-					"query": "path=https://img-asset.chemm.com/test/lottie-demo/navidad/data.json",
-					"scene": null
-				},
-				{
-					"id": 6,
-					"name": "bug4",
-					"pathName": "pages/index/index",
-					"query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
-					"scene": null
-				},
-				{
-					"id": 7,
-					"name": "issuss-72",
-					"pathName": "pages/index/index",
-					"query": "path=https://ddpicture.oss-cn-shenzhen.aliyuncs.com/1565782313691_bubble.json",
-					"scene": null
-				},
-				{
-					"id": 8,
-					"name": "zip2",
-					"pathName": "pages/index/index",
-					"query": "path=https://img1.tuhu.org/mp/FkVqW12iSqUDLvSOjm5gx4H2Fw1X.zip",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "issues-119",
-					"pathName": "pages/index/index",
-					"query": "path=https://github.com/landn172/lottie-miniapp/files/3872556/FeHelper-20191121104350.txt",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "issues-142",
-					"pathName": "pages/index/index",
-					"query": "path=https://assets9.lottiefiles.com/packages/lf20_VD7dtd.json",
-					"scene": null
-				},
-				{
-					"id": 11,
-					"name": "pages/newIndex/index",
-					"pathName": "pages/newIndex/index",
-					"query": "",
-					"scene": null
-				}
-			]
-		}
-	}
+  "description": "项目配置文件。",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": []
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.11.0",
+  "appid": "wx27d20205249c56a3",
+  "projectname": "lottie-miniapp-example",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "plugin": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "currentL": -1,
+      "list": []
+    },
+    "gamePlugin": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": 2,
+      "list": [
+        {
+          "id": 0,
+          "name": "path",
+          "pathName": "pages/index/index",
+          "query": "path=https://img1.tuhu.org/ae/FvW3mtaqPb8dVyhkkCRE1HDIBBz3.json",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "component",
+          "pathName": "pages/component/index",
+          "query": ""
+        },
+        {
+          "id": 2,
+          "name": "zip",
+          "pathName": "pages/index/index",
+          "query": "path=https://img1.tuhu.org/mp/FmnLB-uaIwRD6Djh2bDjti6H4qa4.zip",
+          "scene": null
+        },
+        {
+          "id": 3,
+          "name": "bug2",
+          "pathName": "pages/index/index",
+          "query": "path=https://img-asset.chemm.com/test/lottie-demo/base64/data.json",
+          "scene": null
+        },
+        {
+          "id": 4,
+          "name": "bug",
+          "pathName": "pages/index/index",
+          "query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
+          "scene": null
+        },
+        {
+          "id": 5,
+          "name": "bug3",
+          "pathName": "pages/index/index",
+          "query": "path=https://img-asset.chemm.com/test/lottie-demo/navidad/data.json",
+          "scene": null
+        },
+        {
+          "id": 6,
+          "name": "bug4",
+          "pathName": "pages/index/index",
+          "query": "path=https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json",
+          "scene": null
+        },
+        {
+          "id": 7,
+          "name": "issuss-72",
+          "pathName": "pages/index/index",
+          "query": "path=https://ddpicture.oss-cn-shenzhen.aliyuncs.com/1565782313691_bubble.json",
+          "scene": null
+        },
+        {
+          "id": 8,
+          "name": "zip2",
+          "pathName": "pages/index/index",
+          "query": "path=https://img1.tuhu.org/mp/FkVqW12iSqUDLvSOjm5gx4H2Fw1X.zip",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "issues-119",
+          "pathName": "pages/index/index",
+          "query": "path=https://github.com/landn172/lottie-miniapp/files/3872556/FeHelper-20191121104350.txt",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "issues-142",
+          "pathName": "pages/index/index",
+          "query": "path=https://assets9.lottiefiles.com/packages/lf20_VD7dtd.json",
+          "scene": null
+        },
+        {
+          "id": 11,
+          "name": "pages/newIndex/index",
+          "pathName": "pages/newIndex/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "bug-ae",
+          "pathName": "pages/index/index",
+          "query": "path=https://img1.tuhu.org/JPG/Vz0wGMNZnCTqQjlWLm2mgQ.zip",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/nav/index",
+          "pathName": "pages/nav/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

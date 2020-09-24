@@ -65,9 +65,9 @@ class AnimationManager {
     let animItem = new AnimationItem();
     this.setupAnimation(animItem, null);
     animItem.setParams(params);
-    if (params.rendererSettings && params.rendererSettings.canvas && params.rendererSettings.canvas.requestAnimationFrame) {
-      this.raf = params.rendererSettings.canvas.requestAnimationFrame.bind(params.rendererSettings.canvas);
-    }
+    // if (params.rendererSettings && params.rendererSettings.canvas && params.rendererSettings.canvas.requestAnimationFrame) {
+    //   this.raf = params.rendererSettings.canvas.requestAnimationFrame.bind(params.rendererSettings.canvas);
+    // }
     return animItem;
   }
 

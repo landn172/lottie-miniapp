@@ -4,7 +4,11 @@ import CanvasRenderer from '../renderers/CanvasRenderer';
 import assetLoader from '../utils/assetLoader';
 import BaseEvent from '../utils/BaseEvent';
 import {
-  BMCompleteEvent, BMCompleteLoopEvent, BMDestroyEvent, BMEnterFrameEvent, BMSegmentStartEvent
+  BMCompleteEvent,
+  BMCompleteLoopEvent,
+  BMDestroyEvent,
+  BMEnterFrameEvent,
+  BMSegmentStartEvent
 } from '../utils/common';
 import dataManager from '../utils/DataManager';
 import expressionsPlugin from '../utils/expressions/Expressions';
@@ -46,34 +50,42 @@ class AnimationItem extends BaseEvent {
   }
 
   fixMissingApi(context) {
-    [{
-      fn: 'setGlobalAlpha',
-      key: 'globalAlpha'
-    }, {
-      fn: 'setFillStyle',
-      key: 'fillStyle'
-    }, {
-      fn: 'setFontSize',
-      key: 'font'
-    }, {
-      fn: 'setLineCap',
-      key: 'lineCap'
-    }, {
-      fn: 'setLineJoin',
-      key: 'lineJoin'
-    }, {
-      fn: 'setLineWidth',
-      key: 'lineWidth'
-    }, {
-      fn: 'setMiterLimit',
-      key: 'miterLimit'
-    }, {
-      fn: 'setStrokeStyle',
-      key: 'strokeStyle'
-    }/* {
-      fn: 'setLineDash',
+    [
+      {
+        fn: 'setGlobalAlpha',
+        key: 'globalAlpha'
+      },
+      {
+        fn: 'setFillStyle',
+        key: 'fillStyle'
+      },
+      {
+        fn: 'setFontSize',
+        key: 'font'
+      },
+      {
+        fn: 'setLineCap',
+        key: 'lineCap'
+      },
+      {
+        fn: 'setLineJoin',
+        key: 'lineJoin'
+      },
+      {
+        fn: 'setLineWidth',
+        key: 'lineWidth'
+      },
+      {
+        fn: 'setMiterLimit',
+        key: 'miterLimit'
+      },
+      {
+        fn: 'setStrokeStyle',
+        key: 'strokeStyle'
+      } /* {      fn: 'setLineDash',
       key: 'lineDashOffset'
-    } */].forEach(({ fn, key }) => {
+    } */
+    ].forEach(({ fn, key }) => {
       if (typeof context[fn] !== 'function') {
         Object.defineProperty(context, fn, {
           value: function (value) {
@@ -111,7 +123,9 @@ class AnimationItem extends BaseEvent {
     this.autoplay = 'autoplay' in params ? params.autoplay : true;
     this.hasTriggerplay = false;
     this.name = params.name ? params.name : '';
-    this.autoloadSegments = params.autoloadSegments ? params.autoloadSegments : true;
+    this.autoloadSegments = params.autoloadSegments
+      ? params.autoloadSegments
+      : true;
     this.assetsPath = params.assetsPath;
     if (params.animationData) {
       this.configAnimation(params.animationData);
@@ -131,11 +145,19 @@ class AnimationItem extends BaseEvent {
         this.path = params.path.substr(0, params.path.lastIndexOf('/') + 1);
       }
       this.fileName = params.path.substr(params.path.lastIndexOf('/') + 1);
-      this.fileName = this.fileName.substr(0, this.fileName.lastIndexOf('.json'));
+      this.fileName = this.fileName.substr(
+        0,
+        this.fileName.lastIndexOf('.json')
+      );
 
-      assetLoader.load.call(this, params.path, this.configAnimation.bind(this), function () {
-        this.trigger('data_failed');
-      }.bind(this));
+      assetLoader.load.call(
+        this,
+        params.path,
+        this.configAnimation.bind(this),
+        function () {
+          this.trigger('data_failed');
+        }.bind(this)
+      );
     }
 
     // 判断是否在可视区域内
@@ -143,19 +165,21 @@ class AnimationItem extends BaseEvent {
       const canvasId = params.rendererSettings.context.canvasId;
       const observer = api.createIntersectionObserver(this.context);
       this.$observer = observer;
-      observer.relativeToViewport({
-        bottom: 10,
-        top: 10,
-        left: 0,
-        right: 10
-      }).observe(`#${canvasId}`, (res) => {
-        if (!this.hasTriggerplay) return;
-        if (res.intersectionRatio > 0) {
-          this.play();
-        } else {
-          this.stop();
-        }
-      });
+      observer
+        .relativeToViewport({
+          bottom: 10,
+          top: 10,
+          left: 0,
+          right: 10
+        })
+        .observe(`#${canvasId}`, (res) => {
+          if (!this.hasTriggerplay) return;
+          if (res.intersectionRatio > 0) {
+            this.play();
+          } else {
+            this.stop();
+          }
+        });
     }
   }
 
@@ -182,7 +206,10 @@ class AnimationItem extends BaseEvent {
     }
     if (data.chars || data.fonts) {
       this.renderer.globalData.fontManager.addChars(data.chars);
-      this.renderer.globalData.fontManager.addFonts(data.fonts, this.renderer.globalData.defs);
+      this.renderer.globalData.fontManager.addFonts(
+        data.fonts,
+        this.renderer.globalData.defs
+      );
     }
     if (data.assets) {
       len = data.assets.length;
@@ -191,7 +218,10 @@ class AnimationItem extends BaseEvent {
       }
     }
     this.animationData.__complete = false;
-    dataManager.completeData(this.animationData, this.renderer.globalData.fontManager);
+    dataManager.completeData(
+      this.animationData,
+      this.renderer.globalData.fontManager
+    );
     this.renderer.includeLayers(data.layers);
     if (expressionsPlugin) {
       expressionsPlugin.initExpressions(this);
@@ -210,9 +240,13 @@ class AnimationItem extends BaseEvent {
     this.timeCompleted = segment.time * this.frameRate;
     let segmentPath = this.path + this.fileName + '_' + this.segmentPos + '.json';
     this.segmentPos += 1;
-    assetLoader.load(segmentPath, this.includeLayers.bind(this), function () {
-      this.trigger('data_failed');
-    }.bind(this));
+    assetLoader.load(
+      segmentPath,
+      this.includeLayers.bind(this),
+      function () {
+        this.trigger('data_failed');
+      }.bind(this)
+    );
   }
 
   loadSegments() {
@@ -232,7 +266,10 @@ class AnimationItem extends BaseEvent {
     this.imagePreloader.setCanvas(this.renderer.renderConfig.canvas);
     this.imagePreloader.setAssetsPath(this.assetsPath);
     this.imagePreloader.setPath(this.path);
-    this.imagePreloader.loadAssets(this.animationData.assets, this.imagesLoaded.bind(this));
+    this.imagePreloader.loadAssets(
+      this.animationData.assets,
+      this.imagesLoaded.bind(this)
+    );
   }
 
   configAnimation(animData) {
@@ -240,7 +277,9 @@ class AnimationItem extends BaseEvent {
       return;
     }
     this.animationData = animData;
-    this.totalFrames = Math.floor(this.animationData.op - this.animationData.ip);
+    this.totalFrames = Math.floor(
+      this.animationData.op - this.animationData.ip
+    );
     this.renderer.configAnimation(animData);
     if (!animData.assets) {
       animData.assets = [];
@@ -270,16 +309,26 @@ class AnimationItem extends BaseEvent {
   }
 
   checkLoaded() {
-    if (!this.isLoaded && this.renderer.globalData.fontManager.loaded() && (this.imagePreloader.loaded())) {
+    if (
+      !this.isLoaded
+      && this.renderer.globalData.fontManager.loaded()
+      && this.imagePreloader.loaded()
+    ) {
       this.isLoaded = true;
-      dataManager.completeData(this.animationData, this.renderer.globalData.fontManager);
+      dataManager.completeData(
+        this.animationData,
+        this.renderer.globalData.fontManager
+      );
       if (expressionsPlugin) {
         expressionsPlugin.initExpressions(this);
       }
       this.renderer.initItems();
-      setTimeout(function () {
-        this.trigger('DOMLoaded');
-      }.bind(this), 0);
+      setTimeout(
+        function () {
+          this.trigger('DOMLoaded');
+        }.bind(this),
+        0
+      );
       this.gotoFrame();
       if (this.autoplay) {
         this.play();
@@ -296,9 +345,14 @@ class AnimationItem extends BaseEvent {
   }
 
   gotoFrame() {
-    this.currentFrame = this.subframeEnabled ? this.currentRawFrame : ~~this.currentRawFrame;
+    this.currentFrame = this.subframeEnabled
+      ? this.currentRawFrame
+      : ~~this.currentRawFrame;
 
-    if (this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted) {
+    if (
+      this.timeCompleted !== this.totalFrames
+      && this.currentFrame > this.timeCompleted
+    ) {
       this.currentFrame = this.timeCompleted;
     }
     this.trigger('enterFrame');
@@ -309,7 +363,8 @@ class AnimationItem extends BaseEvent {
     if (this.isLoaded === false) {
       return;
     }
-    this.renderer && this.renderer.renderFrame(this.currentFrame + this.firstFrame);
+    this.renderer
+      && this.renderer.renderFrame(this.currentFrame + this.firstFrame);
   }
 
   play(name) {
@@ -400,7 +455,9 @@ class AnimationItem extends BaseEvent {
     } else if (nextValue < 0) {
       if (!this.checkSegments(nextValue % this.totalFrames)) {
         if (this.loop && !(this.playCount-- <= 0 && this.loop !== true)) {
-          this.setCurrentRawFrameValue(this.totalFrames + (nextValue % this.totalFrames));
+          this.setCurrentRawFrameValue(
+            this.totalFrames + (nextValue % this.totalFrames)
+          );
           this.trigger('loopComplete');
         } else {
           _isComplete = true;
@@ -579,16 +636,35 @@ class AnimationItem extends BaseEvent {
     if (this._cbs && this._cbs[name]) {
       switch (name) {
         case 'enterFrame':
-          this.triggerEvent(name, new BMEnterFrameEvent(name, this.currentFrame, this.totalFrames, this.frameMult));
+          this.triggerEvent(
+            name,
+            new BMEnterFrameEvent(
+              name,
+              this.currentFrame,
+              this.totalFrames,
+              this.frameMult
+            )
+          );
           break;
         case 'loopComplete':
-          this.triggerEvent(name, new BMCompleteLoopEvent(name, this.loop, this.playCount, this.frameMult));
+          this.triggerEvent(
+            name,
+            new BMCompleteLoopEvent(
+              name,
+              this.loop,
+              this.playCount,
+              this.frameMult
+            )
+          );
           break;
         case 'complete':
           this.triggerEvent(name, new BMCompleteEvent(name, this.frameMult));
           break;
         case 'segmentStart':
-          this.triggerEvent(name, new BMSegmentStartEvent(name, this.firstFrame, this.totalFrames));
+          this.triggerEvent(
+            name,
+            new BMSegmentStartEvent(name, this.firstFrame, this.totalFrames)
+          );
           break;
         case 'destroy':
           this.triggerEvent(name, new BMDestroyEvent(name, this));
@@ -598,16 +674,30 @@ class AnimationItem extends BaseEvent {
       }
     }
     if (name === 'enterFrame' && this.onEnterFrame) {
-      this.onEnterFrame.call(this, new BMEnterFrameEvent(name, this.currentFrame, this.totalFrames, this.frameMult));
+      this.onEnterFrame.call(
+        this,
+        new BMEnterFrameEvent(
+          name,
+          this.currentFrame,
+          this.totalFrames,
+          this.frameMult
+        )
+      );
     }
     if (name === 'loopComplete' && this.onLoopComplete) {
-      this.onLoopComplete.call(this, new BMCompleteLoopEvent(name, this.loop, this.playCount, this.frameMult));
+      this.onLoopComplete.call(
+        this,
+        new BMCompleteLoopEvent(name, this.loop, this.playCount, this.frameMult)
+      );
     }
     if (name === 'complete' && this.onComplete) {
       this.onComplete.call(this, new BMCompleteEvent(name, this.frameMult));
     }
     if (name === 'segmentStart' && this.onSegmentStart) {
-      this.onSegmentStart.call(this, new BMSegmentStartEvent(name, this.firstFrame, this.totalFrames));
+      this.onSegmentStart.call(
+        this,
+        new BMSegmentStartEvent(name, this.firstFrame, this.totalFrames)
+      );
     }
     if (name === 'destroy' && this.onDestroy) {
       this.onDestroy.call(this, new BMDestroyEvent(name, this));
