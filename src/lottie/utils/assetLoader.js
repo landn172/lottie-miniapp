@@ -100,23 +100,53 @@ export function getFileTree(dir, tree = {}) {
 }
 
 export function loadZipFiles(url) {
-  let tempDir = '';
   const unzipDir = `${getUserDataPath()}/tmp-unzip/${easyHashCode(url)}`;
   return downloadZip(url)
     .then(tempFilePath => {
       return unzipFile(tempFilePath, unzipDir);
     })
     .then(({ targetPath }) => {
-      tempDir = `${targetPath}/`;
       const tree = getFileTree(targetPath);
-      const keys = Object.keys(tree);
-      const dataJsonPath = keys.find(key => key.endsWith('.json'));
+      const { dir, dataJsonPath } = flatAETree(targetPath, tree);
       if (!dataJsonPath) return;
       return {
-        tempDir,
-        data: JSON.parse(fs.readFileSync(tree[dataJsonPath], 'utf-8') || '{}')
+        tempDir: dir,
+        data: JSON.parse(fs.readFileSync(dataJsonPath, 'utf-8') || '{}')
       };
     });
+}
+
+/**
+ * 扁平化处理AE文件树，查找 `data.json` 文件
+ * @param {string} root 文件根目录
+ * @param {Object} obj AE文件树
+ * @returns {{dir: string; dataJsonPath: string}}
+ */
+function flatAETree(root, obj) {
+  if (typeof obj === 'string') {
+    // 转成数组，去除最后一级文件路径
+    const arr = root.split('/');
+    arr.pop();
+    return {
+      dir: `${arr.join('/')}/`,
+      dataJsonPath: obj.endsWith('data.json') ? obj : '',
+    }
+  }
+  if (obj && typeof obj === 'object') {
+    var keys = Object.keys(obj);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i] === '__MACOSX') continue;
+      const res = flatAETree(`${root}/${keys[i]}`, obj[keys[i]]);
+      if (res.dataJsonPath) {
+        return res;
+      }
+    }
+  }
+
+  return {
+    dir: `${root}/`,
+    dataJsonPath: '',
+  }
 }
 
 function easyHashCode(str = '') {
