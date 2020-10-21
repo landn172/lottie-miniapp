@@ -5,8 +5,20 @@ Page({
     currentValue: "",
     json: [
       {
-        name: "本地动画",
-        value: "../../data/data1.json.js",
+        name: '正常根目录',
+        value: 'https://img2.tuhu.org/JPG/Vz0wGMNZnCTqQjlWLm2mgQ.zip'
+      },
+      {
+        name: '非根目录1',
+        value: 'https://img3.tuhu.org/uploadfile/M3EHjfq17pYI0pedTig02g.zip'
+      },
+      {
+        name: '非根目录2',
+        value: 'https://img2.tuhu.org/uploadfile/L700ygeusI6Gxw_lV5bKWA.zip'
+      },
+      {
+        name: '本地动画',
+        value: "../../data/data1.json.js"
       },
       {
         name: "字母B",
