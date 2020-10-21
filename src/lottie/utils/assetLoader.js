@@ -129,12 +129,12 @@ function flatAETree(root, obj) {
     arr.pop();
     return {
       dir: `${arr.join('/')}/`,
-      dataJsonPath: obj.endsWith('data.json') ? obj : '',
-    }
+      dataJsonPath: obj.endsWith('data.json') ? obj : ''
+    };
   }
   if (obj && typeof obj === 'object') {
-    var keys = Object.keys(obj);
-    for (var i = 0; i < keys.length; i++) {
+    let keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
       if (keys[i] === '__MACOSX') continue;
       const res = flatAETree(`${root}/${keys[i]}`, obj[keys[i]]);
       if (res.dataJsonPath) {
@@ -145,8 +145,8 @@ function flatAETree(root, obj) {
 
   return {
     dir: `${root}/`,
-    dataJsonPath: '',
-  }
+    dataJsonPath: ''
+  };
 }
 
 function easyHashCode(str = '') {
