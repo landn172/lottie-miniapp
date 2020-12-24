@@ -32,7 +32,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.11.0",
-	"appid": "wx27d20205249c56a3",
+	"appid": "",
 	"projectname": "lottie-miniapp-example",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
