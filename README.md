@@ -2,7 +2,11 @@
 
 Lottie 小程序版 [LottieWeb](https://github.com/airbnb/lottie-web)
 
+**不再维护,请到官方维护版本 [lottie-miniprogram](https://github.com/wechat-miniprogram/lottie-miniprogram)**
+
+
 ## 说明
+
 
 小程序版主要依据 LottieWeb 改写，意在解决需要在小程序上播放 lottie 动画，因为工作需要所以写了这库考虑可能大家有这个需求所以开源出来。
 
